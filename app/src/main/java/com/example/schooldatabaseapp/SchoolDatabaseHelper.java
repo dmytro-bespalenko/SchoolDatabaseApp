@@ -16,21 +16,17 @@ public class SchoolDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        updateMyDatabase(db, 0, DB_VERSION);
 
-        db.execSQL("CREATE TABLE CLASSROOMS (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "NAME TEXT, "
-                + "NUMBER INTEGER, "
-                + "FLOOR NUMBER);");
-
-        insertStudents(db, "Chemistry", 48, 2);
 
     }
 
-    private void insertStudents(SQLiteDatabase db, String className, int classNumber, int floor) {
+    private void insertClassrooms(SQLiteDatabase db, String className, int classNumber, int studentsCount, int floor) {
 
         ContentValues studentsValues = new ContentValues();
-        studentsValues.put("NAME", className);
-        studentsValues.put("NUMBER", classNumber);
+        studentsValues.put("CLASSNAME", className);
+        studentsValues.put("CLASSNUMBER", classNumber);
+        studentsValues.put("STUDENTSCOUNT", studentsCount);
         studentsValues.put("FLOOR", floor);
         db.insert("CLASSROOMS", null, studentsValues);
     }
@@ -38,5 +34,22 @@ public class SchoolDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+        updateMyDatabase(db, oldVersion, newVersion);
+    }
+
+
+    private void updateMyDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        if (oldVersion < 1) {
+            db.execSQL("CREATE TABLE CLASSROOMS (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + "CLASSNAME TEXT, "
+                    + "CLASSNUMBER INTEGER, "
+                    + "STUDENTSCOUNT INTEGER, "
+                    + "FLOOR INTEGER);");
+            insertClassrooms(db, "Chemistry", 48, 7, 2);
+
+        }
+
     }
 }
+

@@ -10,6 +10,15 @@ public class SchoolDatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "school";
     private static final int DB_VERSION = 1;
 
+    public final static String TABLE = "CLASSROOMS";
+
+    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_CLASSNAME = "CLASSNAME";
+    public static final String COLUMN_CLASSNUMBER = "CLASSNUMBER";
+    public static final String COLUMN_STUDENTSCOUNT = "STUDENTSCOUNT";
+    public static final String COLUMN_FLOOR = "FLOOR";
+
+
     public SchoolDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -41,11 +50,11 @@ public class SchoolDatabaseHelper extends SQLiteOpenHelper {
     private void updateMyDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         if (oldVersion < 1) {
-            db.execSQL("CREATE TABLE CLASSROOMS (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + "CLASSNAME TEXT, "
-                    + "CLASSNUMBER INTEGER, "
-                    + "STUDENTSCOUNT INTEGER, "
-                    + "FLOOR INTEGER);");
+            db.execSQL("CREATE TABLE " + TABLE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + COLUMN_CLASSNAME + " TEXT, "
+                    + COLUMN_CLASSNUMBER + " INTEGER, "
+                    + COLUMN_STUDENTSCOUNT + " INTEGER, "
+                    + COLUMN_FLOOR + " INTEGER);");
             insertClassrooms(db, "Chemistry", 48, 7, 2);
 
         }

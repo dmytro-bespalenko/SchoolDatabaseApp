@@ -11,12 +11,12 @@ import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.classRoom.ClassRoomContract;
 
-public class AddClassRoomActivity extends AppCompatActivity implements ClassRoomContract.View {
+public class AddClassRoomActivity extends AppCompatActivity implements AddClassRoomContract.View {
 
     private EditText editClassName;
     private EditText editClassNumber;
     private EditText editFloor;
-    private ClassRoomContract.Presenter presenter;
+    private AddClassRoomPresenter presenter;
 
 
     @Override
@@ -47,8 +47,4 @@ public class AddClassRoomActivity extends AppCompatActivity implements ClassRoom
     }
 
 
-    @Override
-    public void onActivityClickBack(int classRoom) {
-
-    }
 }

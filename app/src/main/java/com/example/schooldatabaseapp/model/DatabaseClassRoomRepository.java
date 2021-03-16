@@ -11,18 +11,17 @@ import com.example.schooldatabaseapp.classRoom.ClassRoomContract;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseRepository implements ClassRoomContract.Repository {
+public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
     private final DatabaseHelper dbHelper;
     private SQLiteDatabase database;
 
 
-    public DatabaseRepository(Context context) {
+    public DatabaseClassRoomRepository(Context context) {
         dbHelper = new DatabaseHelper(context.getApplicationContext());
     }
 
-    @Override
-    public DatabaseRepository open() {
+    public DatabaseClassRoomRepository open() {
         database = dbHelper.getWritableDatabase();
 
         return this;
@@ -40,7 +39,7 @@ public class DatabaseRepository implements ClassRoomContract.Repository {
     }
 
     @Override
-    public List<ClassRoom> getClassRooms() {
+    public List<ClassRoom> getAll() {
         List<ClassRoom> classrooms = new ArrayList<>();
         Cursor cursor = getAllEntries();
         while (cursor.moveToNext()) {
@@ -61,7 +60,7 @@ public class DatabaseRepository implements ClassRoomContract.Repository {
     }
 
     @Override
-    public ClassRoom getClassRoom(int id) {
+    public ClassRoom getById(int id) {
         ClassRoom classRoom = null;
         String query = String.format("SELECT * FROM %s WHERE %s=?", DatabaseHelper.TABLE, DatabaseHelper.COLUMN_ID);
         Cursor cursor = database.rawQuery(query, new String[]{String.valueOf(id)});

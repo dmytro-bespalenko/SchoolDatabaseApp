@@ -1,15 +1,14 @@
 package com.example.schooldatabaseapp.classRoom;
 
 import com.example.schooldatabaseapp.model.ClassRoom;
-import com.example.schooldatabaseapp.model.DatabaseRepository;
 
 import java.util.List;
 
 public interface ClassRoomContract {
 
     interface View {
-        void onActivityClickBack(int classRoom);
 
+        void updateRooms(List<ClassRoom> all);
     }
 
     interface Presenter {
@@ -17,24 +16,9 @@ public interface ClassRoomContract {
         void onButtonWasClicked(int id);
         void onAddButtonClicked();
 
+        void refresh();
     }
 
-    interface Repository {
 
-        List<ClassRoom> getClassRooms();
 
-        long getCount();
-
-        ClassRoom getClassRoom(int id);
-
-        long insert(ClassRoom classRoom);
-
-        int delete(int classId);
-
-        int update(ClassRoom classRoom);
-
-        void close();
-
-        DatabaseRepository open();
-    }
 }

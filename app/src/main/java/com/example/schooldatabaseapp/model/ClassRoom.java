@@ -2,18 +2,18 @@ package com.example.schooldatabaseapp.model;
 
 public class ClassRoom {
 
-    private int id;
+    private Integer id;
     private String className;
     private int classNumber;
     private int studentsCount;
     private int floor;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public ClassRoom(String className, int classNumber, int studentsCount, int floor) {
+        this.id = null;
+        this.className = className;
+        this.classNumber = classNumber;
+        this.studentsCount = studentsCount;
+        this.floor = floor;
     }
 
     public ClassRoom(int id, String className, int classNumber, int studentsCount, int floor) {
@@ -22,6 +22,14 @@ public class ClassRoom {
         this.classNumber = classNumber;
         this.studentsCount = studentsCount;
         this.floor = floor;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getClassName() {

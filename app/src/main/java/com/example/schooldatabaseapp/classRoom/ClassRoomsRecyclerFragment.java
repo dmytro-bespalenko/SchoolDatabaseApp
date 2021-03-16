@@ -15,11 +15,13 @@ import android.view.ViewGroup;
 
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.model.ClassRoom;
-import com.example.schooldatabaseapp.model.DatabaseRepository;
+import com.example.schooldatabaseapp.model.ClassRoomRepository;
+import com.example.schooldatabaseapp.model.DatabaseClassRoomRepository;
 import com.example.schooldatabaseapp.addClass.AddClassRoomActivity;
 import com.example.schooldatabaseapp.view.ClassRoomsRecyclerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,8 +30,7 @@ public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomCon
 
     private static final String TAG = "My_Tag";
     private ClassRoomsRecyclerAdapter recyclerAdapter;
-    private List<ClassRoom> classRoomList;
-    private ClassRoomContract.Repository repository;
+    private List<ClassRoom> classRoomList = new ArrayList<>();
     private ClassRoomContract.Presenter presenter;
     private FloatingActionButton button;
 
@@ -41,10 +42,10 @@ public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomCon
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        repository = new DatabaseRepository(view.getContext());
-        presenter = new ClassRoomPresenter(this, (DatabaseRepository) repository);
+        DatabaseClassRoomRepository repository = new DatabaseClassRoomRepository(view.getContext());
         repository.open();
-        classRoomList = repository.getClassRooms();
+        presenter = new ClassRoomPresenter(this, repository);
+
         button = view.findViewById(R.id.addButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,9 +70,18 @@ public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomCon
     }
 
 
-    @Override
-    public void onActivityClickBack(int classRoom) {
 
+
+    @Override
+    public void updateRooms(List<ClassRoom> all) {
+        classRoomList.clear();
+        classRoomList.addAll(all);
+        recyclerAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.refresh();
+    }
 }

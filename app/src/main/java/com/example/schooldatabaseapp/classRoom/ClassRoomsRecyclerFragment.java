@@ -1,4 +1,4 @@
-package com.example.schooldatabaseapp.view;
+package com.example.schooldatabaseapp.classRoom;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,18 +9,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.model.ClassRoom;
-import com.example.schooldatabaseapp.model.ClassRoomContract;
 import com.example.schooldatabaseapp.model.DatabaseRepository;
-import com.example.schooldatabaseapp.presenter.ClassRoomPresenter;
+import com.example.schooldatabaseapp.addClass.AddClassRoomActivity;
+import com.example.schooldatabaseapp.view.ClassRoomsRecyclerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;

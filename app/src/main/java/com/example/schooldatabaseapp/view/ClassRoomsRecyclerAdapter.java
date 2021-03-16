@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.model.ClassRoom;
-import com.example.schooldatabaseapp.model.ClassRoomContract;
+import com.example.schooldatabaseapp.classRoom.ClassRoomContract;
 
 import java.util.List;
 

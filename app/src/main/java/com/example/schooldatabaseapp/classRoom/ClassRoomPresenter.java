@@ -1,6 +1,5 @@
-package com.example.schooldatabaseapp.presenter;
+package com.example.schooldatabaseapp.classRoom;
 
-import com.example.schooldatabaseapp.model.ClassRoomContract;
 import com.example.schooldatabaseapp.model.DatabaseRepository;
 
 public class ClassRoomPresenter implements ClassRoomContract.Presenter {
@@ -18,7 +17,6 @@ public class ClassRoomPresenter implements ClassRoomContract.Presenter {
     @Override
     public void onButtonWasClicked(int id) {
 
-        mRepository.delete(id);
 
     }
 

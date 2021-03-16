@@ -1,4 +1,7 @@
-package com.example.schooldatabaseapp.model;
+package com.example.schooldatabaseapp.classRoom;
+
+import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.DatabaseRepository;
 
 import java.util.List;
 

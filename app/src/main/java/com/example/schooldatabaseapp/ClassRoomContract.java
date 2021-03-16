@@ -7,6 +7,7 @@ import java.util.List;
 public interface ClassRoomContract {
 
     interface View {
+        void onActivityClickBack(int classRoom);
 
     }
 

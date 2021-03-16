@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="30dp"
+    android:layout_marginTop="50dp"
+    tools:context=".view.AddClassRoomActivity">
+
+
+    <EditText
+        android:id="@+id/editClassName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_classname"
+
+        />
+
+
+    <EditText
+        android:id="@+id/editClassNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_classnumber"
+        />
+
+    <EditText
+        android:id="@+id/editFloor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_classfloor"
+        />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:layout_marginTop="@android:dimen/thumbnail_height"
+        android:layout_gravity="center"
+        />
+
+</LinearLayout>

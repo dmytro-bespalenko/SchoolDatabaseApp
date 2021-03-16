@@ -1,11 +1,11 @@
-package com.example.schooldatabaseapp;
+package com.example.schooldatabaseapp.model;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class SchoolDatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "school";
     private static final int DB_VERSION = 1;
@@ -19,7 +19,7 @@ public class SchoolDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_FLOOR = "FLOOR";
 
 
-    public SchoolDatabaseHelper(Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
@@ -43,9 +43,14 @@ public class SchoolDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+
         updateMyDatabase(db, oldVersion, newVersion);
     }
 
+    public void deleteAll(SQLiteDatabase db) {
+        db.execSQL("delete from " + TABLE);
+        db.close();
+    }
 
     private void updateMyDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
 

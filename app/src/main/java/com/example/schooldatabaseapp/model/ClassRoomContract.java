@@ -1,6 +1,4 @@
-package com.example.schooldatabaseapp;
-
-import com.example.schooldatabaseapp.model.ClassRoom;
+package com.example.schooldatabaseapp.model;
 
 import java.util.List;
 
@@ -12,7 +10,9 @@ public interface ClassRoomContract {
     }
 
     interface Presenter {
-        void onButtonWasClicked();
+
+        void onButtonWasClicked(int id);
+        void onAddButtonClicked();
 
     }
 
@@ -30,5 +30,8 @@ public interface ClassRoomContract {
 
         int update(ClassRoom classRoom);
 
+        void close();
+
+        DatabaseRepository open();
     }
 }

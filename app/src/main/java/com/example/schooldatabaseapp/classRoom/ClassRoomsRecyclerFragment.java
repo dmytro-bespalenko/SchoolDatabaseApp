@@ -31,7 +31,6 @@ public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomCon
     private ClassRoomsRecyclerAdapter recyclerAdapter;
     private List<ClassRoom> classRoomList = new ArrayList<>();
     private ClassRoomContract.Presenter presenter;
-    private FloatingActionButton button;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,12 +40,13 @@ public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomCon
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         DatabaseClassRoomRepository repository = new DatabaseClassRoomRepository(view.getContext());
         repository.open();
+
         presenter = new ClassRoomPresenter(this, repository);
 
-
-        button = view.findViewById(R.id.addButton);
+        FloatingActionButton button = view.findViewById(R.id.addButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,12 +59,14 @@ public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomCon
         recyclerAdapter.registerListener(presenter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(recyclerAdapter);
+
     }
 
     public void showOtherFragment() {
         Fragment fr = new AddClassRoomFragment();
         FragmentChangeListener fc = (FragmentChangeListener) getActivity();
         Objects.requireNonNull(fc).replaceFragment(fr);
+
     }
 
     @Override
@@ -83,8 +85,15 @@ public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomCon
     }
 
     @Override
+    public void deleteClassRoom(int position) {
+        classRoomList.remove(position);
+        recyclerAdapter.notifyItemRemoved(position);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        presenter.refresh();
+        presenter.updateClassRooms();
+
     }
 }

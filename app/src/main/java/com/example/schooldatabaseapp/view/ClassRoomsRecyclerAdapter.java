@@ -45,16 +45,16 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
         idView.setText(String.valueOf(classRoom.getId()));
 
         TextView nameView = cv.findViewById(R.id.className);
-        nameView.setText(classRoom.getClassName());
+        nameView.setText("Name: " + classRoom.getClassName());
 
         TextView classNumberView = cv.findViewById(R.id.classNumber);
-        classNumberView.setText(String.valueOf(classRoom.getClassNumber()));
+        classNumberView.setText("Number: " + classRoom.getClassNumber());
 
         TextView studentsCountView = cv.findViewById(R.id.studentsCount);
-        studentsCountView.setText(String.valueOf(classRoom.getStudentsCount()));
+        studentsCountView.setText("Count: " + classRoom.getStudentsCount());
 
         TextView floorView = cv.findViewById(R.id.floor);
-        floorView.setText(String.valueOf(classRoom.getFloor()));
+        floorView.setText("Floor: " + classRoom.getFloor());
 
     }
 
@@ -83,7 +83,14 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    presenter.onButtonWasClicked(getAdapterPosition());
+//                    presenter.onButtonWasClicked(getAdapterPosition());
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    presenter.onItemWasLongClick(getAdapterPosition());
+                    return true;
                 }
             });
 

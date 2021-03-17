@@ -9,14 +9,17 @@ public interface ClassRoomContract {
     interface View {
 
         void updateRooms(List<ClassRoom> all);
+
+        void deleteClassRoom(int position);
     }
 
     interface Presenter {
 
-        void onButtonWasClicked(int id);
-        void onAddButtonClicked();
 
-        void refresh();
+
+        void updateClassRooms();
+
+        void onItemWasLongClick(int adapterPosition);
     }
 
 

@@ -49,6 +49,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteAll(SQLiteDatabase db) {
         db.execSQL("delete from " + TABLE);
+        db.execSQL("delete from SQLITE_SEQUENCE where name=" + TABLE);
+
         db.close();
     }
 
@@ -60,7 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + COLUMN_CLASSNUMBER + " INTEGER, "
                     + COLUMN_STUDENTSCOUNT + " INTEGER, "
                     + COLUMN_FLOOR + " INTEGER);");
-            insertClassrooms(db, "Chemistry", 48, 7, 2);
+            insertClassrooms(db, null, 0, 0, 0);
 
         }
 

@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.schooldatabaseapp.classRoom.ClassRoomContract;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +29,13 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
         dbHelper.close();
     }
 
+    @Override
+    public void deleteAll() {
+        dbHelper.deleteAll(database);
+    }
+
     private Cursor getAllEntries() {
+
         String[] columns = new String[]{DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_CLASSNAME,
                 DatabaseHelper.COLUMN_CLASSNUMBER, DatabaseHelper.COLUMN_STUDENTSCOUNT, DatabaseHelper.COLUMN_FLOOR};
         return database.query(DatabaseHelper.TABLE, columns, null, null, null, null, null);
@@ -91,6 +95,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
         String whereClause = "_id = ?";
         String[] whereArgs = new String[]{String.valueOf(classId)};
+
         return database.delete(DatabaseHelper.TABLE, whereClause, whereArgs);
     }
 

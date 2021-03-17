@@ -4,31 +4,24 @@ import com.example.schooldatabaseapp.model.ClassRoomRepository;
 
 public class ClassRoomPresenter implements ClassRoomContract.Presenter {
 
-    private ClassRoomContract.View mView;
-    private ClassRoomRepository mClassRoomRepository;
+    private final ClassRoomContract.View view;
+    private final ClassRoomRepository classRoomRepository;
 
     public ClassRoomPresenter(ClassRoomContract.View mView, ClassRoomRepository repository) {
-        this.mView = mView;
-        this.mClassRoomRepository = repository;
+        this.view = mView;
+        this.classRoomRepository = repository;
     }
 
 
-
     @Override
-    public void onButtonWasClicked(int id) {
-
-
+    public void updateClassRooms() {
+        view.updateRooms(classRoomRepository.getAll());
     }
 
     @Override
-    public void onAddButtonClicked() {
+    public void onItemWasLongClick(int adapterPosition) {
 
-
-    }
-
-    @Override
-    public void refresh() {
-        mView.updateRooms(mClassRoomRepository.getAll());
+        view.deleteClassRoom(classRoomRepository.delete(adapterPosition));
     }
 
 

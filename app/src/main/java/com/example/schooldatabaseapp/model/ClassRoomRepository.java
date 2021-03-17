@@ -8,8 +8,6 @@ public interface ClassRoomRepository {
 
     long getCount();
 
-    ClassRoom getById(int id);
-
     long insert(ClassRoom classRoom);
 
     int delete(int classId);
@@ -17,5 +15,9 @@ public interface ClassRoomRepository {
     int update(ClassRoom classRoom);
 
     void close();
+
+    ClassRoom getById(int id);
+
+    void deleteAll();
 
 }

@@ -1,6 +1,5 @@
 package com.example.schooldatabaseapp.classRoom;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
-import com.example.schooldatabaseapp.addClass.AddClassRoomActivity;
+import com.example.schooldatabaseapp.addClass.AddClassRoomFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.DatabaseClassRoomRepository;
 import com.example.schooldatabaseapp.view.ClassRoomsRecyclerAdapter;
+import com.example.schooldatabaseapp.view.FragmentChangeListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomContract.View {
@@ -49,8 +50,7 @@ public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomCon
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), AddClassRoomActivity.class);
-                startActivity(intent);
+                showOtherFragment();
             }
         });
 
@@ -61,14 +61,18 @@ public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomCon
         recyclerView.setAdapter(recyclerAdapter);
     }
 
+    public void showOtherFragment() {
+        Fragment fr = new AddClassRoomFragment();
+        FragmentChangeListener fc = (FragmentChangeListener) getActivity();
+        Objects.requireNonNull(fc).replaceFragment(fr);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_class_rooms_recycler, container, false);
     }
-
-
 
 
     @Override

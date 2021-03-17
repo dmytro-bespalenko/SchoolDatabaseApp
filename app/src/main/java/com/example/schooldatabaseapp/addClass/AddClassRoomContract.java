@@ -10,6 +10,8 @@ public interface AddClassRoomContract {
     interface Presenter {
 //callBack
 
+        void addNewClassRoom(String className, int classNumber, int floor);
+
     }
 
 }

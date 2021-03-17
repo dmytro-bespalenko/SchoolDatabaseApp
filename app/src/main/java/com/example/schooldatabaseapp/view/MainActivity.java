@@ -23,9 +23,6 @@ public class MainActivity extends AppCompatActivity  {
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().add(R.id.classrooms_container, fragment).commit();
 
-//        databaseRepository = new DatabaseRepository(this);
-//        presenter = new ClassRoomPresenter(this, databaseRepository);
-
 
 
     }

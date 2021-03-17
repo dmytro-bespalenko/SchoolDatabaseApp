@@ -23,7 +23,6 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
     public DatabaseClassRoomRepository open() {
         database = dbHelper.getWritableDatabase();
-
         return this;
     }
 

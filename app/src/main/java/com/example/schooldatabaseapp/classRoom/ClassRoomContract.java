@@ -16,12 +16,10 @@ public interface ClassRoomContract {
     interface Presenter {
 
 
-
         void updateClassRooms();
 
-        void onItemWasLongClick(int adapterPosition);
+        void onItemWasLongClick(List<ClassRoom> all, int adapterPosition);
     }
-
 
 
 }

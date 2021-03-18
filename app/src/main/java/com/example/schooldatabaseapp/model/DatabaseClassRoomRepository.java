@@ -19,10 +19,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
         dbHelper = new DatabaseHelper(context.getApplicationContext());
     }
 
-    public DatabaseClassRoomRepository open() {
-        database = dbHelper.getWritableDatabase();
-        return this;
-    }
+
 
     @Override
     public void close() {
@@ -32,10 +29,11 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
     @Override
     public void deleteAll() {
         dbHelper.deleteAll(database);
+        close();
     }
 
     private Cursor getAllEntries() {
-
+       database = dbHelper.getWritableDatabase();
         String[] columns = new String[]{DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_CLASSNAME,
                 DatabaseHelper.COLUMN_CLASSNUMBER, DatabaseHelper.COLUMN_STUDENTSCOUNT, DatabaseHelper.COLUMN_FLOOR};
         return database.query(DatabaseHelper.TABLE, columns, null, null, null, null, null);
@@ -64,6 +62,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
     @Override
     public ClassRoom getById(int id) {
+        database = dbHelper.getWritableDatabase();
         ClassRoom classRoom = null;
         String query = String.format("SELECT * FROM %s WHERE %s=?", DatabaseHelper.TABLE, DatabaseHelper.COLUMN_ID);
         Cursor cursor = database.rawQuery(query, new String[]{String.valueOf(id)});
@@ -78,9 +77,10 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
         return classRoom;
     }
 
+
     @Override
     public long insert(ClassRoom classRoom) {
-
+        database = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_CLASSNAME, classRoom.getClassName());
         cv.put(DatabaseHelper.COLUMN_CLASSNUMBER, classRoom.getClassNumber());
@@ -92,16 +92,15 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
     @Override
     public int delete(int classId) {
-
+        database = dbHelper.getWritableDatabase();
         String whereClause = "_id = ?";
         String[] whereArgs = new String[]{String.valueOf(classId)};
-
         return database.delete(DatabaseHelper.TABLE, whereClause, whereArgs);
     }
 
     @Override
     public int update(ClassRoom classRoom) {
-
+        database = dbHelper.getWritableDatabase();
         String whereClause = DatabaseHelper.COLUMN_ID + "=" + classRoom.getId();
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_CLASSNAME, classRoom.getClassName());

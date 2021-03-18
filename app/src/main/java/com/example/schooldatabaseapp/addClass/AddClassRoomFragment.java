@@ -20,7 +20,7 @@ import com.example.schooldatabaseapp.model.DatabaseClassRoomRepository;
 
 import java.util.Objects;
 
-public class AddClassRoomFragment extends Fragment {
+public class AddClassRoomFragment extends Fragment implements AddClassRoomContract.View {
 
     private EditText editClassName;
     private EditText editClassNumber;
@@ -44,10 +44,7 @@ public class AddClassRoomFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        DatabaseClassRoomRepository repository = new DatabaseClassRoomRepository(Objects.requireNonNull(getContext()));
-        repository.open();
-
-        presenter = new AddClassRoomPresenter(repository);
+        presenter = new AddClassRoomPresenter(this, view.getContext());
         editClassName = view.findViewById(R.id.editClassName);
         editClassNumber = view.findViewById(R.id.editClassNumber);
         editFloor = view.findViewById(R.id.editFloor);
@@ -57,6 +54,8 @@ public class AddClassRoomFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 validateEditFields();
+                assert getFragmentManager() != null;
+                getFragmentManager().popBackStack();
             }
         });
     }

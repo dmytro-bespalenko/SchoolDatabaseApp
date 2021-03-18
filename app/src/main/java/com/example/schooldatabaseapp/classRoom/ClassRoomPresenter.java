@@ -1,27 +1,35 @@
 package com.example.schooldatabaseapp.classRoom;
 
+import android.content.Context;
+
+import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
+import com.example.schooldatabaseapp.model.DatabaseClassRoomRepository;
+
+import java.util.List;
 
 public class ClassRoomPresenter implements ClassRoomContract.Presenter {
 
     private final ClassRoomContract.View view;
-    private final ClassRoomRepository classRoomRepository;
+    private final ClassRoomRepository repository;
 
-    public ClassRoomPresenter(ClassRoomContract.View mView, ClassRoomRepository repository) {
-        this.view = mView;
-        this.classRoomRepository = repository;
+    public ClassRoomPresenter(ClassRoomContract.View view, Context context) {
+        this.repository = new DatabaseClassRoomRepository(context);
+        this.view = view;
     }
 
 
     @Override
     public void updateClassRooms() {
-        view.updateRooms(classRoomRepository.getAll());
+        view.updateRooms(repository.getAll());
     }
 
     @Override
-    public void onItemWasLongClick(int adapterPosition) {
+    public void onItemWasLongClick(List<ClassRoom> all, int adapterPosition) {
 
-        view.deleteClassRoom(classRoomRepository.delete(adapterPosition));
+        if (!all.isEmpty()) {
+            view.deleteClassRoom(repository.delete(all.get(adapterPosition).getId()));
+        }
     }
 
 

@@ -12,6 +12,7 @@
         android:id="@+id/editClassName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType=""
         android:hint="@string/edit_classname"
 
         />
@@ -21,12 +22,14 @@
         android:id="@+id/editClassNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="number"
         android:hint="@string/edit_classnumber"
         />
 
     <EditText
         android:id="@+id/editFloor"
         android:layout_width="match_parent"
+        android:inputType="number"
         android:layout_height="wrap_content"
         android:hint="@string/edit_classfloor"
         />

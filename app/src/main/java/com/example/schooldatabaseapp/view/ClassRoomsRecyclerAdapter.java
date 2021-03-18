@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.classRoom.ClassRoomContract;
+import com.example.schooldatabaseapp.model.DatabaseClassRoomRepository;
+import com.example.schooldatabaseapp.model.DatabaseHelper;
 
 import java.util.List;
 
@@ -89,7 +91,9 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    presenter.onItemWasLongClick(getAdapterPosition());
+                    if (!classRooms.isEmpty()) {
+                        presenter.onItemWasLongClick(classRooms, getAdapterPosition());
+                    }
                     return true;
                 }
             });

@@ -1,9 +1,11 @@
 package com.example.schooldatabaseapp.classRoom;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.addClass.AddClassRoomFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
-import com.example.schooldatabaseapp.model.DatabaseClassRoomRepository;
 import com.example.schooldatabaseapp.view.ClassRoomsRecyclerAdapter;
 import com.example.schooldatabaseapp.view.FragmentChangeListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,16 +42,14 @@ public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomCon
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        DatabaseClassRoomRepository repository = new DatabaseClassRoomRepository(view.getContext());
-        repository.open();
-
-        presenter = new ClassRoomPresenter(this, repository);
+        presenter = new ClassRoomPresenter(this, view.getContext());
 
         FloatingActionButton button = view.findViewById(R.id.addButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showOtherFragment();
+
             }
         });
 
@@ -63,9 +62,9 @@ public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomCon
     }
 
     public void showOtherFragment() {
-        Fragment fr = new AddClassRoomFragment();
+        Fragment fragment = new AddClassRoomFragment();
         FragmentChangeListener fc = (FragmentChangeListener) getActivity();
-        Objects.requireNonNull(fc).replaceFragment(fr);
+        Objects.requireNonNull(fc).replaceFragment(fragment);
 
     }
 
@@ -86,7 +85,12 @@ public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomCon
 
     @Override
     public void deleteClassRoom(int position) {
+
+        if (position == classRoomList.size()) {
+            position = 0;
+        }
         classRoomList.remove(position);
+        presenter.updateClassRooms();
         recyclerAdapter.notifyItemRemoved(position);
     }
 

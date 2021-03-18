@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.example.schooldatabaseapp.R;
-import com.example.schooldatabaseapp.classRoom.ClassRoomsRecyclerFragment;
+import com.example.schooldatabaseapp.classRoom.ClassRoomsFragment;
 
 public class MainActivity extends AppCompatActivity implements FragmentChangeListener {
 
@@ -17,9 +17,9 @@ public class MainActivity extends AppCompatActivity implements FragmentChangeLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ClassRoomsRecyclerFragment classRoomsRecyclerFragment = new ClassRoomsRecyclerFragment();
+        ClassRoomsFragment classRoomsFragment = new ClassRoomsFragment();
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().add(R.id.classrooms_container, classRoomsRecyclerFragment).commit();
+        manager.beginTransaction().add(R.id.classrooms_container, classRoomsFragment).commit();
 
 
     }

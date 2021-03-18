@@ -33,7 +33,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
     }
 
     private Cursor getAllEntries() {
-       database = dbHelper.getWritableDatabase();
+        database = dbHelper.getWritableDatabase();
         String[] columns = new String[]{DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_CLASSNAME,
                 DatabaseHelper.COLUMN_CLASSNUMBER, DatabaseHelper.COLUMN_STUDENTSCOUNT, DatabaseHelper.COLUMN_FLOOR};
         return database.query(DatabaseHelper.TABLE, columns, null, null, null, null, null);
@@ -41,6 +41,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
     @Override
     public List<ClassRoom> getAll() {
+        database = dbHelper.getWritableDatabase();
         List<ClassRoom> classrooms = new ArrayList<>();
         Cursor cursor = getAllEntries();
         while (cursor.moveToNext()) {
@@ -76,7 +77,6 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
         cursor.close();
         return classRoom;
     }
-
 
     @Override
     public long insert(ClassRoom classRoom) {

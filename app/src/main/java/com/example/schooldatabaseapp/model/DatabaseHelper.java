@@ -31,26 +31,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void insertClassrooms(SQLiteDatabase db, String className, int classNumber, int studentsCount, int floor) {
-        db = getWritableDatabase();
+
         ContentValues studentsValues = new ContentValues();
         studentsValues.put("CLASSNAME", className);
         studentsValues.put("CLASSNUMBER", classNumber);
         studentsValues.put("STUDENTSCOUNT", studentsCount);
         studentsValues.put("FLOOR", floor);
         db.insert("CLASSROOMS", null, studentsValues);
-        db.close();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db = getWritableDatabase();
-        updateMyDatabase(db, oldVersion, newVersion);
-        db.close();
 
+        updateMyDatabase(db, oldVersion, newVersion);
     }
 
     public void deleteAll(SQLiteDatabase db) {
-        db = getWritableDatabase();
         db.execSQL("delete from " + TABLE);
         db.execSQL("delete from SQLITE_SEQUENCE where name=" + TABLE);
 
@@ -58,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void updateMyDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db = getWritableDatabase();
+
         if (oldVersion < 1) {
             db.execSQL("CREATE TABLE " + TABLE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + COLUMN_CLASSNAME + " TEXT, "

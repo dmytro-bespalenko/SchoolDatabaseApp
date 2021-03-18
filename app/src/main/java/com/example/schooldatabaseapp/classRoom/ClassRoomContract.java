@@ -11,6 +11,8 @@ public interface ClassRoomContract {
         void updateRooms(List<ClassRoom> all);
 
         void deleteClassRoom(int position);
+
+        void openFragment(ClassRoom classRoom);
     }
 
     interface Presenter {
@@ -19,6 +21,9 @@ public interface ClassRoomContract {
         void updateClassRooms();
 
         void onItemWasLongClick(List<ClassRoom> all, int adapterPosition);
+
+
+        void openEditFragment(ClassRoom classRoom);
     }
 
 

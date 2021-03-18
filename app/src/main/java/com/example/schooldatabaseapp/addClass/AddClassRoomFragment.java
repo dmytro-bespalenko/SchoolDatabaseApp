@@ -6,19 +6,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.schooldatabaseapp.R;
-import com.example.schooldatabaseapp.model.DatabaseClassRoomRepository;
-
-import java.util.Objects;
 
 public class AddClassRoomFragment extends Fragment implements AddClassRoomContract.View {
 
@@ -45,17 +39,15 @@ public class AddClassRoomFragment extends Fragment implements AddClassRoomContra
         super.onViewCreated(view, savedInstanceState);
 
         presenter = new AddClassRoomPresenter(this, view.getContext());
-        editClassName = view.findViewById(R.id.editClassName);
-        editClassNumber = view.findViewById(R.id.editClassNumber);
-        editFloor = view.findViewById(R.id.editFloor);
+        editClassName = view.findViewById(R.id.addClassName);
+        editClassNumber = view.findViewById(R.id.addClassNumber);
+        editFloor = view.findViewById(R.id.addFloor);
         Button saveButton = view.findViewById(R.id.saveButton);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 validateEditFields();
-                assert getFragmentManager() != null;
-                getFragmentManager().popBackStack();
             }
         });
     }
@@ -74,6 +66,8 @@ public class AddClassRoomFragment extends Fragment implements AddClassRoomContra
             int classNumber = Integer.parseInt(editClassNumber.getText().toString());
             int floor = Integer.parseInt(editFloor.getText().toString());
             presenter.addNewClassRoom(className, classNumber, floor);
+            assert getFragmentManager() != null;
+            getFragmentManager().popBackStack();
         }
     }
 }

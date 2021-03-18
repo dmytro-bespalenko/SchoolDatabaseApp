@@ -1,11 +1,10 @@
 package com.example.schooldatabaseapp.classRoom;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.addClass.AddClassRoomFragment;
+import com.example.schooldatabaseapp.editClassRoom.EditClassRoomFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.view.ClassRoomsRecyclerAdapter;
 import com.example.schooldatabaseapp.view.FragmentChangeListener;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomContract.View {
+public class ClassRoomsFragment extends Fragment implements ClassRoomContract.View {
 
 
     private static final String TAG = "My_Tag";
@@ -55,7 +55,7 @@ public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomCon
 
         RecyclerView recyclerView = view.findViewById(R.id.classrooms_recycle_view);
         recyclerAdapter = new ClassRoomsRecyclerAdapter(classRoomList);
-        recyclerAdapter.registerListener(presenter);
+        recyclerAdapter.registerClassRoomsListener(presenter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(recyclerAdapter);
 
@@ -93,6 +93,18 @@ public class ClassRoomsRecyclerFragment extends Fragment implements ClassRoomCon
         presenter.updateClassRooms();
         recyclerAdapter.notifyItemRemoved(position);
     }
+
+    @Override
+    public void openFragment(ClassRoom classRoom) {
+        Fragment fragment = new EditClassRoomFragment();
+        FragmentChangeListener fc = (FragmentChangeListener) getActivity();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("pos",  classRoom);
+        fragment.setArguments(bundle);
+
+        Objects.requireNonNull(fc).replaceFragment(fragment);
+    }
+
 
     @Override
     public void onResume() {

@@ -1,6 +1,9 @@
 package com.example.schooldatabaseapp.model;
 
-public class ClassRoom {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ClassRoom implements Parcelable {
 
     private Integer id;
     private String className;
@@ -62,5 +65,15 @@ public class ClassRoom {
 
     public void setFloor(int floor) {
         this.floor = floor;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }

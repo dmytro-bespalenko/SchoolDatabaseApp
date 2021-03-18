@@ -3,6 +3,7 @@ package com.example.schooldatabaseapp.view;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -10,10 +11,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
+import com.example.schooldatabaseapp.editClassRoom.EditClassRoomContract;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.classRoom.ClassRoomContract;
-import com.example.schooldatabaseapp.model.DatabaseClassRoomRepository;
-import com.example.schooldatabaseapp.model.DatabaseHelper;
 
 import java.util.List;
 
@@ -21,15 +21,20 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
 
 
     private List<ClassRoom> classRooms;
-    private ClassRoomContract.Presenter presenter;
+    private ClassRoomContract.Presenter classRoomPresenter;
+    private EditClassRoomContract.Presenter editPresenter;
 
 
     public ClassRoomsRecyclerAdapter(List<ClassRoom> classRooms) {
         this.classRooms = classRooms;
     }
 
-    public void registerListener(ClassRoomContract.Presenter presenter) {
-        this.presenter = presenter;
+    public void registerEditListener(EditClassRoomContract.Presenter editPresenter) {
+        this.editPresenter = editPresenter;
+    }
+
+    public void registerClassRoomsListener(ClassRoomContract.Presenter presenter) {
+        this.classRoomPresenter = presenter;
     }
 
     @NonNull
@@ -50,13 +55,17 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
         nameView.setText("Name: " + classRoom.getClassName());
 
         TextView classNumberView = cv.findViewById(R.id.classNumber);
-        classNumberView.setText("Number: " + classRoom.getClassNumber());
+        classNumberView.setText("№" + classRoom.getClassNumber());
 
         TextView studentsCountView = cv.findViewById(R.id.studentsCount);
         studentsCountView.setText("Count: " + classRoom.getStudentsCount());
 
         TextView floorView = cv.findViewById(R.id.floor);
         floorView.setText("Floor: " + classRoom.getFloor());
+
+        ImageButton editButton = cv.findViewById(R.id.editButton);
+        editButton.setImageResource(R.drawable.ic_baseline_edit_24);
+
 
     }
 
@@ -65,6 +74,7 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
         return classRooms.size();
     }
 
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final CardView cardView;
         final TextView classId;
@@ -72,6 +82,7 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
         final TextView classNumber;
         final TextView studentsCount;
         final TextView floor;
+        final ImageButton editButton;
 
         public ViewHolder(@NonNull CardView itemView) {
             super(itemView);
@@ -81,6 +92,15 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
             classNumber = itemView.findViewById(R.id.classNumber);
             studentsCount = itemView.findViewById(R.id.studentsCount);
             floor = itemView.findViewById(R.id.floor);
+            editButton = itemView.findViewById(R.id.editButton);
+
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    classRoomPresenter.openEditFragment(classRooms.get(getAdapterPosition()));
+
+                }
+            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -92,7 +112,7 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
                 @Override
                 public boolean onLongClick(View v) {
                     if (!classRooms.isEmpty()) {
-                        presenter.onItemWasLongClick(classRooms, getAdapterPosition());
+                        classRoomPresenter.onItemWasLongClick(classRooms, getAdapterPosition());
                     }
                     return true;
                 }

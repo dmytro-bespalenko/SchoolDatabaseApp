@@ -2,48 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="20dp"
+    android:layout_marginTop="20dp"
     android:fitsSystemWindows="true"
-    android:layout_marginTop="20dp">
+    android:orientation="vertical"
+    android:padding="20dp">
 
 
     <EditText
-        android:id="@+id/addClassName"
+        android:id="@+id/editClassName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType=""
-        android:hint="@string/edit_classname"
 
         />
 
 
     <EditText
-        android:id="@+id/addClassNumber"
+        android:id="@+id/editClassNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:hint="@string/edit_classnumber"
-        />
+        android:inputType="number" />
 
     <EditText
-        android:id="@+id/addFloor"
+        android:id="@+id/editFloor"
         android:layout_width="match_parent"
-        android:inputType="number"
         android:layout_height="wrap_content"
-        android:hint="@string/edit_classfloor"
-        />
+        android:inputType="number" />
 
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:layout_marginTop="@android:dimen/thumbnail_height"
         android:layout_gravity="center"
-        />
-
+        android:layout_marginTop="@android:dimen/thumbnail_height"
+        android:text="@string/save" />
 
 
 </LinearLayout>

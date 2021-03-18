@@ -30,6 +30,12 @@ public class ClassRoomPresenter implements ClassRoomContract.Presenter {
         if (!all.isEmpty()) {
             view.deleteClassRoom(repository.delete(all.get(adapterPosition).getId()));
         }
+
+    }
+
+    @Override
+    public void openEditFragment(ClassRoom classRoom) {
+        view.openFragment(classRoom);
     }
 
 

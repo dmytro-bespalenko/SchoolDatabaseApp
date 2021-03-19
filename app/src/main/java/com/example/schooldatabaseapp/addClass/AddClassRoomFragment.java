@@ -14,6 +14,8 @@ import android.widget.EditText;
 
 import com.example.schooldatabaseapp.R;
 
+import java.util.concurrent.Executor;
+
 public class AddClassRoomFragment extends Fragment implements AddClassRoomContract.View {
 
     private EditText editClassName;
@@ -44,6 +46,7 @@ public class AddClassRoomFragment extends Fragment implements AddClassRoomContra
         editFloor = view.findViewById(R.id.addFloor);
         Button saveButton = view.findViewById(R.id.saveButton);
 
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,11 +58,9 @@ public class AddClassRoomFragment extends Fragment implements AddClassRoomContra
     public void validateEditFields() {
         if (editClassName.getText().toString().length() == 0) {
             editClassName.setError("Class name is required!");
-        }
-        if (editClassNumber.getText().toString().length() == 0) {
+        } else if (editClassNumber.getText().toString().length() == 0) {
             editClassNumber.setError("Class number is required!");
-        }
-        if (editFloor.getText().toString().length() == 0) {
+        } else if (editFloor.getText().toString().length() == 0) {
             editFloor.setError("Floor is required!");
         } else {
             String className = String.valueOf(editClassName.getText());

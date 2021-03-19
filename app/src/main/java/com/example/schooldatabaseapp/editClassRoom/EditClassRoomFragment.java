@@ -12,6 +12,7 @@ import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -32,13 +33,14 @@ public class EditClassRoomFragment extends Fragment implements EditClassRoomCont
 
     private static final String TAG = "My_Tag";
     private EditClassRoomContract.Presenter presenter;
-    private ClassRoomsRecyclerAdapter recyclerAdapter;
-    private List<ClassRoom> classRoomList = new ArrayList<>();
+//    private ClassRoomsRecyclerAdapter recyclerAdapter;
+//    private List<ClassRoom> classRoomList = new ArrayList<>();
 
     private EditText editClassName;
     private EditText editClassNumber;
     private EditText editFloor;
-
+    private EditText idClass;
+    private ClassRoom classRoom;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,50 +56,47 @@ public class EditClassRoomFragment extends Fragment implements EditClassRoomCont
 
         presenter = new EditClassRoomPresenter(this, view.getContext());
 
-        recyclerAdapter = new ClassRoomsRecyclerAdapter(classRoomList);
-        recyclerAdapter.registerEditListener(presenter);
-
         editClassName = view.findViewById(R.id.editClassName);
         editClassNumber = view.findViewById(R.id.editClassNumber);
         editFloor = view.findViewById(R.id.editFloor);
 
-        ClassRoom classRoom;
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             classRoom = bundle.getParcelable("pos");
+
             editClassName.setText(classRoom.getClassName());
             editClassNumber.setText(String.valueOf(classRoom.getClassNumber()));
             editFloor.setText(String.valueOf(classRoom.getFloor()));
         }
 
-
+        Button button = view.findViewById(R.id.saveEditButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                validateEditFields();
+            }
+        });
 
 
     }
 
-//    public void validateEditFields() {
-//        if (editClassName.getText().toString().length() == 0) {
-//            editClassName.setError("Class name is required!");
-//        }
-//        if (editClassNumber.getText().toString().length() == 0) {
-//            editClassNumber.setError("Class number is required!");
-//        }
-//        if (editFloor.getText().toString().length() == 0) {
-//            editFloor.setError("Floor is required!");
-//        } else {
-//            String className = String.valueOf(editClassName.getText());
-//            int classNumber = Integer.parseInt(editClassNumber.getText().toString());
-//            int floor = Integer.parseInt(editFloor.getText().toString());
-//            presenter.addNewClassRoom (className, classNumber, floor);
-//            assert getFragmentManager() != null;
-//            getFragmentManager().popBackStack();
-//        }
-//    }
+    public void validateEditFields() {
+        if (editClassName.getText().toString().length() == 0) {
+            editClassName.setError("Class name is required!");
 
-    @Override
-    public void updateRooms(List<ClassRoom> all) {
-        classRoomList.clear();
-        classRoomList.addAll(all);
-        recyclerAdapter.notifyDataSetChanged();
+        } else if (editClassNumber.getText().toString().length() == 0) {
+            editClassNumber.setError("Class number is required!");
+        } else if (editFloor.getText().toString().length() == 0) {
+            editFloor.setError("Floor is required!");
+        } else {
+            String className = String.valueOf(editClassName.getText());
+            int classNumber = Integer.parseInt(editClassNumber.getText().toString());
+            int floor = Integer.parseInt(editFloor.getText().toString());
+            presenter.editClassRoom(new ClassRoom(classRoom.getId(), className, classNumber, 0, floor));
+            assert getFragmentManager() != null;
+            getFragmentManager().popBackStack();
+        }
     }
+
+
 }

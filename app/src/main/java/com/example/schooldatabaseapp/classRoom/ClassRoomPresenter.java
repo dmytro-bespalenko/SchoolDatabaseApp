@@ -38,5 +38,11 @@ public class ClassRoomPresenter implements ClassRoomContract.Presenter {
         view.openFragment(classRoom);
     }
 
+    @Override
+    public void onItemClickListener(ClassRoom classRoom) {
+        view.openClassRoomDetailsFragment(classRoom);
+
+    }
+
 
 }

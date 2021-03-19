@@ -5,12 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
+    private static final String TAG = "My_Tag";
     private final DatabaseHelper dbHelper;
     private SQLiteDatabase database;
 
@@ -18,7 +21,6 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
     public DatabaseClassRoomRepository(Context context) {
         dbHelper = new DatabaseHelper(context.getApplicationContext());
     }
-
 
 
     @Override
@@ -103,10 +105,13 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
         database = dbHelper.getWritableDatabase();
         String whereClause = DatabaseHelper.COLUMN_ID + "=" + classRoom.getId();
         ContentValues cv = new ContentValues();
+
         cv.put(DatabaseHelper.COLUMN_CLASSNAME, classRoom.getClassName());
         cv.put(DatabaseHelper.COLUMN_CLASSNUMBER, classRoom.getClassNumber());
         cv.put(DatabaseHelper.COLUMN_STUDENTSCOUNT, classRoom.getStudentsCount());
         cv.put(DatabaseHelper.COLUMN_FLOOR, classRoom.getFloor());
+
+        Log.d(TAG, "run: " + Thread.currentThread().getName());
 
         return database.update(DatabaseHelper.TABLE, cv, whereClause, null);
     }

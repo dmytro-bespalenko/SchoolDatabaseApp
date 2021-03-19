@@ -8,16 +8,16 @@ public interface EditClassRoomContract {
 
     interface View {
 
-        void updateRooms(List<ClassRoom> all);
+//        void updateRooms(List<ClassRoom> all);
 
     }
 
     interface Presenter {
 
-        void editClassRoom(int pos);
+        void editClassRoom(ClassRoom classRoom);
 
         void onEditButtonWasClicked(List<ClassRoom> classRooms, int adapterPosition);
 
-        void updateClassRooms();
+
     }
 }

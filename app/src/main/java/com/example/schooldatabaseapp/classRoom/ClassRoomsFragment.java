@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.addClass.AddClassRoomFragment;
+import com.example.schooldatabaseapp.classRoomInfo.ClassRoomDetailsFragment;
 import com.example.schooldatabaseapp.editClassRoom.EditClassRoomFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.view.ClassRoomsRecyclerAdapter;
@@ -97,6 +98,17 @@ public class ClassRoomsFragment extends Fragment implements ClassRoomContract.Vi
     @Override
     public void openFragment(ClassRoom classRoom) {
         Fragment fragment = new EditClassRoomFragment();
+        FragmentChangeListener fc = (FragmentChangeListener) getActivity();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("pos",  classRoom);
+        fragment.setArguments(bundle);
+
+        Objects.requireNonNull(fc).replaceFragment(fragment);
+    }
+
+    @Override
+    public void openClassRoomDetailsFragment(ClassRoom classRoom) {
+        Fragment fragment = new ClassRoomDetailsFragment();
         FragmentChangeListener fc = (FragmentChangeListener) getActivity();
         Bundle bundle = new Bundle();
         bundle.putParcelable("pos",  classRoom);

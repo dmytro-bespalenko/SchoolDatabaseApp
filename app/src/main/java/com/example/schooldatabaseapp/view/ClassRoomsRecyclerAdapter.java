@@ -22,16 +22,12 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
 
     private List<ClassRoom> classRooms;
     private ClassRoomContract.Presenter classRoomPresenter;
-    private EditClassRoomContract.Presenter editPresenter;
 
 
     public ClassRoomsRecyclerAdapter(List<ClassRoom> classRooms) {
         this.classRooms = classRooms;
     }
 
-    public void registerEditListener(EditClassRoomContract.Presenter editPresenter) {
-        this.editPresenter = editPresenter;
-    }
 
     public void registerClassRoomsListener(ClassRoomContract.Presenter presenter) {
         this.classRoomPresenter = presenter;
@@ -55,7 +51,7 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
         nameView.setText("Name: " + classRoom.getClassName());
 
         TextView classNumberView = cv.findViewById(R.id.classNumber);
-        classNumberView.setText("№" + classRoom.getClassNumber());
+        classNumberView.setText("№ " + classRoom.getClassNumber());
 
         TextView studentsCountView = cv.findViewById(R.id.studentsCount);
         studentsCountView.setText("Count: " + classRoom.getStudentsCount());
@@ -84,6 +80,7 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
         final TextView floor;
         final ImageButton editButton;
 
+
         public ViewHolder(@NonNull CardView itemView) {
             super(itemView);
             cardView = itemView;
@@ -105,7 +102,7 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    presenter.onButtonWasClicked(getAdapterPosition());
+                    classRoomPresenter.onItemClickListener(classRooms.get(getAdapterPosition()));
                 }
             });
             itemView.setOnLongClickListener(new View.OnLongClickListener() {

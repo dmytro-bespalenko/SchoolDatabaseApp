@@ -6,4 +6,5 @@
     <string name="edit_classnumber">Edit class number</string>
     <string name="edit_classfloor">Edit floor</string>
     <string name="save">Save</string>
+    <string name="add_students">Add students</string>
 </resources>

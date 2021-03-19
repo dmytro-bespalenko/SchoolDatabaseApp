@@ -19,10 +19,9 @@ public class EditClassRoomPresenter implements EditClassRoomContract.Presenter {
     }
 
 
-
     @Override
-    public void editClassRoom(int pos) {
-        repository.update(repository.getById(pos));
+    public void editClassRoom(ClassRoom classRoom) {
+        repository.update(classRoom);
     }
 
     @Override
@@ -31,11 +30,6 @@ public class EditClassRoomPresenter implements EditClassRoomContract.Presenter {
 
     }
 
-    @Override
-    public void updateClassRooms() {
-        view.updateRooms(repository.getAll());
-
-    }
 
 
 }

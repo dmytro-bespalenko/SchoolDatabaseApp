@@ -13,6 +13,8 @@ public interface ClassRoomContract {
         void deleteClassRoom(int position);
 
         void openFragment(ClassRoom classRoom);
+
+        void openClassRoomDetailsFragment(ClassRoom classRoom);
     }
 
     interface Presenter {
@@ -24,6 +26,9 @@ public interface ClassRoomContract {
 
 
         void openEditFragment(ClassRoom classRoom);
+
+
+        void onItemClickListener(ClassRoom classRoom);
     }
 
 

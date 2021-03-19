@@ -9,7 +9,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
 
 public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
@@ -38,7 +37,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
         database = dbHelper.getWritableDatabase();
         String[] columns = new String[]{DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_CLASSNAME,
                 DatabaseHelper.COLUMN_CLASSNUMBER, DatabaseHelper.COLUMN_STUDENTSCOUNT, DatabaseHelper.COLUMN_FLOOR};
-        return database.query(DatabaseHelper.TABLE, columns, null, null, null, null, null);
+        return database.query(DatabaseHelper.TABLE_CLASSROOMS, columns, null, null, null, null, null);
     }
 
     @Override
@@ -60,14 +59,14 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
     @Override
     public long getCount() {
-        return DatabaseUtils.queryNumEntries(database, DatabaseHelper.TABLE);
+        return DatabaseUtils.queryNumEntries(database, DatabaseHelper.TABLE_CLASSROOMS);
     }
 
     @Override
     public ClassRoom getById(int id) {
         database = dbHelper.getWritableDatabase();
         ClassRoom classRoom = null;
-        String query = String.format("SELECT * FROM %s WHERE %s=?", DatabaseHelper.TABLE, DatabaseHelper.COLUMN_ID);
+        String query = String.format("SELECT * FROM %s WHERE %s=?", DatabaseHelper.TABLE_CLASSROOMS, DatabaseHelper.COLUMN_ID);
         Cursor cursor = database.rawQuery(query, new String[]{String.valueOf(id)});
         if (cursor.moveToFirst()) {
             String className = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNAME));
@@ -89,7 +88,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
         cv.put(DatabaseHelper.COLUMN_STUDENTSCOUNT, classRoom.getStudentsCount());
         cv.put(DatabaseHelper.COLUMN_FLOOR, classRoom.getFloor());
 
-        return database.insert(DatabaseHelper.TABLE, null, cv);
+        return database.insert(DatabaseHelper.TABLE_CLASSROOMS, null, cv);
     }
 
     @Override
@@ -97,7 +96,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
         database = dbHelper.getWritableDatabase();
         String whereClause = "_id = ?";
         String[] whereArgs = new String[]{String.valueOf(classId)};
-        return database.delete(DatabaseHelper.TABLE, whereClause, whereArgs);
+        return database.delete(DatabaseHelper.TABLE_CLASSROOMS, whereClause, whereArgs);
     }
 
     @Override
@@ -113,7 +112,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
         Log.d(TAG, "run: " + Thread.currentThread().getName());
 
-        return database.update(DatabaseHelper.TABLE, cv, whereClause, null);
+        return database.update(DatabaseHelper.TABLE_CLASSROOMS, cv, whereClause, null);
     }
 
 }

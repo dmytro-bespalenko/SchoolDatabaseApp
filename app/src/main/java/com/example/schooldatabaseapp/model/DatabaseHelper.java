@@ -10,13 +10,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "school";
     private static final int DB_VERSION = 1;
 
-    public final static String TABLE = "CLASSROOMS";
+    public final static String TABLE_CLASSROOMS = "CLASSROOMS";
+    public final static String TABLE_STUDENTS = "STUDENTS";
+
 
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_CLASSNAME = "CLASSNAME";
     public static final String COLUMN_CLASSNUMBER = "CLASSNUMBER";
     public static final String COLUMN_STUDENTSCOUNT = "STUDENTSCOUNT";
     public static final String COLUMN_FLOOR = "FLOOR";
+
+    public static final String COLUMN_STUDENT_ID = "_id";
+    public static final String COLUMN_FIRST_NAME = "CLASSNAME";
+    public static final String COLUMN_LAST_NAME = "CLASSNUMBER";
+    public static final String COLUMN_STUDENT_CLASS_NAME = "STUDENTCLASSNAME";
+    public static final String COLUMN_GENDER = "GENDER";
+    public static final String COLUMN_AGE = "AGE";
 
 
     public DatabaseHelper(Context context) {
@@ -25,8 +34,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        updateMyDatabase(db, 0, DB_VERSION);
-
+        updateClassRoomsTable(db, 0, DB_VERSION);
+        updateStudentsTable(db, 0, DB_VERSION);
 
     }
 
@@ -43,24 +52,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        updateMyDatabase(db, oldVersion, newVersion);
+        updateClassRoomsTable(db, oldVersion, newVersion);
+        updateStudentsTable(db, oldVersion, newVersion);
     }
 
     public void deleteAll(SQLiteDatabase db) {
-        db.execSQL("delete from " + TABLE);
-        db.execSQL("delete from SQLITE_SEQUENCE where name=" + TABLE);
+        db.execSQL("delete from " + TABLE_CLASSROOMS);
+        db.execSQL("delete from SQLITE_SEQUENCE where name=" + TABLE_CLASSROOMS);
 
         db.close();
     }
 
-    private void updateMyDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
+    private void updateClassRoomsTable(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         if (oldVersion < 1) {
-            db.execSQL("CREATE TABLE " + TABLE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            db.execSQL("CREATE TABLE " + TABLE_CLASSROOMS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + COLUMN_CLASSNAME + " TEXT, "
                     + COLUMN_CLASSNUMBER + " INTEGER, "
                     + COLUMN_STUDENTSCOUNT + " INTEGER, "
                     + COLUMN_FLOOR + " INTEGER);");
+            insertClassrooms(db, null, 0, 0, 0);
+
+        }
+
+    }
+
+    private void updateStudentsTable(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        if (oldVersion < 1) {
+            db.execSQL("CREATE TABLE " + TABLE_STUDENTS + "(" + COLUMN_STUDENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + COLUMN_FIRST_NAME + " TEXT, "
+                    + COLUMN_LAST_NAME + "TEXT, "
+                    + COLUMN_STUDENT_CLASS_NAME + " TEXT, "
+                    + COLUMN_GENDER + " TEXT, "
+                    + COLUMN_AGE + " INTEGER);");
             insertClassrooms(db, null, 0, 0, 0);
 
         }

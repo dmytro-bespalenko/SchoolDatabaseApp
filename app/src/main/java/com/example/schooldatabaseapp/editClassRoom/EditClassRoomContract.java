@@ -8,7 +8,6 @@ public interface EditClassRoomContract {
 
     interface View {
 
-//        void updateRooms(List<ClassRoom> all);
 
     }
 

@@ -7,4 +7,12 @@
     <string name="edit_classfloor">Edit floor</string>
     <string name="save">Save</string>
     <string name="add_students">Add students</string>
+    <string name="edit_first_name">Edit first name</string>
+    <string name="edit_last_name">Edit last name</string>
+    <string name="edit_age">Edit age</string>
+    <string-array name="gender">
+        <item>Male</item>
+        <item>Female</item>
+        </string-array>
+
 </resources>

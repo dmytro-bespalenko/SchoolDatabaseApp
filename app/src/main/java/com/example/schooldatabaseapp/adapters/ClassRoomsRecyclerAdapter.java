@@ -1,4 +1,4 @@
-package com.example.schooldatabaseapp.view;
+package com.example.schooldatabaseapp.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +11,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
-import com.example.schooldatabaseapp.editClassRoom.EditClassRoomContract;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.classRoom.ClassRoomContract;
 

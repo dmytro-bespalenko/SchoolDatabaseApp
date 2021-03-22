@@ -1,7 +1,6 @@
 package com.example.schooldatabaseapp.classRoom;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.addClass.AddClassRoomFragment;
-import com.example.schooldatabaseapp.classRoomInfo.ClassRoomDetailsFragment;
+import com.example.schooldatabaseapp.students.StudentsFragment;
 import com.example.schooldatabaseapp.editClassRoom.EditClassRoomFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
-import com.example.schooldatabaseapp.view.ClassRoomsRecyclerAdapter;
-import com.example.schooldatabaseapp.view.FragmentChangeListener;
+import com.example.schooldatabaseapp.adapters.ClassRoomsRecyclerAdapter;
+import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -108,7 +107,7 @@ public class ClassRoomsFragment extends Fragment implements ClassRoomContract.Vi
 
     @Override
     public void openClassRoomDetailsFragment(ClassRoom classRoom) {
-        Fragment fragment = new ClassRoomDetailsFragment();
+        Fragment fragment = new StudentsFragment();
         FragmentChangeListener fc = (FragmentChangeListener) getActivity();
         Bundle bundle = new Bundle();
         bundle.putParcelable("pos",  classRoom);

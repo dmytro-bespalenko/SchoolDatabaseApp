@@ -5,25 +5,25 @@ public class Student {
     private Integer id;
     private String firstName;
     private String lastName;
-    private String className;
+    private Integer classId;
     private String gender;
     private int age;
 
 
-    public Student(Integer id, String firstName, String lastName, String className, String gender, int age) {
+    public Student(Integer id, String firstName, String lastName, int classId, String gender, int age) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.className = className;
+        this.classId = classId;
         this.gender = gender;
         this.age = age;
     }
 
-    public Student(String firstName, String lastName, String className, String gender, int age) {
+    public Student(String firstName, String lastName, int classId, String gender, int age) {
         this.id = null;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.className = className;
+        this.classId = classId;
         this.gender = gender;
         this.age = age;
     }
@@ -53,12 +53,12 @@ public class Student {
         this.lastName = lastName;
     }
 
-    public String getClassName() {
-        return className;
+    public int getClassId() {
+        return classId;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setClassId(int classId) {
+        this.classId = classId;
     }
 
     public String getGender() {

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".classRoomInfo.ClassRoomDetailsFragment">
+    tools:context=".students.StudentsFragment">
 
 
     <LinearLayout
@@ -58,12 +58,13 @@
     </LinearLayout>
 
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addStudentsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:text="@string/add_students" />
+        android:src="@drawable/ic_baseline_add_24"
+        />
 
 </LinearLayout>

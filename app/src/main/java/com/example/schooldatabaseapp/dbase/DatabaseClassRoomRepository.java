@@ -1,4 +1,4 @@
-package com.example.schooldatabaseapp.model;
+package com.example.schooldatabaseapp.dbase;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,6 +6,10 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.example.schooldatabaseapp.base.DatabaseHelper;
+import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.ClassRoomRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +25,6 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
         dbHelper = new DatabaseHelper(context.getApplicationContext());
     }
 
-
     @Override
     public void close() {
         dbHelper.close();
@@ -29,11 +32,12 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
     @Override
     public void deleteAll() {
-        dbHelper.deleteAll(database);
+        dbHelper.deleteAll(database, DatabaseHelper.TABLE_CLASSROOMS);
         close();
     }
 
-    private Cursor getAllEntries() {
+    @Override
+    public Cursor getAllEntries() {
         database = dbHelper.getWritableDatabase();
         String[] columns = new String[]{DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_CLASSNAME,
                 DatabaseHelper.COLUMN_CLASSNUMBER, DatabaseHelper.COLUMN_STUDENTSCOUNT, DatabaseHelper.COLUMN_FLOOR};
@@ -66,7 +70,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
     public ClassRoom getById(int id) {
         database = dbHelper.getWritableDatabase();
         ClassRoom classRoom = null;
-        String query = String.format("SELECT * FROM %s WHERE %s=?", DatabaseHelper.TABLE_CLASSROOMS, DatabaseHelper.COLUMN_ID);
+        String query = "SELECT * FROM " + DatabaseHelper.TABLE_CLASSROOMS + " WHERE " + DatabaseHelper.COLUMN_ID;
         Cursor cursor = database.rawQuery(query, new String[]{String.valueOf(id)});
         if (cursor.moveToFirst()) {
             String className = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNAME));

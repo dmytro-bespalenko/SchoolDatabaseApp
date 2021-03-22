@@ -1,4 +1,4 @@
-package com.example.schooldatabaseapp.view;
+package com.example.schooldatabaseapp.base;
 
 import androidx.fragment.app.Fragment;
 

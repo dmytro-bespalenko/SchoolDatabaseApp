@@ -1,5 +1,7 @@
 package com.example.schooldatabaseapp.model;
 
+import android.database.Cursor;
+
 import java.util.List;
 
 public interface ClassRoomRepository {
@@ -17,6 +19,8 @@ public interface ClassRoomRepository {
     void close();
 
     ClassRoom getById(int id);
+
+    Cursor getAllEntries();
 
     void deleteAll();
 

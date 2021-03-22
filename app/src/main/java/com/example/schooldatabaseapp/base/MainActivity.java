@@ -1,4 +1,4 @@
-package com.example.schooldatabaseapp.view;
+package com.example.schooldatabaseapp.base;
 
 import android.os.Bundle;
 
@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.example.schooldatabaseapp.R;
+import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.classRoom.ClassRoomsFragment;
 
 public class MainActivity extends AppCompatActivity implements FragmentChangeListener {

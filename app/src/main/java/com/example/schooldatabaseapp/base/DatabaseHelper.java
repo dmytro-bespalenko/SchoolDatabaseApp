@@ -1,4 +1,4 @@
-package com.example.schooldatabaseapp.model;
+package com.example.schooldatabaseapp.base;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -21,9 +21,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_FLOOR = "FLOOR";
 
     public static final String COLUMN_STUDENT_ID = "_id";
-    public static final String COLUMN_FIRST_NAME = "CLASSNAME";
-    public static final String COLUMN_LAST_NAME = "CLASSNUMBER";
-    public static final String COLUMN_STUDENT_CLASS_NAME = "STUDENTCLASSNAME";
+    public static final String COLUMN_FIRST_NAME = "FIRSTNAME";
+    public static final String COLUMN_LAST_NAME = "LASTNAME";
+    public static final String COLUMN_STUDENT_CLASS_ID = "STUDENTCLASSID";
     public static final String COLUMN_GENDER = "GENDER";
     public static final String COLUMN_AGE = "AGE";
 
@@ -41,25 +41,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private void insertClassrooms(SQLiteDatabase db, String className, int classNumber, int studentsCount, int floor) {
 
+        ContentValues classroomValues = new ContentValues();
+        classroomValues.put(COLUMN_CLASSNAME, className);
+        classroomValues.put(COLUMN_CLASSNUMBER, classNumber);
+        classroomValues.put(COLUMN_STUDENTSCOUNT, studentsCount);
+        classroomValues.put(COLUMN_FLOOR, floor);
+        db.insert(TABLE_CLASSROOMS, null, classroomValues);
+    }
+
+    private void insertStudents(SQLiteDatabase db, String firstName, String lastName, int classId, String gender, int age) {
         ContentValues studentsValues = new ContentValues();
-        studentsValues.put("CLASSNAME", className);
-        studentsValues.put("CLASSNUMBER", classNumber);
-        studentsValues.put("STUDENTSCOUNT", studentsCount);
-        studentsValues.put("FLOOR", floor);
-        db.insert("CLASSROOMS", null, studentsValues);
+        studentsValues.put(COLUMN_FIRST_NAME, firstName);
+        studentsValues.put(COLUMN_LAST_NAME, lastName);
+        studentsValues.put(COLUMN_STUDENT_CLASS_ID, classId);
+        studentsValues.put(COLUMN_GENDER, gender);
+        studentsValues.put(COLUMN_AGE, age);
+        db.insert(TABLE_STUDENTS, null, studentsValues);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         updateClassRoomsTable(db, oldVersion, newVersion);
         updateStudentsTable(db, oldVersion, newVersion);
     }
 
-    public void deleteAll(SQLiteDatabase db) {
-        db.execSQL("delete from " + TABLE_CLASSROOMS);
-        db.execSQL("delete from SQLITE_SEQUENCE where name=" + TABLE_CLASSROOMS);
-
+    public void deleteAll(SQLiteDatabase db, String tableName) {
+        db.execSQL("delete from " + tableName);
         db.close();
     }
 
@@ -82,11 +90,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (oldVersion < 1) {
             db.execSQL("CREATE TABLE " + TABLE_STUDENTS + "(" + COLUMN_STUDENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + COLUMN_FIRST_NAME + " TEXT, "
-                    + COLUMN_LAST_NAME + "TEXT, "
-                    + COLUMN_STUDENT_CLASS_NAME + " TEXT, "
+                    + COLUMN_LAST_NAME + " TEXT, "
+                    + COLUMN_STUDENT_CLASS_ID + " INTEGER, "
                     + COLUMN_GENDER + " TEXT, "
                     + COLUMN_AGE + " INTEGER);");
-            insertClassrooms(db, null, 0, 0, 0);
+            insertStudents(db, "Ivan", "Ivanov", 0, null, 0);
 
         }
 

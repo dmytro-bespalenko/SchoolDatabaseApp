@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
-import com.example.schooldatabaseapp.model.DatabaseClassRoomRepository;
+import com.example.schooldatabaseapp.dbase.DatabaseClassRoomRepository;
 
 public class AddClassRoomPresenter  implements AddClassRoomContract.Presenter{
 

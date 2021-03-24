@@ -10,6 +10,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
+import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.students.StudentsContract;
 
@@ -39,12 +40,8 @@ public class StudentsRecyclerAdapter extends RecyclerView.Adapter<StudentsRecycl
     @Override
     public void onBindViewHolder(@NonNull StudentsRecyclerAdapter.ViewHolder holder, int position) {
         Student student = studentsList.get(position);
-        CardView cv = holder.cardView;
 
-        TextView studentName = cv.findViewById(R.id.students_full_name);
-        studentName.setText(student.getFirstName() + " " + student.getLastName());
-
-
+        holder.studentName.setText(student.getFirstName() + " " + student.getLastName() + " classId " + student.getClassId());
     }
 
     @Override
@@ -54,18 +51,16 @@ public class StudentsRecyclerAdapter extends RecyclerView.Adapter<StudentsRecycl
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final CardView cardView;
         final TextView studentName;
 
         public ViewHolder(@NonNull CardView itemView) {
             super(itemView);
-            cardView = itemView;
             studentName = itemView.findViewById(R.id.students_full_name);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    studentsPresenter.onItemClickListener(studentsList.get(getAdapterPosition()));
                 }
             });
 

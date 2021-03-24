@@ -1,6 +1,9 @@
 package com.example.schooldatabaseapp.model;
 
-public class Student {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Student implements Parcelable {
 
     private Integer id;
     private String firstName;
@@ -28,6 +31,35 @@ public class Student {
         this.age = age;
     }
 
+
+    protected Student(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        firstName = in.readString();
+        lastName = in.readString();
+        if (in.readByte() == 0) {
+            classId = null;
+        } else {
+            classId = in.readInt();
+        }
+        gender = in.readString();
+        age = in.readInt();
+    }
+
+    public static final Creator<Student> CREATOR = new Creator<Student>() {
+        @Override
+        public Student createFromParcel(Parcel in) {
+            return new Student(in);
+        }
+
+        @Override
+        public Student[] newArray(int size) {
+            return new Student[size];
+        }
+    };
 
     public Integer getId() {
         return id;
@@ -78,4 +110,28 @@ public class Student {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(id);
+        }
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        if (classId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(classId);
+        }
+        dest.writeString(gender);
+        dest.writeInt(age);
+    }
 }

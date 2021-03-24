@@ -4,16 +4,16 @@ import android.content.Context;
 
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
-import com.example.schooldatabaseapp.dbase.DatabaseClassRoomRepository;
+import com.example.schooldatabaseapp.dataBase.DatabaseClassRoomRepository;
 
 public class AddClassRoomPresenter  implements AddClassRoomContract.Presenter{
 
     private final ClassRoomRepository repository;
     private AddClassRoomContract.View view;
 
-    public AddClassRoomPresenter(AddClassRoomContract.View view, Context context) {
+    public AddClassRoomPresenter(AddClassRoomContract.View callBack, Context context) {
         this.repository = new DatabaseClassRoomRepository(context);
-        this.view = view;
+        this.view = callBack;
     }
 
     @Override

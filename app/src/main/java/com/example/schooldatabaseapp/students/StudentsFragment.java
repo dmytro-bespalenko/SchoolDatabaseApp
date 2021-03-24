@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.schooldatabaseapp.R;
+import com.example.schooldatabaseapp.adapters.ClassRoomsRecyclerAdapter;
 import com.example.schooldatabaseapp.addStudents.AddStudentFragment;
+import com.example.schooldatabaseapp.detailsStudent.DetailsStudentFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
@@ -33,7 +35,9 @@ public class StudentsFragment extends Fragment implements StudentsContract.View 
     private StudentsRecyclerAdapter recyclerAdapter;
     private List<Student> studentList = new ArrayList<>();
     private StudentsContract.Presenter presenter;
+    private List<ClassRoom> classRoomList = new ArrayList<>();
 
+    List<Student> result;
 
     private TextView className;
     private TextView classNumber;
@@ -54,7 +58,8 @@ public class StudentsFragment extends Fragment implements StudentsContract.View 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new StudentsPresenter(this, view.getContext());
+        presenter = new StudentsPresenter(this, requireContext());
+
         RecyclerView recyclerView = view.findViewById(R.id.students_recycle_view);
         recyclerAdapter = new StudentsRecyclerAdapter(studentList);
         recyclerAdapter.registerStudentsListener(presenter);
@@ -66,40 +71,39 @@ public class StudentsFragment extends Fragment implements StudentsContract.View 
         studentsCount = view.findViewById(R.id.studentsCountInfo);
         floor = view.findViewById(R.id.floorInfo);
         addStudentsButton = view.findViewById(R.id.addStudentsButton);
+        classRoomList = presenter.getClassRooms();
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             classRoom = bundle.getParcelable("pos");
 
-            className.setText("Name: " + classRoom.getClassName());
-            classNumber.setText("№ " + classRoom.getClassNumber());
-            studentsCount.setText("Count " + classRoom.getStudentsCount());
-            floor.setText("Floor " + classRoom.getFloor());
+            className.setText(classRoom.getClassName());
+            classNumber.setText(String.valueOf(classRoom.getClassNumber()));
+            studentsCount.setText(String.valueOf(classRoom.getStudentsCount()));
+            floor.setText(String.valueOf(classRoom.getFloor()));
         }
 
         addStudentsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOtherFragment();
+                presenter.showOtherFragment();
             }
         });
 
 
     }
 
-    public void showOtherFragment() {
-        Fragment fragment = new AddStudentFragment();
-        FragmentChangeListener fc = (FragmentChangeListener) getActivity();
-        Objects.requireNonNull(fc).replaceFragment(fragment);
-
-    }
 
     @Override
     public void updateStudents(List<Student> all) {
         studentList.clear();
         studentList.addAll(all);
-        Log.d(TAG, "updateStudents: " + studentList.size());
-        recyclerAdapter.notifyDataSetChanged();
+        List<Student> result = new ArrayList<>();
+        for (int i = 0; i < studentList.size() - 1; i++) {
+
+            Log.d(TAG, "updateStudents: " + studentList.size());
+            recyclerAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -113,13 +117,26 @@ public class StudentsFragment extends Fragment implements StudentsContract.View 
     }
 
     @Override
-    public void openFragment(Student student) {
+    public void openStudentEditFragment(Student student) {
 
     }
 
     @Override
-    public void openClassRoomDetailsFragment(Student student) {
+    public void openStudentsDetailsFragment(Student student) {
 
+        Fragment fragment = new DetailsStudentFragment();
+        FragmentChangeListener fc = (FragmentChangeListener) getActivity();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("pos", student);
+        fragment.setArguments(bundle);
+        fc.replaceFragment(fragment);
+    }
+
+    @Override
+    public void openOtherFragment() {
+        Fragment fragment = new AddStudentFragment();
+        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
+        fragmentChangeListener.replaceFragment(fragment);
     }
 
 

@@ -1,5 +1,8 @@
 package com.example.schooldatabaseapp.classRoom;
 
+import androidx.fragment.app.Fragment;
+
+import com.example.schooldatabaseapp.addClass.AddClassRoomFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
 
 import java.util.List;
@@ -12,9 +15,11 @@ public interface ClassRoomContract {
 
         void deleteClassRoom(int position);
 
-        void openFragment(ClassRoom classRoom);
+        void openClassRoomEditFragment(ClassRoom classRoom);
 
         void openClassRoomDetailsFragment(ClassRoom classRoom);
+
+        void openOtherFragment();
     }
 
     interface Presenter {
@@ -29,6 +34,8 @@ public interface ClassRoomContract {
 
 
         void onItemClickListener(ClassRoom classRoom);
+
+        void showOtherFragment();
     }
 
 

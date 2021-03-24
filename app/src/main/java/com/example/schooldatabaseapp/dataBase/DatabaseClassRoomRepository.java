@@ -1,4 +1,4 @@
-package com.example.schooldatabaseapp.dbase;
+package com.example.schooldatabaseapp.dataBase;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -22,7 +22,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
 
     public DatabaseClassRoomRepository(Context context) {
-        dbHelper = new DatabaseHelper(context.getApplicationContext());
+        dbHelper = new DatabaseHelper(context);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
     @Override
     public int update(ClassRoom classRoom) {
         database = dbHelper.getWritableDatabase();
-        String whereClause = DatabaseHelper.COLUMN_ID + "=" + classRoom.getId();
+        String whereClause = DatabaseHelper.COLUMN_ID + "=" + classRoom.getClassId();
         ContentValues cv = new ContentValues();
 
         cv.put(DatabaseHelper.COLUMN_CLASSNAME, classRoom.getClassName());

@@ -9,6 +9,9 @@ public interface StudentsRepository {
 
     List<Student> getAll();
 
+    List<ClassRoom> getAllClassRoom();
+
+
     long getCount();
 
     long insert(Student student);
@@ -24,4 +27,6 @@ public interface StudentsRepository {
     Cursor getAllEntries();
 
     void deleteAll();
+
+
 }

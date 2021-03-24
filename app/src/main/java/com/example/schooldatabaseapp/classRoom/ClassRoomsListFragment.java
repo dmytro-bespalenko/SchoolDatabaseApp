@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class ClassRoomsFragment extends Fragment implements ClassRoomContract.View {
+public class ClassRoomsListFragment extends Fragment implements ClassRoomContract.View {
 
 
     private static final String TAG = "My_Tag";
@@ -39,6 +39,13 @@ public class ClassRoomsFragment extends Fragment implements ClassRoomContract.Vi
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_class_rooms_recycler, container, false);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -48,8 +55,7 @@ public class ClassRoomsFragment extends Fragment implements ClassRoomContract.Vi
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOtherFragment();
-
+                presenter.showOtherFragment();
             }
         });
 
@@ -60,21 +66,6 @@ public class ClassRoomsFragment extends Fragment implements ClassRoomContract.Vi
         recyclerView.setAdapter(recyclerAdapter);
 
     }
-
-    public void showOtherFragment() {
-        Fragment fragment = new AddClassRoomFragment();
-        FragmentChangeListener fc = (FragmentChangeListener) getActivity();
-        Objects.requireNonNull(fc).replaceFragment(fragment);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_class_rooms_recycler, container, false);
-    }
-
 
     @Override
     public void updateRooms(List<ClassRoom> all) {
@@ -95,14 +86,13 @@ public class ClassRoomsFragment extends Fragment implements ClassRoomContract.Vi
     }
 
     @Override
-    public void openFragment(ClassRoom classRoom) {
+    public void openClassRoomEditFragment(ClassRoom classRoom) {
         Fragment fragment = new EditClassRoomFragment();
         FragmentChangeListener fc = (FragmentChangeListener) getActivity();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("pos",  classRoom);
+        bundle.putParcelable("pos", classRoom);
         fragment.setArguments(bundle);
-
-        Objects.requireNonNull(fc).replaceFragment(fragment);
+        fc.replaceFragment(fragment);
     }
 
     @Override
@@ -110,12 +100,17 @@ public class ClassRoomsFragment extends Fragment implements ClassRoomContract.Vi
         Fragment fragment = new StudentsFragment();
         FragmentChangeListener fc = (FragmentChangeListener) getActivity();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("pos",  classRoom);
+        bundle.putParcelable("pos", classRoom);
         fragment.setArguments(bundle);
-
-        Objects.requireNonNull(fc).replaceFragment(fragment);
+        fc.replaceFragment(fragment);
     }
 
+    @Override
+    public void openOtherFragment() {
+        Fragment fragment = new AddClassRoomFragment();
+        FragmentChangeListener fc = (FragmentChangeListener) getActivity();
+        fc.replaceFragment(fragment);
+    }
 
     @Override
     public void onResume() {

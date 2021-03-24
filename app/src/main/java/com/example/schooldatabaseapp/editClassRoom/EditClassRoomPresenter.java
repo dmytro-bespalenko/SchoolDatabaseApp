@@ -4,18 +4,16 @@ import android.content.Context;
 
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
-import com.example.schooldatabaseapp.dbase.DatabaseClassRoomRepository;
-
-import java.util.List;
+import com.example.schooldatabaseapp.dataBase.DatabaseClassRoomRepository;
 
 public class EditClassRoomPresenter implements EditClassRoomContract.Presenter {
 
     private final ClassRoomRepository repository;
     private EditClassRoomContract.View view;
 
-    public EditClassRoomPresenter(EditClassRoomContract.View view, Context context) {
+    public EditClassRoomPresenter(EditClassRoomContract.View callback, Context context) {
         this.repository = new DatabaseClassRoomRepository(context);
-        this.view = view;
+        this.view = callback;
     }
 
 
@@ -23,13 +21,6 @@ public class EditClassRoomPresenter implements EditClassRoomContract.Presenter {
     public void editClassRoom(ClassRoom classRoom) {
         repository.update(classRoom);
     }
-
-    @Override
-    public void onEditButtonWasClicked(List<ClassRoom> classRooms, int adapterPosition) {
-
-
-    }
-
 
 
 }

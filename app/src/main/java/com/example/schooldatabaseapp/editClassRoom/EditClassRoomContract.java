@@ -15,7 +15,7 @@ public interface EditClassRoomContract {
 
         void editClassRoom(ClassRoom classRoom);
 
-        void onEditButtonWasClicked(List<ClassRoom> classRooms, int adapterPosition);
+
 
 
     }

@@ -2,17 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".students.StudentsFragment">
-
+    tools:context=".detailsStudent.DetailsStudentFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:orientation="horizontal">
 
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,33 +22,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="5dp"
-                android:text="Class name:"
+                android:text="Student id:"
                 android:textColor="#000" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="5dp"
-                android:text="Class number:"
+                android:text="First name:"
                 android:textColor="#000" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="5dp"
-                android:text="Students count:"
+                android:text="Last name:"
                 android:textColor="#000" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="5dp"
-                android:text="Floor:"
+                android:text="Gender:"
+                android:textColor="#000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:text="Age:"
                 android:textColor="#000" />
 
 
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -58,59 +63,54 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/classNameInfo"
+                android:id="@+id/student_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textColor="#000" />
+
+            <TextView
+                android:id="@+id/student_first_name"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="5dp"
                 android:textColor="#000" />
 
             <TextView
-                android:id="@+id/classNumberInfo"
+                android:id="@+id/student_last_name"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="5dp"
                 android:textColor="#000" />
 
             <TextView
-                android:id="@+id/studentsCountInfo"
+                android:id="@+id/student_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="5dp"
                 android:textColor="#000" />
 
             <TextView
-                android:id="@+id/floorInfo"
+                android:id="@+id/student_age"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="5dp"
                 android:textColor="#000" />
-
 
         </LinearLayout>
 
-
     </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:orientation="vertical">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/students_recycle_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addStudentsButton"
+    <Button
+        android:id="@+id/edit_student"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/ic_baseline_add_24" />
+        android:layout_marginTop="100dp"
+        android:text="Edit">
+
+
+    </Button>
+
 
 </LinearLayout>

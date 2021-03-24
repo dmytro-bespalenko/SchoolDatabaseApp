@@ -7,7 +7,7 @@ public class ClassRoom implements Parcelable {
 
     private Integer id;
     private String className;
-    private int classNumber;
+    public int classNumber;
     private int studentsCount;
     private int floor;
 
@@ -51,7 +51,7 @@ public class ClassRoom implements Parcelable {
         }
     };
 
-    public int getId() {
+    public int getClassId() {
         return id;
     }
 

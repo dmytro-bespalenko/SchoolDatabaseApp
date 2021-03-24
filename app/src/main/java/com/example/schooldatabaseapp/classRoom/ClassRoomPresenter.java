@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
-import com.example.schooldatabaseapp.dbase.DatabaseClassRoomRepository;
+import com.example.schooldatabaseapp.dataBase.DatabaseClassRoomRepository;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ public class ClassRoomPresenter implements ClassRoomContract.Presenter {
     private final ClassRoomContract.View view;
     private final ClassRoomRepository repository;
 
-    public ClassRoomPresenter(ClassRoomContract.View view, Context context) {
+    public ClassRoomPresenter(ClassRoomContract.View callBack, Context context) {
         this.repository = new DatabaseClassRoomRepository(context);
-        this.view = view;
+        this.view = callBack;
     }
 
 
@@ -28,20 +28,25 @@ public class ClassRoomPresenter implements ClassRoomContract.Presenter {
     public void onItemWasLongClick(List<ClassRoom> all, int adapterPosition) {
 
         if (!all.isEmpty()) {
-            view.deleteClassRoom(repository.delete(all.get(adapterPosition).getId()));
+            view.deleteClassRoom(repository.delete(all.get(adapterPosition).getClassId()));
         }
 
     }
 
     @Override
     public void openEditFragment(ClassRoom classRoom) {
-        view.openFragment(classRoom);
+        view.openClassRoomEditFragment(classRoom);
     }
 
     @Override
     public void onItemClickListener(ClassRoom classRoom) {
         view.openClassRoomDetailsFragment(classRoom);
 
+    }
+
+    @Override
+    public void showOtherFragment() {
+        view.openOtherFragment();
     }
 
 

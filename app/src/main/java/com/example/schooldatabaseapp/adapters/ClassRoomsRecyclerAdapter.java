@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.classRoom.ClassRoomContract;
+import com.example.schooldatabaseapp.students.StudentsContract;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
         this.classRoomPresenter = presenter;
     }
 
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,22 +46,22 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
         CardView cv = holder.cardView;
 
         TextView idView = cv.findViewById(R.id.classId);
-        idView.setText(String.valueOf(classRoom.getId()));
+        idView.setText(String.valueOf(classRoom.getClassId()));
 
         TextView nameView = cv.findViewById(R.id.className);
-        nameView.setText("Name: " + classRoom.getClassName());
+        nameView.setText("Classname: " + classRoom.getClassName());
 
         TextView classNumberView = cv.findViewById(R.id.classNumber);
-        classNumberView.setText("№ " + classRoom.getClassNumber());
+        classNumberView.setText("№" + classRoom.getClassNumber());
 
-        TextView studentsCountView = cv.findViewById(R.id.studentsCount);
-        studentsCountView.setText("Count: " + classRoom.getStudentsCount());
+//        TextView studentsCountView = cv.findViewById(R.id.studentsCount);
+//        studentsCountView.setText("Count: " + classRoom.getStudentsCount());
+//
+//        TextView floorView = cv.findViewById(R.id.floor);
+//        floorView.setText("Floor: " + classRoom.getFloor());
 
-        TextView floorView = cv.findViewById(R.id.floor);
-        floorView.setText("Floor: " + classRoom.getFloor());
-
-        ImageButton editButton = cv.findViewById(R.id.editButton);
-        editButton.setImageResource(R.drawable.ic_baseline_edit_24);
+//        ImageButton editButton = cv.findViewById(R.id.editButton);
+//        editButton.setImageResource(R.drawable.ic_baseline_edit_24);
 
 
     }
@@ -102,14 +104,14 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
                 @Override
                 public void onClick(View v) {
                     classRoomPresenter.onItemClickListener(classRooms.get(getAdapterPosition()));
+
                 }
             });
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    if (!classRooms.isEmpty()) {
-                        classRoomPresenter.onItemWasLongClick(classRooms, getAdapterPosition());
-                    }
+                    classRoomPresenter.onItemWasLongClick(classRooms, getAdapterPosition());
+
                     return true;
                 }
             });

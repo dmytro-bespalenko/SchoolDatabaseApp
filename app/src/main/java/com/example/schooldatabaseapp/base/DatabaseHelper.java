@@ -94,7 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + COLUMN_STUDENT_CLASS_ID + " INTEGER, "
                     + COLUMN_GENDER + " TEXT, "
                     + COLUMN_AGE + " INTEGER);");
-            insertStudents(db, "Ivan", "Ivanov", 0, null, 0);
+            insertStudents(db, "Ivan", "Ivanov", 1, "Male", 18);
 
         }
 

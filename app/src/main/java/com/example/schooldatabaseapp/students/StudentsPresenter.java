@@ -3,8 +3,12 @@ package com.example.schooldatabaseapp.students;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.schooldatabaseapp.dbase.DatabaseStudentsRepository;
+import com.example.schooldatabaseapp.dataBase.DatabaseStudentsRepository;
+import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.model.StudentsRepository;
+
+import java.util.List;
 
 public class StudentsPresenter implements StudentsContract.Presenter {
 
@@ -12,9 +16,10 @@ public class StudentsPresenter implements StudentsContract.Presenter {
     private StudentsRepository repository;
     private StudentsContract.View view;
 
-    public StudentsPresenter(StudentsContract.View view, Context context) {
+    public StudentsPresenter(StudentsContract.View callBack, Context context) {
         this.repository = new DatabaseStudentsRepository(context);
-        this.view = view;
+        this.view = callBack;
+
     }
 
 
@@ -23,5 +28,29 @@ public class StudentsPresenter implements StudentsContract.Presenter {
 
         view.updateStudents(repository.getAll());
         Log.d(TAG, "updateStudent: ");
+    }
+
+    @Override
+    public List<ClassRoom> getClassRooms() {
+        return repository.getAllClassRoom();
+    }
+
+
+    @Override
+    public void onItemClickListener(Student student) {
+
+        view.openStudentsDetailsFragment(student);
+
+    }
+
+    @Override
+    public void showOtherFragment() {
+        view.openOtherFragment();
+    }
+
+    @Override
+    public void onClassItemClickListener(ClassRoom classRoom) {
+
+
     }
 }

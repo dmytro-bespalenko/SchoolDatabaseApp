@@ -1,4 +1,4 @@
-package com.example.schooldatabaseapp.dbase;
+package com.example.schooldatabaseapp.dataBase;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.schooldatabaseapp.base.DatabaseHelper;
+import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.model.StudentsRepository;
 
@@ -23,8 +24,9 @@ public class DatabaseStudentsRepository implements StudentsRepository {
 
 
     public DatabaseStudentsRepository(Context context) {
-        this.dbHelper = new DatabaseHelper(context.getApplicationContext());
+        this.dbHelper = new DatabaseHelper(context);
     }
+
 
 
     @Override
@@ -44,6 +46,30 @@ public class DatabaseStudentsRepository implements StudentsRepository {
         Log.d(TAG, "getAll: " + students.size());
         cursor.close();
         return students;
+    }
+
+    @Override
+    public List<ClassRoom> getAllClassRoom() {
+        database = dbHelper.getWritableDatabase();
+        List<ClassRoom> classrooms = new ArrayList<>();
+        Cursor cursor = getClassRoom();
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
+            String className = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNAME));
+            int classNumber = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNUMBER));
+            int studentsCount = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENTSCOUNT));
+            int floor = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_FLOOR));
+            classrooms.add(new ClassRoom(id, className, classNumber, studentsCount, floor));
+        }
+        cursor.close();
+        return classrooms;
+    }
+
+    public Cursor getClassRoom() {
+        database = dbHelper.getWritableDatabase();
+        String[] columns = new String[]{DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_CLASSNAME,
+                DatabaseHelper.COLUMN_CLASSNUMBER, DatabaseHelper.COLUMN_STUDENTSCOUNT, DatabaseHelper.COLUMN_FLOOR};
+        return database.query(DatabaseHelper.TABLE_CLASSROOMS, columns, null, null, null, null, null);
     }
 
 
@@ -100,7 +126,7 @@ public class DatabaseStudentsRepository implements StudentsRepository {
     public Student getById(int id) {
         database = dbHelper.getWritableDatabase();
         Student student = null;
-        String query = String.format("SELECT * FROM %s WHERE %s=?", DatabaseHelper.TABLE_STUDENTS, DatabaseHelper.COLUMN_ID);
+        String query = "SELECT * FROM " + DatabaseHelper.TABLE_STUDENTS + " WHERE " + DatabaseHelper.COLUMN_ID;
         Cursor cursor = database.rawQuery(query, new String[]{String.valueOf(id)});
         if (cursor.moveToFirst()) {
             String firstName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FIRST_NAME));

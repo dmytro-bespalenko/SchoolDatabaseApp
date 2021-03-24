@@ -35,24 +35,33 @@
             android:inputType="number" />
 
         <Spinner
-            android:id="@+id/spinnerAge"
-            android:layout_marginLeft="20dp"
+            android:id="@+id/spinnerGender"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:entries="@array/gender"
-            android:layout_marginStart="10dp" />
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="20dp"
+            android:entries="@array/gender" />
+
+        <Spinner
+            android:id="@+id/className_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="20dp">
+
+        </Spinner>
+
     </LinearLayout>
 
-<Button
-    android:id="@+id/save_Student_button"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="200dp"
-    android:layout_gravity="center"
-    android:text="@string/save"
-    >
+    <Button
+        android:id="@+id/save_Student_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="200dp"
+        android:text="@string/save">
 
-</Button>
+    </Button>
 
 
 </LinearLayout>

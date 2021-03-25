@@ -105,7 +105,6 @@ public class DatabaseStudentsRepository implements StudentsRepository {
         database = dbHelper.getWritableDatabase();
         String whereClause = DatabaseHelper.COLUMN_STUDENT_ID + "=" + student.getId();
         ContentValues cv = new ContentValues();
-
         cv.put(DatabaseHelper.COLUMN_FIRST_NAME, student.getFirstName());
         cv.put(DatabaseHelper.COLUMN_LAST_NAME, student.getLastName());
         cv.put(DatabaseHelper.COLUMN_STUDENT_CLASS_ID, student.getClassId());

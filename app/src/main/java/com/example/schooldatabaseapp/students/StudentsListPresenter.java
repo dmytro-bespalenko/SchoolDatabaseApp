@@ -10,13 +10,13 @@ import com.example.schooldatabaseapp.model.StudentsRepository;
 
 import java.util.List;
 
-public class StudentsPresenter implements StudentsContract.Presenter {
+public class StudentsListPresenter implements StudentsListContract.Presenter {
 
     private static final String TAG = "My_tag";
     private StudentsRepository repository;
-    private StudentsContract.View view;
+    private StudentsListContract.View view;
 
-    public StudentsPresenter(StudentsContract.View callBack, Context context) {
+    public StudentsListPresenter(StudentsListContract.View callBack, Context context) {
         this.repository = new DatabaseStudentsRepository(context);
         this.view = callBack;
 
@@ -43,14 +43,9 @@ public class StudentsPresenter implements StudentsContract.Presenter {
 
     }
 
-    @Override
-    public void showOtherFragment() {
-        view.openOtherFragment();
-    }
 
     @Override
-    public void onClassItemClickListener(ClassRoom classRoom) {
-
-
+    public void onItemWasLongClick(List<Student> studentsList, int adapterPosition) {
+        view.deleteStudent(repository.delete(studentsList.get(adapterPosition).getId()));
     }
 }

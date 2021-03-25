@@ -24,7 +24,6 @@ public class EditClassRoomFragment extends Fragment implements EditClassRoomCont
     private EditText editClassName;
     private EditText editClassNumber;
     private EditText editFloor;
-    private EditText idClass;
     private ClassRoom classRoom;
 
     @Override
@@ -48,14 +47,13 @@ public class EditClassRoomFragment extends Fragment implements EditClassRoomCont
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             classRoom = bundle.getParcelable("pos");
-
             editClassName.setText(classRoom.getClassName());
             editClassNumber.setText(String.valueOf(classRoom.getClassNumber()));
             editFloor.setText(String.valueOf(classRoom.getFloor()));
         }
 
-        Button button = view.findViewById(R.id.saveEditButton);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button saveEditClassButton = view.findViewById(R.id.saveEditButton);
+        saveEditClassButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 validateEditFields();

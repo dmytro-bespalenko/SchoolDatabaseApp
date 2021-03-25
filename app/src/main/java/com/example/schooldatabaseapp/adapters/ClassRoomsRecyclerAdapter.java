@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.model.ClassRoom;
-import com.example.schooldatabaseapp.classRoom.ClassRoomContract;
-import com.example.schooldatabaseapp.students.StudentsContract;
+import com.example.schooldatabaseapp.classRoom.ClassRoomListContract;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
 
 
     private List<ClassRoom> classRooms;
-    private ClassRoomContract.Presenter classRoomPresenter;
+    private ClassRoomListContract.Presenter classRoomPresenter;
 
 
     public ClassRoomsRecyclerAdapter(List<ClassRoom> classRooms) {
@@ -29,7 +28,7 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
     }
 
 
-    public void registerClassRoomsListener(ClassRoomContract.Presenter presenter) {
+    public void registerClassRoomsListener(ClassRoomListContract.Presenter presenter) {
         this.classRoomPresenter = presenter;
     }
 

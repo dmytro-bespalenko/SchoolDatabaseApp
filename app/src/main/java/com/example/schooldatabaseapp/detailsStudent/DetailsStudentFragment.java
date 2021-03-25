@@ -17,8 +17,6 @@ import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.editStudent.EditStudentFragment;
 import com.example.schooldatabaseapp.model.Student;
 
-import java.util.Objects;
-
 public class DetailsStudentFragment extends Fragment implements DetailsStudentContract.View {
 
 
@@ -69,7 +67,7 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
         editStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.showOtherFragment();
+                presenter.openEditStudentFragment();
             }
         });
 
@@ -77,11 +75,14 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
     }
 
 
-
     @Override
-    public void openOtherFragment() {
+    public void openEditStudentFragment() {
         Fragment fragment = new EditStudentFragment();
-        FragmentChangeListener fc = (FragmentChangeListener) getActivity();
-        Objects.requireNonNull(fc).replaceFragment(fragment);
+        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("pos", student);
+        fragment.setArguments(bundle);
+        fragmentChangeListener.replaceFragment(fragment);
+
     }
 }

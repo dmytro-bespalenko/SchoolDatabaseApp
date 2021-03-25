@@ -108,7 +108,6 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
         database = dbHelper.getWritableDatabase();
         String whereClause = DatabaseHelper.COLUMN_ID + "=" + classRoom.getClassId();
         ContentValues cv = new ContentValues();
-
         cv.put(DatabaseHelper.COLUMN_CLASSNAME, classRoom.getClassName());
         cv.put(DatabaseHelper.COLUMN_CLASSNUMBER, classRoom.getClassNumber());
         cv.put(DatabaseHelper.COLUMN_STUDENTSCOUNT, classRoom.getStudentsCount());

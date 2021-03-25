@@ -10,16 +10,15 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
-import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
-import com.example.schooldatabaseapp.students.StudentsContract;
+import com.example.schooldatabaseapp.students.StudentsListContract;
 
 import java.util.List;
 
 public class StudentsRecyclerAdapter extends RecyclerView.Adapter<StudentsRecyclerAdapter.ViewHolder> {
 
     private List<Student> studentsList;
-    private StudentsContract.Presenter studentsPresenter;
+    private StudentsListContract.Presenter studentsPresenter;
 
 
     public StudentsRecyclerAdapter(List<Student> studentsList) {
@@ -27,7 +26,7 @@ public class StudentsRecyclerAdapter extends RecyclerView.Adapter<StudentsRecycl
     }
 
 
-    public void registerStudentsListener(StudentsContract.Presenter presenter) {
+    public void registerStudentsListener(StudentsListContract.Presenter presenter) {
         this.studentsPresenter = presenter;
     }
 
@@ -41,7 +40,7 @@ public class StudentsRecyclerAdapter extends RecyclerView.Adapter<StudentsRecycl
     public void onBindViewHolder(@NonNull StudentsRecyclerAdapter.ViewHolder holder, int position) {
         Student student = studentsList.get(position);
 
-        holder.studentName.setText(student.getFirstName() + " " + student.getLastName() + " classId " + student.getClassId());
+        holder.studentName.setText(student.getFirstName() + " " + student.getLastName());
     }
 
     @Override
@@ -64,6 +63,13 @@ public class StudentsRecyclerAdapter extends RecyclerView.Adapter<StudentsRecycl
                 }
             });
 
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    studentsPresenter.onItemWasLongClick(studentsList, getAdapterPosition());
+                    return true;
+                }
+            });
         }
 
 

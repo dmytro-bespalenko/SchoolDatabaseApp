@@ -13,8 +13,8 @@ public class Student implements Parcelable {
     private int age;
 
 
-    public Student(Integer id, String firstName, String lastName, int classId, String gender, int age) {
-        this.id = id;
+    public Student(String firstName, String lastName, int classId, String gender, int age) {
+        this.id = null;
         this.firstName = firstName;
         this.lastName = lastName;
         this.classId = classId;
@@ -22,8 +22,8 @@ public class Student implements Parcelable {
         this.age = age;
     }
 
-    public Student(String firstName, String lastName, int classId, String gender, int age) {
-        this.id = null;
+    public Student(int id, String firstName, String lastName, int classId, String gender, int age) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.classId = classId;

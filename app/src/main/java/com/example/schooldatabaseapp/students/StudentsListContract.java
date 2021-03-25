@@ -5,7 +5,7 @@ import com.example.schooldatabaseapp.model.Student;
 
 import java.util.List;
 
-public interface StudentsContract {
+public interface StudentsListContract {
 
     interface View {
 
@@ -14,12 +14,8 @@ public interface StudentsContract {
 
         void deleteStudent(int position);
 
-        void openStudentEditFragment(Student student);
-
-
         void openStudentsDetailsFragment(Student student);
 
-        void openOtherFragment();
     }
 
     interface Presenter {
@@ -31,8 +27,8 @@ public interface StudentsContract {
 
         void onItemClickListener(Student student);
 
-        void showOtherFragment();
 
-        void onClassItemClickListener(ClassRoom classRoom);
+        void onItemWasLongClick(List<Student> studentsList, int adapterPosition);
+
     }
 }

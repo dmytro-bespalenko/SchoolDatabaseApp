@@ -51,11 +51,11 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
         super.onViewCreated(view, savedInstanceState);
 
 
-        presenter = new AddStudentPresenter(this, view.getContext());
-        editFirstName = view.findViewById(R.id.edit_firstName);
-        editLastName = view.findViewById(R.id.edit_lastName);
-        editaAge = view.findViewById(R.id.edit_age);
-        genderSpinner = view.findViewById(R.id.spinnerGender);
+        presenter = new AddStudentPresenter(this, requireContext());
+        editFirstName = view.findViewById(R.id.add_firstName);
+        editLastName = view.findViewById(R.id.add_lastName);
+        editaAge = view.findViewById(R.id.add_age);
+        genderSpinner = view.findViewById(R.id.add_spinner_Gender);
         classRoomList = presenter.getClassRooms();
         saveStudent = view.findViewById(R.id.save_Student_button);
 
@@ -73,14 +73,16 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
             }
         });
 
-        classSpinner = view.findViewById(R.id.className_spinner);
+        classSpinner = view.findViewById(R.id.add_className_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item);
+
 
         for (int i = 0; i < classRoomList.size(); i++) {
             adapter.add((classRoomList.get(i).getClassName()));
             Log.d(TAG, "id_class: " + classRoomList.get(i).getClassId());
         }
         classSpinner.setAdapter(adapter);
+
         classSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

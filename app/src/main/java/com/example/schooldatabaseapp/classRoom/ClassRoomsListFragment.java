@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,25 +14,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.addClass.AddClassRoomFragment;
-import com.example.schooldatabaseapp.students.StudentsFragment;
+import com.example.schooldatabaseapp.addStudents.AddStudentFragment;
+import com.example.schooldatabaseapp.students.StudentsListFragment;
 import com.example.schooldatabaseapp.editClassRoom.EditClassRoomFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.adapters.ClassRoomsRecyclerAdapter;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
-public class ClassRoomsListFragment extends Fragment implements ClassRoomContract.View {
+public class ClassRoomsListFragment extends Fragment implements ClassRoomListContract.View {
 
 
     private static final String TAG = "My_Tag";
     private ClassRoomsRecyclerAdapter recyclerAdapter;
     private List<ClassRoom> classRoomList = new ArrayList<>();
-    private ClassRoomContract.Presenter presenter;
+    private ClassRoomListContract.Presenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,15 +49,24 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomContrac
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new ClassRoomPresenter(this, view.getContext());
+        presenter = new ClassRoomListPresenter(this, requireContext());
 
-        FloatingActionButton button = view.findViewById(R.id.addButton);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button addClassButton = view.findViewById(R.id.addClassButton);
+        addClassButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.showOtherFragment();
+                presenter.showAddClassFragment();
             }
         });
+
+        Button addStudentButton = view.findViewById(R.id.addStudentButton);
+        addStudentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.showAddStudentFragment();
+            }
+        });
+
 
         RecyclerView recyclerView = view.findViewById(R.id.classrooms_recycle_view);
         recyclerAdapter = new ClassRoomsRecyclerAdapter(classRoomList);
@@ -97,7 +106,7 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomContrac
 
     @Override
     public void openClassRoomDetailsFragment(ClassRoom classRoom) {
-        Fragment fragment = new StudentsFragment();
+        Fragment fragment = new StudentsListFragment();
         FragmentChangeListener fc = (FragmentChangeListener) getActivity();
         Bundle bundle = new Bundle();
         bundle.putParcelable("pos", classRoom);
@@ -106,10 +115,18 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomContrac
     }
 
     @Override
-    public void openOtherFragment() {
+    public void openAddClassRoomFragment() {
         Fragment fragment = new AddClassRoomFragment();
         FragmentChangeListener fc = (FragmentChangeListener) getActivity();
         fc.replaceFragment(fragment);
+    }
+
+    @Override
+    public void openAddStudentFragment() {
+
+        Fragment fragment = new AddStudentFragment();
+        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
+        fragmentChangeListener.replaceFragment(fragment);
     }
 
     @Override

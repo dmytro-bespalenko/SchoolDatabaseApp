@@ -8,43 +8,36 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.schooldatabaseapp.R;
-import com.example.schooldatabaseapp.adapters.ClassRoomsRecyclerAdapter;
-import com.example.schooldatabaseapp.addStudents.AddStudentFragment;
 import com.example.schooldatabaseapp.detailsStudent.DetailsStudentFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.adapters.StudentsRecyclerAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class StudentsFragment extends Fragment implements StudentsContract.View {
+public class StudentsListFragment extends Fragment implements StudentsListContract.View {
 
 
     private static final String TAG = "My_Tag";
     private StudentsRecyclerAdapter recyclerAdapter;
     private List<Student> studentList = new ArrayList<>();
-    private StudentsContract.Presenter presenter;
-    private List<ClassRoom> classRoomList = new ArrayList<>();
+    private StudentsListContract.Presenter presenter;
 
-    List<Student> result;
 
     private TextView className;
     private TextView classNumber;
     private TextView studentsCount;
     private TextView floor;
+
     private ClassRoom classRoom;
-    private FloatingActionButton addStudentsButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,7 +51,7 @@ public class StudentsFragment extends Fragment implements StudentsContract.View 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new StudentsPresenter(this, requireContext());
+        presenter = new StudentsListPresenter(this, requireContext());
 
         RecyclerView recyclerView = view.findViewById(R.id.students_recycle_view);
         recyclerAdapter = new StudentsRecyclerAdapter(studentList);
@@ -70,8 +63,6 @@ public class StudentsFragment extends Fragment implements StudentsContract.View 
         classNumber = view.findViewById(R.id.classNumberInfo);
         studentsCount = view.findViewById(R.id.studentsCountInfo);
         floor = view.findViewById(R.id.floorInfo);
-        addStudentsButton = view.findViewById(R.id.addStudentsButton);
-        classRoomList = presenter.getClassRooms();
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -83,13 +74,6 @@ public class StudentsFragment extends Fragment implements StudentsContract.View 
             floor.setText(String.valueOf(classRoom.getFloor()));
         }
 
-        addStudentsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.showOtherFragment();
-            }
-        });
-
 
     }
 
@@ -97,13 +81,14 @@ public class StudentsFragment extends Fragment implements StudentsContract.View 
     @Override
     public void updateStudents(List<Student> all) {
         studentList.clear();
-        studentList.addAll(all);
-        List<Student> result = new ArrayList<>();
-        for (int i = 0; i < studentList.size() - 1; i++) {
 
-            Log.d(TAG, "updateStudents: " + studentList.size());
-            recyclerAdapter.notifyDataSetChanged();
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).getClassId() == classRoom.getClassId()) {
+                studentList.add(all.get(i));
+            }
         }
+        recyclerAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -116,26 +101,16 @@ public class StudentsFragment extends Fragment implements StudentsContract.View 
         recyclerAdapter.notifyItemRemoved(position);
     }
 
-    @Override
-    public void openStudentEditFragment(Student student) {
 
-    }
 
     @Override
     public void openStudentsDetailsFragment(Student student) {
 
         Fragment fragment = new DetailsStudentFragment();
-        FragmentChangeListener fc = (FragmentChangeListener) getActivity();
+        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
         Bundle bundle = new Bundle();
         bundle.putParcelable("pos", student);
         fragment.setArguments(bundle);
-        fc.replaceFragment(fragment);
-    }
-
-    @Override
-    public void openOtherFragment() {
-        Fragment fragment = new AddStudentFragment();
-        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
         fragmentChangeListener.replaceFragment(fragment);
     }
 

@@ -8,12 +8,12 @@ import com.example.schooldatabaseapp.dataBase.DatabaseClassRoomRepository;
 
 import java.util.List;
 
-public class ClassRoomPresenter implements ClassRoomContract.Presenter {
+public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
 
-    private final ClassRoomContract.View view;
+    private final ClassRoomListContract.View view;
     private final ClassRoomRepository repository;
 
-    public ClassRoomPresenter(ClassRoomContract.View callBack, Context context) {
+    public ClassRoomListPresenter(ClassRoomListContract.View callBack, Context context) {
         this.repository = new DatabaseClassRoomRepository(context);
         this.view = callBack;
     }
@@ -27,9 +27,7 @@ public class ClassRoomPresenter implements ClassRoomContract.Presenter {
     @Override
     public void onItemWasLongClick(List<ClassRoom> all, int adapterPosition) {
 
-        if (!all.isEmpty()) {
-            view.deleteClassRoom(repository.delete(all.get(adapterPosition).getClassId()));
-        }
+        view.deleteClassRoom(repository.delete(all.get(adapterPosition).getClassId()));
 
     }
 
@@ -45,8 +43,13 @@ public class ClassRoomPresenter implements ClassRoomContract.Presenter {
     }
 
     @Override
-    public void showOtherFragment() {
-        view.openOtherFragment();
+    public void showAddClassFragment() {
+        view.openAddClassRoomFragment();
+    }
+
+    @Override
+    public void showAddStudentFragment() {
+        view.openAddStudentFragment();
     }
 
 

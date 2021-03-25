@@ -79,7 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + COLUMN_CLASSNUMBER + " INTEGER, "
                     + COLUMN_STUDENTSCOUNT + " INTEGER, "
                     + COLUMN_FLOOR + " INTEGER);");
-            insertClassrooms(db, null, 0, 0, 0);
+            insertClassrooms(db, "Android", 1, 0, 2);
 
         }
 

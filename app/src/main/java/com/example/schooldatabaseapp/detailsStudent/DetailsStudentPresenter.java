@@ -3,6 +3,7 @@ package com.example.schooldatabaseapp.detailsStudent;
 import android.content.Context;
 
 import com.example.schooldatabaseapp.dataBase.DatabaseStudentsRepository;
+import com.example.schooldatabaseapp.model.Student;
 
 public class DetailsStudentPresenter implements DetailsStudentContract.Presenter {
 
@@ -16,9 +17,9 @@ public class DetailsStudentPresenter implements DetailsStudentContract.Presenter
     }
 
     @Override
-    public void showOtherFragment() {
+    public void openEditStudentFragment() {
 
-        view.openOtherFragment();
+        view.openEditStudentFragment();
 
     }
 }

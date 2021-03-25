@@ -7,7 +7,7 @@ import com.example.schooldatabaseapp.model.ClassRoom;
 
 import java.util.List;
 
-public interface ClassRoomContract {
+public interface ClassRoomListContract {
 
     interface View {
 
@@ -19,7 +19,9 @@ public interface ClassRoomContract {
 
         void openClassRoomDetailsFragment(ClassRoom classRoom);
 
-        void openOtherFragment();
+        void openAddClassRoomFragment();
+
+        void openAddStudentFragment();
     }
 
     interface Presenter {
@@ -35,7 +37,10 @@ public interface ClassRoomContract {
 
         void onItemClickListener(ClassRoom classRoom);
 
-        void showOtherFragment();
+        void showAddClassFragment();
+
+        void showAddStudentFragment();
+
     }
 
 

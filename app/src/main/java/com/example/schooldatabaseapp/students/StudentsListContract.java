@@ -16,6 +16,8 @@ public interface StudentsListContract {
 
         void openStudentsDetailsFragment(Student student);
 
+        void openAddStudentFragment();
+
     }
 
     interface Presenter {
@@ -30,5 +32,6 @@ public interface StudentsListContract {
 
         void onItemWasLongClick(List<Student> studentsList, int adapterPosition);
 
+        void openAddStudentFragment();
     }
 }

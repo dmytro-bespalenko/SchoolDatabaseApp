@@ -1,34 +1,30 @@
 package com.example.schooldatabaseapp.classRoom;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
+import com.example.schooldatabaseapp.adapters.ClassRoomsRecyclerAdapter;
 import com.example.schooldatabaseapp.addClass.AddClassRoomFragment;
 import com.example.schooldatabaseapp.addStudents.AddStudentFragment;
-import com.example.schooldatabaseapp.students.StudentsListFragment;
+import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.editClassRoom.EditClassRoomFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
-import com.example.schooldatabaseapp.adapters.ClassRoomsRecyclerAdapter;
-import com.example.schooldatabaseapp.base.FragmentChangeListener;
+import com.example.schooldatabaseapp.students.StudentsListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 public class ClassRoomsListFragment extends Fragment implements ClassRoomListContract.View {
@@ -93,12 +89,36 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
     @Override
     public void deleteClassRoom(int position) {
 
+
         if (position == classRoomList.size()) {
             position = 0;
         }
-        classRoomList.remove(position);
-        presenter.updateClassRooms();
-        recyclerAdapter.notifyItemRemoved(position);
+        int finalPosition = position;
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
+
+                        classRoomList.remove(finalPosition);
+
+                        presenter.updateClassRooms();
+                        recyclerAdapter.notifyItemRemoved(finalPosition);
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Delete classroom?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+
     }
 
     @Override

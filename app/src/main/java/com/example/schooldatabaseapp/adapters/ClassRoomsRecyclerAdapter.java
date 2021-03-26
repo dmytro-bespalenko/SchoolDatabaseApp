@@ -1,5 +1,6 @@
 package com.example.schooldatabaseapp.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
         return new ViewHolder((CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.classroom_card, parent, false));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ClassRoom classRoom = classRooms.get(position);
@@ -52,7 +54,7 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
 
         TextView classNumberView = cv.findViewById(R.id.classNumber);
         classNumberView.setText("№" + classRoom.getClassNumber());
-
+//
 //        TextView studentsCountView = cv.findViewById(R.id.studentsCount);
 //        studentsCountView.setText("Count: " + classRoom.getStudentsCount());
 //

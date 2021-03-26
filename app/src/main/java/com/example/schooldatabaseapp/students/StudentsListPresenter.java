@@ -48,4 +48,9 @@ public class StudentsListPresenter implements StudentsListContract.Presenter {
     public void onItemWasLongClick(List<Student> studentsList, int adapterPosition) {
         view.deleteStudent(repository.delete(studentsList.get(adapterPosition).getId()));
     }
+
+    @Override
+    public void openAddStudentFragment() {
+        view.openAddStudentFragment();
+    }
 }

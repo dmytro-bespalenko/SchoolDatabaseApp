@@ -1,5 +1,7 @@
 package com.example.schooldatabaseapp.students;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,11 +16,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.schooldatabaseapp.R;
+import com.example.schooldatabaseapp.addStudents.AddStudentFragment;
 import com.example.schooldatabaseapp.detailsStudent.DetailsStudentFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.adapters.StudentsRecyclerAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +40,8 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
     private TextView classNumber;
     private TextView studentsCount;
     private TextView floor;
-
+    private FloatingActionButton addButton;
+    int count;
     private ClassRoom classRoom;
 
     @Override
@@ -63,6 +68,14 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
         classNumber = view.findViewById(R.id.classNumberInfo);
         studentsCount = view.findViewById(R.id.studentsCountInfo);
         floor = view.findViewById(R.id.floorInfo);
+        addButton = view.findViewById(R.id.add_student_from_class_details);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.openAddStudentFragment();
+            }
+        });
+
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -70,7 +83,7 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
 
             className.setText(classRoom.getClassName());
             classNumber.setText(String.valueOf(classRoom.getClassNumber()));
-            studentsCount.setText(String.valueOf(classRoom.getStudentsCount()));
+            studentsCount.setText(String.valueOf(count));
             floor.setText(String.valueOf(classRoom.getFloor()));
         }
 
@@ -87,6 +100,8 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
                 studentList.add(all.get(i));
             }
         }
+        count = studentList.size();
+        studentsCount.setText(String.valueOf(count));
         recyclerAdapter.notifyDataSetChanged();
 
     }
@@ -96,11 +111,33 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
         if (position == studentList.size()) {
             position = 0;
         }
-        studentList.remove(position);
-        presenter.updateStudent();
-        recyclerAdapter.notifyItemRemoved(position);
-    }
+        int finalPosition = position;
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
 
+                        studentList.remove(finalPosition);
+
+                        presenter.updateStudent();
+                        recyclerAdapter.notifyItemRemoved(finalPosition);
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Delete student?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+
+    }
 
 
     @Override
@@ -109,9 +146,17 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
         Fragment fragment = new DetailsStudentFragment();
         FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
         Bundle bundle = new Bundle();
-
+        bundle.putInt("count", studentList.size());
         bundle.putParcelable("pos", student);
         fragment.setArguments(bundle);
+        fragmentChangeListener.replaceFragment(fragment);
+    }
+
+    @Override
+    public void openAddStudentFragment() {
+
+        Fragment fragment = new AddStudentFragment();
+        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
         fragmentChangeListener.replaceFragment(fragment);
     }
 

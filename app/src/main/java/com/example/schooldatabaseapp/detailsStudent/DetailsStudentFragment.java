@@ -31,6 +31,7 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
     private TextView ageView;
     private Student student;
     private Button editStudent;
+    private int count;
 
     private DetailsStudentContract.Presenter presenter;
     private Student student2;

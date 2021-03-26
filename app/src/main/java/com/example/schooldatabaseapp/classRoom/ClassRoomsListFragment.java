@@ -2,12 +2,17 @@ package com.example.schooldatabaseapp.classRoom;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +28,7 @@ import com.example.schooldatabaseapp.base.FragmentChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class ClassRoomsListFragment extends Fragment implements ClassRoomListContract.View {
@@ -48,6 +54,7 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
 
         presenter = new ClassRoomListPresenter(this, requireContext());
 
@@ -97,28 +104,28 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
     @Override
     public void openClassRoomEditFragment(ClassRoom classRoom) {
         Fragment fragment = new EditClassRoomFragment();
-        FragmentChangeListener fc = (FragmentChangeListener) getActivity();
+        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
         Bundle bundle = new Bundle();
         bundle.putParcelable("pos", classRoom);
         fragment.setArguments(bundle);
-        fc.replaceFragment(fragment);
+        fragmentChangeListener.replaceFragment(fragment);
     }
 
     @Override
     public void openClassRoomDetailsFragment(ClassRoom classRoom) {
         Fragment fragment = new StudentsListFragment();
-        FragmentChangeListener fc = (FragmentChangeListener) getActivity();
+        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
         Bundle bundle = new Bundle();
         bundle.putParcelable("pos", classRoom);
         fragment.setArguments(bundle);
-        fc.replaceFragment(fragment);
+        fragmentChangeListener.replaceFragment(fragment);
     }
 
     @Override
     public void openAddClassRoomFragment() {
         Fragment fragment = new AddClassRoomFragment();
-        FragmentChangeListener fc = (FragmentChangeListener) getActivity();
-        fc.replaceFragment(fragment);
+        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
+        fragmentChangeListener.replaceFragment(fragment);
     }
 
     @Override

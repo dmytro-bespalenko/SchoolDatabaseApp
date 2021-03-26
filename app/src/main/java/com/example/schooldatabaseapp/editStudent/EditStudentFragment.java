@@ -1,5 +1,6 @@
 package com.example.schooldatabaseapp.editStudent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,11 +17,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.schooldatabaseapp.R;
+import com.example.schooldatabaseapp.detailsStudent.DetailsStudentContract;
+import com.example.schooldatabaseapp.detailsStudent.DetailsStudentFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
+import com.example.schooldatabaseapp.students.StudentsListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 public class EditStudentFragment extends Fragment implements EditStudentContract.View {
 
@@ -135,9 +141,10 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
             String lastName = String.valueOf(editLastName.getText());
             int age = Integer.parseInt(editAge.getText().toString());
             presenter.saveEditStudent(new Student(student.getId(), firstName, lastName, selectedClassId, selectedGender, age));
-            assert getFragmentManager() != null;
+
             getFragmentManager().popBackStack();
             getFragmentManager().popBackStack();
+
         }
     }
 }

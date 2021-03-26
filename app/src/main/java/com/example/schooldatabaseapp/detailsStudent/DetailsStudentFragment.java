@@ -1,11 +1,13 @@
 package com.example.schooldatabaseapp.detailsStudent;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.editStudent.EditStudentFragment;
 import com.example.schooldatabaseapp.model.Student;
+
+import static android.app.Activity.RESULT_OK;
 
 public class DetailsStudentFragment extends Fragment implements DetailsStudentContract.View {
 
@@ -29,9 +33,9 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
     private Button editStudent;
 
     private DetailsStudentContract.Presenter presenter;
+    private Student student2;
 
-
-    @Override
+        @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -53,6 +57,7 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
 
         Bundle bundle = this.getArguments();
 
+
         if (bundle != null) {
             student = bundle.getParcelable("pos");
 
@@ -62,7 +67,18 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
             genderView.setText(student.getGender());
             ageView.setText(String.valueOf(student.getAge()));
 
+
         }
+//
+//        if (bundle.containsKey("sear")){
+//            student2 = bundle.getParcelable("sear");
+//            idView.setText(String.valueOf(student2.getId()));
+//            firstNameView.setText(student2.getFirstName());
+//            lastNameView.setText(student2.getLastName());
+//            genderView.setText(student2.getGender());
+//            ageView.setText(String.valueOf(student2.getAge()));
+//        }
+
 
         editStudent.setOnClickListener(new View.OnClickListener() {
             @Override

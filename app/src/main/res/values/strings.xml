@@ -10,9 +10,14 @@
     <string name="edit_first_name">Edit first name</string>
     <string name="edit_last_name">Edit last name</string>
     <string name="edit_age">Edit age</string>
+    <string name="search_title">Search By</string>
     <string-array name="gender">
         <item>Male</item>
         <item>Female</item>
+    </string-array>
+    <string-array name="search_category">
+        <item>Students</item>
+        <item>Classrooms</item>
     </string-array>
 
 </resources>

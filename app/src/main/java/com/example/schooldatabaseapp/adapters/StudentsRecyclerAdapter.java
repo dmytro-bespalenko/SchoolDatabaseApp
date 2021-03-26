@@ -3,6 +3,7 @@ package com.example.schooldatabaseapp.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,7 +16,7 @@ import com.example.schooldatabaseapp.students.StudentsListContract;
 
 import java.util.List;
 
-public class StudentsRecyclerAdapter extends RecyclerView.Adapter<StudentsRecyclerAdapter.ViewHolder> {
+public class StudentsRecyclerAdapter extends RecyclerView.Adapter<StudentsRecyclerAdapter.ViewHolder>  {
 
     private List<Student> studentsList;
     private StudentsListContract.Presenter studentsPresenter;

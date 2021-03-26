@@ -109,6 +109,7 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
         Fragment fragment = new DetailsStudentFragment();
         FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
         Bundle bundle = new Bundle();
+
         bundle.putParcelable("pos", student);
         fragment.setArguments(bundle);
         fragmentChangeListener.replaceFragment(fragment);

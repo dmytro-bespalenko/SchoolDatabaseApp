@@ -92,18 +92,19 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
         classSpinner.setAdapter(adapter);
 
         if (classRoom != null) {
-            selectedClassId = adapter.getPosition(classRoom.getClassName());
-        } else {
-            selectedClassId = 0;
-
+            selectedClassId = classRoom.getClassId();
+            classSpinner.setSelection(adapter.getPosition(classRoom.getClassName()), true);
         }
         // TODO: 30.03.21
 
-        classSpinner.setSelection(selectedClassId, true);
+
+
+
         classSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedClassId = classRoomList.get(position).getClassId();
+
             }
 
             @Override
@@ -136,8 +137,10 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
             String firstName = String.valueOf(editFirstName.getText());
             String lastName = String.valueOf(editLastName.getText());
             int age = Integer.parseInt(editaAge.getText().toString());
-            int finalPosition = classRoomList.get(selectedClassId).getClassId();
-            presenter.addNewStudent(firstName, lastName, finalPosition, selectedGender, age);
+
+            presenter.addNewStudent(firstName, lastName, selectedClassId, selectedGender, age);
+
+            //          int finalPosition = classRoomList.get(selectedClassId).getClassId();
             assert getFragmentManager() != null;
             getFragmentManager().popBackStack();
             Log.d(TAG, "run: " + Thread.currentThread().getName());

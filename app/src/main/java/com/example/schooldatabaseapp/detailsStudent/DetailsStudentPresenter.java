@@ -47,6 +47,7 @@ public class DetailsStudentPresenter implements DetailsStudentContract.Presenter
 
     }
 
+
     @Override
     public List<ClassRoom> getAllClassRooms() {
         return repository.getAllClassRoom();

@@ -1,6 +1,7 @@
 package com.example.schooldatabaseapp.students;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 
 import com.example.schooldatabaseapp.dataBase.DatabaseStudentsRepository;
@@ -15,6 +16,7 @@ public class StudentsListPresenter implements StudentsListContract.Presenter {
     private static final String TAG = "My_tag";
     private StudentsRepository repository;
     private StudentsListContract.View view;
+    private Handler handler;
 
     public StudentsListPresenter(StudentsListContract.View callBack, Context context) {
         this.repository = new DatabaseStudentsRepository(context);
@@ -25,9 +27,15 @@ public class StudentsListPresenter implements StudentsListContract.Presenter {
 
     @Override
     public void updateStudent() {
+        handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                view.updateStudents(repository.getAll());
+                Log.d(TAG, "Handler updateStudent : " + Thread.currentThread().getName());
 
-        view.updateStudents(repository.getAll());
-        Log.d(TAG, "updateStudent: ");
+            }
+        });
     }
 
     @Override
@@ -46,11 +54,16 @@ public class StudentsListPresenter implements StudentsListContract.Presenter {
 
     @Override
     public void onItemWasLongClick(List<Student> studentsList, int adapterPosition) {
-        view.deleteStudent(repository.delete(studentsList.get(adapterPosition).getId()));
+        view.onItemDeleteWasClick(adapterPosition);
     }
 
     @Override
     public void openAddStudentFragment() {
         view.openAddStudentFragment();
+    }
+
+    @Override
+    public void deleteStudent(List<Student> studentsList, int adapterPosition) {
+        repository.delete(studentsList.get(adapterPosition).getId());
     }
 }

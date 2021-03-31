@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.schooldatabaseapp.addClass.AddClassRoomFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.Student;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface ClassRoomListContract {
 
         void updateRooms(List<ClassRoom> all);
 
-        void deleteClassRoom(int position);
+        void deleteClassRoom(ClassRoom position);
 
         void openClassRoomEditFragment(ClassRoom classRoom);
 
@@ -22,6 +23,7 @@ public interface ClassRoomListContract {
         void openAddClassRoomFragment();
 
         void openAddStudentFragment();
+
     }
 
     interface Presenter {
@@ -40,6 +42,12 @@ public interface ClassRoomListContract {
         void showAddClassFragment();
 
         void showAddStudentFragment();
+
+        List<Student> getAllStudents();
+
+        void deleteClassRoom(ClassRoom finalPosition);
+
+        void deleteStudent(Student student);
 
     }
 

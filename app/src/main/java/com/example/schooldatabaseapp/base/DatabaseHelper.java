@@ -12,7 +12,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public final static String TABLE_CLASSROOMS = "CLASSROOMS";
     public final static String TABLE_STUDENTS = "STUDENTS";
-
+    private static DatabaseHelper instance;
 
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_CLASSNAME = "CLASSNAME";
@@ -28,8 +28,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_AGE = "AGE";
 
 
-    public DatabaseHelper(Context context) {
+    private DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+    }
+
+    public static synchronized DatabaseHelper getHelper(Context context)
+    {
+        if (instance == null)
+            instance = new DatabaseHelper(context);
+
+        return instance;
     }
 
     @Override
@@ -68,8 +76,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteAll(SQLiteDatabase db, String tableName) {
         db.execSQL("delete from " + tableName);
-        db.close();
-    }
+     }
 
     private void updateClassRoomsTable(SQLiteDatabase db, int oldVersion, int newVersion) {
 

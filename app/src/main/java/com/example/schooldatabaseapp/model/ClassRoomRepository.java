@@ -10,9 +10,13 @@ public interface ClassRoomRepository {
 
     long getCount();
 
+    List<Student> getAllStudents();
+
     long insert(ClassRoom classRoom);
 
-    int delete(int classId);
+    int delete(int studentId);
+
+    int deleteStudent(int studentId);
 
     int update(ClassRoom classRoom);
 
@@ -20,7 +24,7 @@ public interface ClassRoomRepository {
 
     ClassRoom getById(int id);
 
-    Cursor getAllEntries();
+    Cursor getAllClassRoomsEntries();
 
     void deleteAll();
 

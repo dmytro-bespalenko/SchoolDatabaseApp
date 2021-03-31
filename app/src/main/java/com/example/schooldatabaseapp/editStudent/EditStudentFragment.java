@@ -43,8 +43,8 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
     private List<ClassRoom> classRoomList = new ArrayList<>();
 
     private EditStudentContract.Presenter presenter;
-    private int selectedClassId;
     private String selectedGender;
+    private int selectedClassId;
 
 
     @Override
@@ -78,21 +78,9 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
             editAge.setText(String.valueOf(student.getAge()));
 
         }
+
         getClassRoomSpinnerItems();
-
-        editGenderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String[] choose = getResources().getStringArray(R.array.gender);
-                selectedGender = choose[position];
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
+        setEditGenderSpinner();
 
         saveEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,10 +91,35 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
 
     }
 
+    private void setEditGenderSpinner() {
+
+        String compareValue = student.getGender();
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.gender, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        editGenderSpinner.setAdapter(adapter);
+        if (compareValue != null) {
+            int spinnerPosition = adapter.getPosition(compareValue);
+            editGenderSpinner.setSelection(spinnerPosition);
+        }
+        editGenderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String[] choose = getResources().getStringArray(R.array.gender);
+                selectedGender = choose[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
 
     private void getClassRoomSpinnerItems() {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item);
+        int spinnerPosition = 0;
 
         for (int i = 0; i < classRoomList.size(); i++) {
             adapter.add((classRoomList.get(i).getClassName()));
@@ -114,16 +127,29 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
         }
         editClassSpinner.setAdapter(adapter);
 
+        for (int i = 0; i < classRoomList.size(); i++) {
+            if (classRoomList.get(i).getClassId() == student.getClassId()) {
+                spinnerPosition = adapter.getPosition(classRoomList.get(i).getClassName());
+            }
+        }
+
+        if (student != null) {
+            selectedClassId = adapter.getPosition(classRoomList.get(spinnerPosition).getClassName());
+        } else {
+            selectedClassId = 0;
+        }
+
+        editClassSpinner.setSelection(selectedClassId, true);
         editClassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 selectedClassId = classRoomList.get(position).getClassId();
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                Log.d(TAG, "onNothingSelected: ");
             }
         });
 
@@ -140,8 +166,10 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
             String firstName = String.valueOf(editFirstName.getText());
             String lastName = String.valueOf(editLastName.getText());
             int age = Integer.parseInt(editAge.getText().toString());
-            presenter.saveEditStudent(new Student(student.getId(), firstName, lastName, selectedClassId, selectedGender, age));
+            int finalSpinnerClassroomPosition = classRoomList.get(selectedClassId).getClassId();
+            presenter.saveEditStudent(new Student(student.getId(), firstName, lastName, finalSpinnerClassroomPosition, selectedGender, age));
 
+            assert getFragmentManager() != null;
             getFragmentManager().popBackStack();
             getFragmentManager().popBackStack();
 

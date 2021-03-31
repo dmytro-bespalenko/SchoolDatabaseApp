@@ -9,10 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SchoolDatabaseApp"
-        android:windowSoftInputMode="adjustPan">
+    >
 
         <activity android:name=".base.MainActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             >
 
             <intent-filter>

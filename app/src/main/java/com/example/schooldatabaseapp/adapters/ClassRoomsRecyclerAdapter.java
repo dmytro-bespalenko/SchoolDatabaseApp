@@ -54,15 +54,6 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
 
         TextView classNumberView = cv.findViewById(R.id.classNumber);
         classNumberView.setText("№" + classRoom.getClassNumber());
-//
-//        TextView studentsCountView = cv.findViewById(R.id.studentsCount);
-//        studentsCountView.setText("Count: " + classRoom.getStudentsCount());
-//
-//        TextView floorView = cv.findViewById(R.id.floor);
-//        floorView.setText("Floor: " + classRoom.getFloor());
-
-//        ImageButton editButton = cv.findViewById(R.id.editButton);
-//        editButton.setImageResource(R.drawable.ic_baseline_edit_24);
 
 
     }
@@ -78,8 +69,6 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
         final TextView classId;
         final TextView className;
         final TextView classNumber;
-        final TextView studentsCount;
-        final TextView floor;
         final ImageButton editButton;
 
 
@@ -89,8 +78,6 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
             classId = itemView.findViewById(R.id.classId);
             className = itemView.findViewById(R.id.className);
             classNumber = itemView.findViewById(R.id.classNumber);
-            studentsCount = itemView.findViewById(R.id.studentsCount);
-            floor = itemView.findViewById(R.id.floor);
             editButton = itemView.findViewById(R.id.editButton);
 
             editButton.setOnClickListener(new View.OnClickListener() {

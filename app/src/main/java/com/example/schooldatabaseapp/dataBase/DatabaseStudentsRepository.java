@@ -19,12 +19,12 @@ public class DatabaseStudentsRepository implements StudentsRepository {
 
 
     private static final String TAG = "My_Tag";
-    private final DatabaseHelper dbHelper;
+    private  DatabaseHelper dbHelper;
     private SQLiteDatabase database;
 
 
     public DatabaseStudentsRepository(Context context) {
-        this.dbHelper = new DatabaseHelper(context);
+        this.dbHelper = DatabaseHelper.getHelper(context);
     }
 
 

@@ -10,6 +10,7 @@ import android.util.Log;
 import com.example.schooldatabaseapp.base.DatabaseHelper;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
+import com.example.schooldatabaseapp.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
 
     public DatabaseClassRoomRepository(Context context) {
-        dbHelper = new DatabaseHelper(context);
+        dbHelper = DatabaseHelper.getHelper(context);
     }
 
     @Override
@@ -33,22 +34,13 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
     @Override
     public void deleteAll() {
         dbHelper.deleteAll(database, DatabaseHelper.TABLE_CLASSROOMS);
-        close();
-    }
-
-    @Override
-    public Cursor getAllEntries() {
-        database = dbHelper.getWritableDatabase();
-        String[] columns = new String[]{DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_CLASSNAME,
-                DatabaseHelper.COLUMN_CLASSNUMBER, DatabaseHelper.COLUMN_STUDENTSCOUNT, DatabaseHelper.COLUMN_FLOOR};
-        return database.query(DatabaseHelper.TABLE_CLASSROOMS, columns, null, null, null, null, null);
     }
 
     @Override
     public List<ClassRoom> getAll() {
         database = dbHelper.getWritableDatabase();
         List<ClassRoom> classrooms = new ArrayList<>();
-        Cursor cursor = getAllEntries();
+        Cursor cursor = getAllClassRoomsEntries();
         while (cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
             String className = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNAME));
@@ -57,8 +49,43 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
             int floor = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_FLOOR));
             classrooms.add(new ClassRoom(id, className, classNumber, studentsCount, floor));
         }
-        cursor.close();
+
         return classrooms;
+    }
+
+    @Override
+    public List<Student> getAllStudents() {
+        database = dbHelper.getWritableDatabase();
+        List<Student> students = new ArrayList<>();
+        Cursor cursor = getAllStudentsEntries();
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENT_ID));
+            String firstName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FIRST_NAME));
+            String lastName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LAST_NAME));
+            int classId = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENT_CLASS_ID));
+            String gender = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_GENDER));
+            int age = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_AGE));
+            students.add(new Student(id, firstName, lastName, classId, gender, age));
+        }
+        Log.d(TAG, "getAll: " + students.size());
+        cursor.close();
+        return students;
+    }
+
+    @Override
+    public Cursor getAllClassRoomsEntries() {
+        database = dbHelper.getWritableDatabase();
+        String[] columns = new String[]{DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_CLASSNAME,
+                DatabaseHelper.COLUMN_CLASSNUMBER, DatabaseHelper.COLUMN_STUDENTSCOUNT, DatabaseHelper.COLUMN_FLOOR};
+        return database.query(DatabaseHelper.TABLE_CLASSROOMS, columns, null, null, null, null, null);
+    }
+
+    private Cursor getAllStudentsEntries() {
+        database = dbHelper.getWritableDatabase();
+
+        String[] columns = new String[]{DatabaseHelper.COLUMN_STUDENT_ID, DatabaseHelper.COLUMN_FIRST_NAME,
+                DatabaseHelper.COLUMN_LAST_NAME, DatabaseHelper.COLUMN_STUDENT_CLASS_ID, DatabaseHelper.COLUMN_GENDER, DatabaseHelper.COLUMN_AGE};
+        return database.query(DatabaseHelper.TABLE_STUDENTS, columns, null, null, null, null, null);
     }
 
     @Override
@@ -103,6 +130,13 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
         return database.delete(DatabaseHelper.TABLE_CLASSROOMS, whereClause, whereArgs);
     }
 
+    @Override
+    public int deleteStudent(int studentId) {
+        database = dbHelper.getWritableDatabase();
+        String whereClause = "_id = ?";
+        String[] whereArgs = new String[]{String.valueOf(studentId)};
+        return database.delete(DatabaseHelper.TABLE_STUDENTS, whereClause, whereArgs);
+    }
     @Override
     public int update(ClassRoom classRoom) {
         database = dbHelper.getWritableDatabase();

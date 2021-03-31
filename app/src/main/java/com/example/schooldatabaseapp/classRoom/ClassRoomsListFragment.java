@@ -21,6 +21,7 @@ import com.example.schooldatabaseapp.addStudents.AddStudentFragment;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.editClassRoom.EditClassRoomFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.students.StudentsListFragment;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
     private ClassRoomsRecyclerAdapter recyclerAdapter;
     private List<ClassRoom> classRoomList = new ArrayList<>();
     private ClassRoomListContract.Presenter presenter;
+    private List<Student> studentList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
 
 
         presenter = new ClassRoomListPresenter(this, requireContext());
+        studentList = presenter.getAllStudents();
 
         Button addClassButton = view.findViewById(R.id.addClassButton);
         addClassButton.setOnClickListener(new View.OnClickListener() {
@@ -87,24 +90,22 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
     }
 
     @Override
-    public void deleteClassRoom(int position) {
-
-
-        if (position == classRoomList.size()) {
-            position = 0;
-        }
-        int finalPosition = position;
+    public void deleteClassRoom(ClassRoom position) {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
                         //Yes button clicked
-
-                        classRoomList.remove(finalPosition);
-
+                        for (int i = 0; i < studentList.size(); i++) {
+                            if (position.getClassId() == studentList.get(i).getClassId()) {
+                                presenter.deleteStudent(studentList.get(i));
+                            }
+                        }
+                        presenter.deleteClassRoom(position);
+                        classRoomList.remove(position);
                         presenter.updateClassRooms();
-                        recyclerAdapter.notifyItemRemoved(finalPosition);
+                        recyclerAdapter.notifyItemRemoved(classRoomList.indexOf(position));
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -118,8 +119,8 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("Delete classroom?").setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener).show();
-
     }
+
 
     @Override
     public void openClassRoomEditFragment(ClassRoom classRoom) {
@@ -153,8 +154,10 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
 
         Fragment fragment = new AddStudentFragment();
         FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
+
         fragmentChangeListener.replaceFragment(fragment);
     }
+
 
     @Override
     public void onResume() {

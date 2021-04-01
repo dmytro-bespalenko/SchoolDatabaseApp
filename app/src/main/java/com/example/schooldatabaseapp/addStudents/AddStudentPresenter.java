@@ -1,7 +1,5 @@
 package com.example.schooldatabaseapp.addStudents;
 
-import android.content.Context;
-
 import com.example.schooldatabaseapp.dataBase.DatabaseStudentsRepository;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
@@ -17,11 +15,9 @@ public class AddStudentPresenter implements AddStudentContract.Presenter {
     private AddStudentContract.View view;
     private Executor executor;
 
-    public AddStudentPresenter(AddStudentContract.View callBack, Context context) {
-
+    public AddStudentPresenter(AddStudentContract.View callBack) {
         this.view = callBack;
-        repository = new DatabaseStudentsRepository(context);
-
+        repository = DatabaseStudentsRepository.getInstance();
     }
 
     @Override
@@ -39,8 +35,6 @@ public class AddStudentPresenter implements AddStudentContract.Presenter {
 
     @Override
     public List<ClassRoom> getClassRooms() {
-
-
         return repository.getAllClassRoom();
     }
 

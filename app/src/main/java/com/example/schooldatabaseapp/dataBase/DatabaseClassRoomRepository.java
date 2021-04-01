@@ -1,13 +1,13 @@
 package com.example.schooldatabaseapp.dataBase;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.schooldatabaseapp.base.DatabaseHelper;
+import com.example.schooldatabaseapp.base.SchoolApplication;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
 import com.example.schooldatabaseapp.model.Student;
@@ -20,10 +20,27 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
     private static final String TAG = "My_Tag";
     private final DatabaseHelper dbHelper;
     private SQLiteDatabase database;
+    private static DatabaseClassRoomRepository instance;
 
 
-    public DatabaseClassRoomRepository(Context context) {
-        dbHelper = DatabaseHelper.getHelper(context);
+    public DatabaseClassRoomRepository(SchoolApplication application) {
+        dbHelper = new DatabaseHelper(application);
+    }
+
+
+    public static synchronized DatabaseClassRoomRepository getInstance() {
+        if (instance == null) {
+            throw new RuntimeException();
+        }
+        return instance;
+
+    }
+
+    public static void initInstance(SchoolApplication schoolApplication) {
+
+        if (schoolApplication != null) {
+            instance = new DatabaseClassRoomRepository(schoolApplication);
+        }
     }
 
     @Override
@@ -137,6 +154,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
         String[] whereArgs = new String[]{String.valueOf(studentId)};
         return database.delete(DatabaseHelper.TABLE_STUDENTS, whereClause, whereArgs);
     }
+
     @Override
     public int update(ClassRoom classRoom) {
         database = dbHelper.getWritableDatabase();

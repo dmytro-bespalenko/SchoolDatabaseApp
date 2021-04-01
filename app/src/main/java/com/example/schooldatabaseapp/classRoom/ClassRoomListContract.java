@@ -14,7 +14,6 @@ public interface ClassRoomListContract {
 
         void updateRooms(List<ClassRoom> all);
 
-        void deleteClassRoom(ClassRoom position);
 
         void openClassRoomEditFragment(ClassRoom classRoom);
 
@@ -30,9 +29,6 @@ public interface ClassRoomListContract {
 
 
         void updateClassRooms();
-
-        void onItemWasLongClick(List<ClassRoom> all, int adapterPosition);
-
 
         void openEditFragment(ClassRoom classRoom);
 

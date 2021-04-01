@@ -23,14 +23,13 @@ import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.adapters.StudentsRecyclerAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class StudentsListFragment extends Fragment implements StudentsListContract.View {
+public class StudentsListFragment extends Fragment implements StudentsListContract.View, StudentsRecyclerAdapter.CallBackAdapterPosition {
 
     private static final String TAG = "My_Tag";
     private StudentsRecyclerAdapter recyclerAdapter;
@@ -58,11 +57,10 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new StudentsListPresenter(this, requireContext());
+        presenter = new StudentsListPresenter(this);
 
         RecyclerView recyclerView = view.findViewById(R.id.students_recycle_view);
-        recyclerAdapter = new StudentsRecyclerAdapter(studentList);
-        recyclerAdapter.registerStudentsListener(presenter);
+        recyclerAdapter = new StudentsRecyclerAdapter(studentList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(recyclerAdapter);
 
@@ -82,7 +80,6 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             classRoom = bundle.getParcelable("pos");
-
             className.setText(classRoom.getClassName());
             classNumber.setText(String.valueOf(classRoom.getClassNumber()));
             studentsCount.setText(String.valueOf(count));
@@ -102,20 +99,11 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
                 studentList.add(all.get(i));
             }
         }
-        Collections.sort(studentList, new Comparator<Student>() {
-            @Override
-            public int compare(Student o1, Student o2) {
-                return o1.getFirstName().compareTo(o2.getFirstName());
-            }
-        });
-
         count = studentList.size();
         studentsCount.setText(String.valueOf(count));
         recyclerAdapter.notifyDataSetChanged();
 
     }
-
-
 
 
     @Override
@@ -143,36 +131,43 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
 
     }
 
+//    @Override
+//    public void onItemDeleteWasClick(int position) {
+//        if (position == studentList.size()) {
+//            position = 0;
+//        }
+//        int finalPosition = position;
+//        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                switch (which) {
+//                    case DialogInterface.BUTTON_POSITIVE:
+//                        //Yes button clicked
+//                        presenter.deleteStudent(studentList, finalPosition);
+//                        studentList.remove(finalPosition);
+//                        presenter.updateStudent();
+//                        recyclerAdapter.notifyItemRemoved(finalPosition);
+//                        break;
+//
+//                    case DialogInterface.BUTTON_NEGATIVE:
+//                        //No button clicked
+//
+//                        break;
+//                }
+//            }
+//        };
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//        builder.setMessage("Delete student?").setPositiveButton("Yes", dialogClickListener)
+//                .setNegativeButton("No", dialogClickListener).show();
+//
+//    }
+
+
     @Override
-    public void onItemDeleteWasClick(int position) {
-        if (position == studentList.size()) {
-            position = 0;
-        }
-        int finalPosition = position;
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        //Yes button clicked
-                        presenter.deleteStudent(studentList, finalPosition);
-                        studentList.remove(finalPosition);
-                        presenter.updateStudent();
-                        recyclerAdapter.notifyItemRemoved(finalPosition);
-                        break;
+    public void onItemClickListener(Student student) {
 
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        //No button clicked
-
-                        break;
-                }
-            }
-        };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Delete student?").setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener).show();
-
+        presenter.openDetailsStudentFragment(student);
     }
 
 

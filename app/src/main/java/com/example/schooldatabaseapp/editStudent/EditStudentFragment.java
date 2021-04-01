@@ -1,6 +1,5 @@
 package com.example.schooldatabaseapp.editStudent;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,16 +16,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.schooldatabaseapp.R;
-import com.example.schooldatabaseapp.detailsStudent.DetailsStudentContract;
-import com.example.schooldatabaseapp.detailsStudent.DetailsStudentFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
-import com.example.schooldatabaseapp.students.StudentsListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 public class EditStudentFragment extends Fragment implements EditStudentContract.View {
 
@@ -60,7 +54,7 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new EditStudentPresenter(this, view.getContext());
+        presenter = new EditStudentPresenter(this);
 
         editFirstName = view.findViewById(R.id.edit_student_first_name);
         editLastName = view.findViewById(R.id.edit_student_last_name);
@@ -135,11 +129,12 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
 
         if (classRoom != null) {
             selectedClassId = classRoom.getClassId();
-        } else {
+            editClassSpinner.setSelection(adapter.getPosition(classRoom.getClassName()), true);
+
+        } else if (!classRoomList.isEmpty()) {
             selectedClassId = (classRoomList.get(0).getClassId());
         }
 
-        editClassSpinner.setSelection(adapter.getPosition(classRoom.getClassName()), true);
 
         editClassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -157,6 +152,7 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
     }
 
     public void validateEditFields() {
+
         if (editFirstName.getText().toString().length() == 0) {
             editFirstName.setError("First name is required!");
         } else if (editLastName.getText().toString().length() == 0) {

@@ -12,7 +12,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public final static String TABLE_CLASSROOMS = "CLASSROOMS";
     public final static String TABLE_STUDENTS = "STUDENTS";
-    private static DatabaseHelper instance;
 
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_CLASSNAME = "CLASSNAME";
@@ -28,17 +27,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_AGE = "AGE";
 
 
-    private DatabaseHelper(Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
-    public static synchronized DatabaseHelper getHelper(Context context)
-    {
-        if (instance == null)
-            instance = new DatabaseHelper(context);
-
-        return instance;
-    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {

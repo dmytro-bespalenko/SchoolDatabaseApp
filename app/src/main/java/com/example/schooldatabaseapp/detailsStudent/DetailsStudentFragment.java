@@ -49,7 +49,7 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new DetailsStudentPresenter(this, view.getContext());
+        presenter = new DetailsStudentPresenter(this);
 
         idView = view.findViewById(R.id.student_id);
         firstNameView = view.findViewById(R.id.student_first_name);
@@ -80,6 +80,20 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
 
         }
 
+        removeStudentButton();
+
+        editStudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.openEditStudentFragment();
+            }
+        });
+
+
+    }
+
+
+    public void removeStudentButton() {
         deleteStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,17 +125,7 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
 
             }
         });
-
-        editStudent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.openEditStudentFragment();
-            }
-        });
-
-
     }
-
 
     @Override
     public void openEditStudentFragment() {
@@ -138,7 +142,6 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
     @Override
     public void deleteCurrentStudent(List<Student> students, int delete) {
         students.remove(delete);
-
     }
 
     @Override

@@ -21,8 +21,9 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
     private final ClassRoomRepository repository;
     private Executor executor;
     private Handler handler;
-    public ClassRoomListPresenter(ClassRoomListContract.View callBack, Context context) {
-        this.repository = new DatabaseClassRoomRepository(context);
+
+    public ClassRoomListPresenter(ClassRoomListContract.View callBack) {
+        this.repository = DatabaseClassRoomRepository.getInstance();
         this.view = callBack;
     }
 
@@ -42,17 +43,7 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
 
     }
 
-    @Override
-    public void onItemWasLongClick(List<ClassRoom> all, int adapterPosition) {
-        handler = new Handler();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                view.deleteClassRoom(all.get(adapterPosition));
-                Log.d(TAG, "run: " + Thread.currentThread().getName() + " " + getClass().getName());
-            }
-        });
-    }
+
 
     @Override
     public void openEditFragment(ClassRoom classRoom) {
@@ -113,8 +104,8 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
 
     @Override
     public void deleteClassRoom(ClassRoom classRoom) {
-        executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
+        handler = new Handler();
+        handler.post(new Runnable() {
             @Override
             public void run() {
                 repository.delete(classRoom.getClassId());

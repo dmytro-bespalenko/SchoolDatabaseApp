@@ -21,23 +21,27 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
 
 
     private List<ClassRoom> classRooms;
-    private ClassRoomListContract.Presenter classRoomPresenter;
+    private CallBackAdapterPosition callBackAdapterPosition;
 
+    public interface CallBackAdapterPosition {
+        void editButtonOnClickListener(ClassRoom classRoom);
 
-    public ClassRoomsRecyclerAdapter(List<ClassRoom> classRooms) {
-        this.classRooms = classRooms;
+        void onItemClickListener(ClassRoom classRoom);
+
+        void onItemLongClickListener(ClassRoom classRoom);
+
     }
 
-
-    public void registerClassRoomsListener(ClassRoomListContract.Presenter presenter) {
-        this.classRoomPresenter = presenter;
+    public ClassRoomsRecyclerAdapter(List<ClassRoom> classRooms, CallBackAdapterPosition callBackAdapterPosition) {
+        this.classRooms = classRooms;
+        this.callBackAdapterPosition = callBackAdapterPosition;
     }
 
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder((CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.classroom_card, parent, false));
+        return new ViewHolder((CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.classroom_card, parent, false), classRooms, callBackAdapterPosition);
     }
 
     @SuppressLint("SetTextI18n")
@@ -64,7 +68,7 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final CardView cardView;
         final TextView classId;
         final TextView className;
@@ -72,7 +76,7 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
         final ImageButton editButton;
 
 
-        public ViewHolder(@NonNull CardView itemView) {
+        public ViewHolder(@NonNull CardView itemView, List<ClassRoom> classRooms, CallBackAdapterPosition callBackAdapterPosition) {
             super(itemView);
             cardView = itemView;
             classId = itemView.findViewById(R.id.classId);
@@ -83,23 +87,20 @@ public class ClassRoomsRecyclerAdapter extends RecyclerView.Adapter<ClassRoomsRe
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    classRoomPresenter.openEditFragment(classRooms.get(getAdapterPosition()));
-
+                    callBackAdapterPosition.editButtonOnClickListener(classRooms.get(getAdapterPosition()));
                 }
             });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    classRoomPresenter.onItemClickListener(classRooms.get(getAdapterPosition()));
-
+                    callBackAdapterPosition.onItemClickListener(classRooms.get(getAdapterPosition()));
                 }
             });
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    classRoomPresenter.onItemWasLongClick(classRooms, getAdapterPosition());
-
+                    callBackAdapterPosition.onItemLongClickListener(classRooms.get(getAdapterPosition()));
                     return true;
                 }
             });

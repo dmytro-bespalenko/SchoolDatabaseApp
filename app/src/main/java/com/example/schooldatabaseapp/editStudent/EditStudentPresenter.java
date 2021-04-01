@@ -1,6 +1,5 @@
 package com.example.schooldatabaseapp.editStudent;
 
-import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
@@ -18,9 +17,9 @@ public class EditStudentPresenter implements EditStudentContract.Presenter {
     private StudentsRepository studentsRepository;
     private Handler handler;
 
-    public EditStudentPresenter(EditStudentContract.View callBack, Context context) {
+    public EditStudentPresenter(EditStudentContract.View callBack) {
         this.view = callBack;
-        this.studentsRepository = new DatabaseStudentsRepository(context);
+        this.studentsRepository = DatabaseStudentsRepository.getInstance();
     }
 
     @Override

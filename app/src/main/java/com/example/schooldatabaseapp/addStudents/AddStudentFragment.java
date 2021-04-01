@@ -16,13 +16,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.schooldatabaseapp.R;
+import com.example.schooldatabaseapp.dataBase.DatabaseStudentsRepository;
 import com.example.schooldatabaseapp.model.ClassRoom;
-import com.example.schooldatabaseapp.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class AddStudentFragment extends Fragment implements AddStudentContract.View {
 
@@ -55,7 +53,8 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
         super.onViewCreated(view, savedInstanceState);
 
 
-        presenter = new AddStudentPresenter(this, requireContext());
+        presenter = new AddStudentPresenter(this);
+
         editFirstName = view.findViewById(R.id.add_firstName);
         editLastName = view.findViewById(R.id.add_lastName);
         editaAge = view.findViewById(R.id.add_age);

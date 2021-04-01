@@ -1,5 +1,6 @@
 package com.example.schooldatabaseapp.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,27 +17,30 @@ import com.example.schooldatabaseapp.students.StudentsListContract;
 
 import java.util.List;
 
-public class StudentsRecyclerAdapter extends RecyclerView.Adapter<StudentsRecyclerAdapter.ViewHolder>  {
+public class StudentsRecyclerAdapter extends RecyclerView.Adapter<StudentsRecyclerAdapter.ViewHolder> {
 
     private List<Student> studentsList;
-    private StudentsListContract.Presenter studentsPresenter;
 
+    CallBackAdapterPosition callBackAdapterPosition;
 
-    public StudentsRecyclerAdapter(List<Student> studentsList) {
+    public interface CallBackAdapterPosition {
+        void onItemClickListener(Student student);
+
+    }
+
+    public StudentsRecyclerAdapter(List<Student> studentsList, CallBackAdapterPosition callBackAdapterPosition) {
         this.studentsList = studentsList;
+        this.callBackAdapterPosition = callBackAdapterPosition;
     }
 
-
-    public void registerStudentsListener(StudentsListContract.Presenter presenter) {
-        this.studentsPresenter = presenter;
-    }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder((CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.student_card, parent, false));
+        return new ViewHolder((CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.student_card, parent, false), studentsList, callBackAdapterPosition);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull StudentsRecyclerAdapter.ViewHolder holder, int position) {
         Student student = studentsList.get(position);
@@ -50,27 +54,21 @@ public class StudentsRecyclerAdapter extends RecyclerView.Adapter<StudentsRecycl
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView studentName;
 
-        public ViewHolder(@NonNull CardView itemView) {
+        public ViewHolder(@NonNull CardView itemView, List<Student> studentsList, CallBackAdapterPosition callBackAdapterPosition) {
             super(itemView);
             studentName = itemView.findViewById(R.id.students_full_name);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    studentsPresenter.onItemClickListener(studentsList.get(getAdapterPosition()));
+                    callBackAdapterPosition.onItemClickListener(studentsList.get(getAdapterPosition()));
                 }
             });
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    studentsPresenter.onItemWasLongClick(studentsList, getAdapterPosition());
-                    return true;
-                }
-            });
+
         }
 
 

@@ -17,7 +17,6 @@ public interface StudentsListContract {
 
         void openAddStudentFragment();
 
-        void onItemDeleteWasClick(int adapterPosition);
 
     }
 
@@ -25,17 +24,10 @@ public interface StudentsListContract {
 
         void updateStudent();
 
-
-        List<ClassRoom> getClassRooms();
-
-        void onItemClickListener(Student student);
-
-
-        void onItemWasLongClick(List<Student> studentsList, int adapterPosition);
-
         void openAddStudentFragment();
 
         void deleteStudent(List<Student> studentsList, int adapterPosition);
 
+        void openDetailsStudentFragment(Student student);
     }
 }

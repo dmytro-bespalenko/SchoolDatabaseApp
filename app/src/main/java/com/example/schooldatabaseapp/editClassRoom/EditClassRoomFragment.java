@@ -38,7 +38,7 @@ public class EditClassRoomFragment extends Fragment implements EditClassRoomCont
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new EditClassRoomPresenter(this, view.getContext());
+        presenter = new EditClassRoomPresenter(this);
 
         editClassName = view.findViewById(R.id.editClassName);
         editClassNumber = view.findViewById(R.id.editClassNumber);

@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.model.Student;
-import com.example.schooldatabaseapp.searchBy.SearchByContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,24 +22,24 @@ public class SearchByStudentsRecyclerAdapter extends RecyclerView.Adapter<Search
 
     private List<Student> studentList;
     private List<Student> filteredStudentList;
-    private SearchByContract.Presenter presenter;
+    public CallBackAdapterPosition adapterPosition;
 
-
-    public SearchByStudentsRecyclerAdapter(List<Student> studentList) {
-        this.studentList = studentList;
-        this.filteredStudentList = new ArrayList<>(studentList);
+    public interface CallBackAdapterPosition {
+        void adapterPosition(Student position);
     }
 
 
-    public void registerSearchByListener(SearchByContract.Presenter presenter) {
-        this.presenter = presenter;
+    public SearchByStudentsRecyclerAdapter(List<Student> studentList, SearchByStudentsRecyclerAdapter.CallBackAdapterPosition callBackAdapterPosition) {
+        this.studentList = studentList;
+        adapterPosition = callBackAdapterPosition;
+        filteredStudentList = new ArrayList<>(studentList);
     }
 
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.search_result_card, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.search_result_card, parent, false), filteredStudentList, adapterPosition);
     }
 
     @SuppressLint("SetTextI18n")
@@ -55,7 +54,6 @@ public class SearchByStudentsRecyclerAdapter extends RecyclerView.Adapter<Search
     public int getItemCount() {
         return studentList.size();
     }
-
 
 
     @Override
@@ -89,22 +87,21 @@ public class SearchByStudentsRecyclerAdapter extends RecyclerView.Adapter<Search
         protected void publishResults(CharSequence constraint, FilterResults results) {
             studentList.clear();
             studentList.addAll((List) results.values);
-
             notifyDataSetChanged();
         }
     };
 
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    // FIXME: 31.03.21
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView searchResult;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, List<Student> filteredStudentList, CallBackAdapterPosition adapterPosition) {
             super(itemView);
             searchResult = itemView.findViewById(R.id.search_result_text_view);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    presenter.onItemStudentClickListener(filteredStudentList.get(getAdapterPosition()));
+                    adapterPosition.adapterPosition(filteredStudentList.get(getAdapterPosition()));
                 }
             });
         }

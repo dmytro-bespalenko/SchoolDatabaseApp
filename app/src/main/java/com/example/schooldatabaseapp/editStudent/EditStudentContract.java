@@ -8,9 +8,8 @@ import java.util.List;
 public interface EditStudentContract {
 
     interface Presenter {
+
         List<ClassRoom> getClassRooms();
-
-
         void saveEditStudent(Student student);
     }
 

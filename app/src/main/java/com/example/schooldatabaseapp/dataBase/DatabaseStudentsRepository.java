@@ -1,13 +1,14 @@
 package com.example.schooldatabaseapp.dataBase;
 
+import android.app.Application;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.schooldatabaseapp.base.DatabaseHelper;
+import com.example.schooldatabaseapp.base.SchoolApplication;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.model.StudentsRepository;
@@ -19,14 +20,28 @@ public class DatabaseStudentsRepository implements StudentsRepository {
 
 
     private static final String TAG = "My_Tag";
-    private  DatabaseHelper dbHelper;
+    private DatabaseHelper dbHelper;
     private SQLiteDatabase database;
+    private static DatabaseStudentsRepository instance;
 
 
-    public DatabaseStudentsRepository(Context context) {
-        this.dbHelper = DatabaseHelper.getHelper(context);
+    private DatabaseStudentsRepository(SchoolApplication application) {
+        this.dbHelper = new DatabaseHelper(application);
     }
 
+    public static synchronized DatabaseStudentsRepository getInstance() {
+        if (instance == null) {
+            throw new RuntimeException();
+        }
+
+        return instance;
+    }
+
+    public static void initInstance(SchoolApplication schoolApplication) {
+        if (schoolApplication != null) {
+            instance = new DatabaseStudentsRepository(schoolApplication);
+        }
+    }
 
 
     @Override
@@ -69,7 +84,7 @@ public class DatabaseStudentsRepository implements StudentsRepository {
         database = dbHelper.getWritableDatabase();
         String[] columns = new String[]{DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_CLASSNAME,
                 DatabaseHelper.COLUMN_CLASSNUMBER, DatabaseHelper.COLUMN_STUDENTSCOUNT, DatabaseHelper.COLUMN_FLOOR};
-        return database.query(DatabaseHelper.TABLE_CLASSROOMS, columns, null, null, null, null, null);
+        return database.query(DatabaseHelper.TABLE_CLASSROOMS, columns, null, null, null, null, DatabaseHelper.COLUMN_CLASSNAME);
     }
 
 
@@ -145,7 +160,7 @@ public class DatabaseStudentsRepository implements StudentsRepository {
         database = dbHelper.getWritableDatabase();
         String[] columns = new String[]{DatabaseHelper.COLUMN_STUDENT_ID, DatabaseHelper.COLUMN_FIRST_NAME,
                 DatabaseHelper.COLUMN_LAST_NAME, DatabaseHelper.COLUMN_STUDENT_CLASS_ID, DatabaseHelper.COLUMN_GENDER, DatabaseHelper.COLUMN_AGE};
-        return database.query(DatabaseHelper.TABLE_STUDENTS, columns, null, null, null, null, null);
+        return database.query(DatabaseHelper.TABLE_STUDENTS, columns, null, null, null, null, DatabaseHelper.COLUMN_LAST_NAME);
     }
 
     @Override

@@ -1,11 +1,10 @@
 package com.example.schooldatabaseapp.addClass;
 
-import android.content.Context;
 import android.util.Log;
 
+import com.example.schooldatabaseapp.dataBase.DatabaseClassRoomRepository;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
-import com.example.schooldatabaseapp.dataBase.DatabaseClassRoomRepository;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -17,8 +16,8 @@ public class AddClassRoomPresenter  implements AddClassRoomContract.Presenter{
     private AddClassRoomContract.View view;
     private Executor executor;
 
-    public AddClassRoomPresenter(AddClassRoomContract.View callBack, Context context) {
-        this.repository = new DatabaseClassRoomRepository(context);
+    public AddClassRoomPresenter(AddClassRoomContract.View callBack) {
+        this.repository = DatabaseClassRoomRepository.getInstance();
         this.view = callBack;
     }
 

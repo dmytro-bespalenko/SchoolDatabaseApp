@@ -13,9 +13,9 @@ public interface SearchByContract {
 
         void updateStudents();
 
-        void onItemStudentClickListener(Student student);
+        void openDetailsStudentFragment(Student student);
 
-        void onItemClassRoomClickListener(ClassRoom classRoom);
+        void openStudentsListFragment(ClassRoom classRoom);
     }
 
     interface View {
@@ -23,9 +23,9 @@ public interface SearchByContract {
 
         void openClassRoomDetailsFragment(ClassRoom classRoom);
 
-        void openStudentsDetailsFragment(Student student);
-
         void updateClassRooms(List<ClassRoom> allClassRoom);
+
+        void openDetailsStudentFragment(Student student);
     }
 
 }

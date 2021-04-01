@@ -16,8 +16,8 @@ public class EditClassRoomPresenter implements EditClassRoomContract.Presenter {
     private EditClassRoomContract.View view;
     private Handler handler;
 
-    public EditClassRoomPresenter(EditClassRoomContract.View callback, Context context) {
-        this.repository = new DatabaseClassRoomRepository(context);
+    public EditClassRoomPresenter(EditClassRoomContract.View callback) {
+        this.repository = DatabaseClassRoomRepository.getInstance();
         this.view = callback;
     }
 

@@ -1,9 +1,5 @@
 package com.example.schooldatabaseapp.detailsStudent;
 
-import android.content.Context;
-import android.util.Log;
-
-import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.dataBase.DatabaseStudentsRepository;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
@@ -19,9 +15,9 @@ public class DetailsStudentPresenter implements DetailsStudentContract.Presenter
     private DatabaseStudentsRepository repository;
     private Executor executor;
 
-    public DetailsStudentPresenter(DetailsStudentContract.View callBack, Context context) {
+    public DetailsStudentPresenter(DetailsStudentContract.View callBack) {
         this.view = callBack;
-        repository = new DatabaseStudentsRepository(context);
+        repository = DatabaseStudentsRepository.getInstance();
     }
 
     @Override
@@ -37,16 +33,15 @@ public class DetailsStudentPresenter implements DetailsStudentContract.Presenter
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                if (repository.getAll().size() > 0) {
+                try {
                     view.deleteCurrentStudent(repository.getAll(), repository.delete(student.getId()));
-                    Log.d(TAG, "run: " + Thread.currentThread().getName() + " delete student " + getClass().getName());
+                } catch (IndexOutOfBoundsException ignored) {
 
                 }
             }
         });
 
     }
-
 
     @Override
     public List<ClassRoom> getAllClassRooms() {

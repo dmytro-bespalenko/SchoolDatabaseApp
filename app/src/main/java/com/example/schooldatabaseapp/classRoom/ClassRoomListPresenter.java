@@ -1,6 +1,6 @@
 package com.example.schooldatabaseapp.classRoom;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.util.Log;
 
@@ -9,10 +9,17 @@ import com.example.schooldatabaseapp.model.ClassRoomRepository;
 import com.example.schooldatabaseapp.dataBase.DatabaseClassRoomRepository;
 import com.example.schooldatabaseapp.model.Student;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
+
+@SuppressLint("CheckResult")
 
 public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
 
@@ -30,19 +37,21 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
 
     @Override
     public void updateClassRooms() {
-        handler = new Handler();
 
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                view.updateRooms(repository.getAll());
-                Log.d(TAG, "run: " + Thread.currentThread().getName() + " Handler " + getClass().getName());
+        repository.getAllClassrooms()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<ClassRoom>>() {
+                    @Override
+                    public void accept(List<ClassRoom> classRoomList) throws Exception {
+                        Log.d(TAG, "run: updateClassRooms " + Thread.currentThread().getName());
+                        view.updateRooms(classRoomList);
 
-            }
-        });
+                    }
+                });
+
 
     }
-
 
 
     @Override
@@ -99,7 +108,22 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
 
     @Override
     public List<Student> getAllStudents() {
-        return repository.getAllStudents();
+        List<Student> result = new ArrayList<>();
+
+        repository.getAllStudents()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Student>>() {
+                    @Override
+                    public void accept(List<Student> classRoomList) throws Exception {
+                        Log.d(TAG, "Presenter " + Thread.currentThread().getName());
+
+                        result.addAll(classRoomList);
+                    }
+                });
+
+
+        return result;
     }
 
     @Override

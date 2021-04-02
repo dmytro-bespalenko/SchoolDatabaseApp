@@ -4,13 +4,15 @@ import android.database.Cursor;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 public interface ClassRoomRepository {
 
-    List<ClassRoom> getAll();
+    Single<List<ClassRoom>> getAllClassrooms();
 
     long getCount();
 
-    List<Student> getAllStudents();
+    Single<List<Student>> getAllStudents();
 
     long insert(ClassRoom classRoom);
 
@@ -24,7 +26,7 @@ public interface ClassRoomRepository {
 
     ClassRoom getById(int id);
 
-    Cursor getAllClassRoomsEntries();
+    Single<Cursor> getAllClassRoomsEntries();
 
     void deleteAll();
 

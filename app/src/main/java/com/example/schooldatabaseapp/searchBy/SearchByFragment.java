@@ -78,7 +78,6 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
         setSearchBySpinner();
     }
 
-
     public void setSearchBySpinner() {
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -96,7 +95,6 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
                         @Override
                         public boolean onQueryTextChange(String newText) {
                             recyclerStudentsAdapter.getFilter().filter(newText);
-
                             return false;
                         }
                     });
@@ -110,9 +108,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
 
                         @Override
                         public boolean onQueryTextChange(String newText) {
-
                             recyclerClassroomsAdapter.getFilter().filter(newText);
-
                             return false;
                         }
                     });
@@ -122,7 +118,6 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
-
             }
         });
 
@@ -131,10 +126,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
     @Override
     public void updateStudents(List<Student> all) {
         studentList.clear();
-
-
         studentList.addAll(all);
-
         Collections.sort(studentList, new Comparator<Student>() {
             @Override
             public int compare(Student o1, Student o2) {
@@ -150,7 +142,6 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
 
     @Override
     public void openClassRoomDetailsFragment(ClassRoom classRoom) {
-
         Fragment fragment = new StudentsListFragment();
         FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
         Bundle bundle = new Bundle();

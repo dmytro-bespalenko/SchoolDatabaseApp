@@ -1,9 +1,7 @@
 package com.example.schooldatabaseapp.dataBase;
 
-import android.app.Application;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -15,6 +13,10 @@ import com.example.schooldatabaseapp.model.StudentsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Single;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
 
 public class DatabaseStudentsRepository implements StudentsRepository {
 
@@ -45,53 +47,60 @@ public class DatabaseStudentsRepository implements StudentsRepository {
 
 
     @Override
-    public List<Student> getAll() {
+    public Single<List<Student>> getAllStudents() {
         database = dbHelper.getWritableDatabase();
-        List<Student> students = new ArrayList<>();
-        Cursor cursor = getAllEntries();
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENT_ID));
-            String firstName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FIRST_NAME));
-            String lastName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LAST_NAME));
-            int classId = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENT_CLASS_ID));
-            String gender = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_GENDER));
-            int age = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_AGE));
-            students.add(new Student(id, firstName, lastName, classId, gender, age));
-        }
-        Log.d(TAG, "getAll: " + students.size());
-        cursor.close();
-        return students;
+        return getAllEntries()
+                .map(new Function<Cursor, List<Student>>() {
+                    @Override
+                    public List<Student> apply(@NonNull Cursor cursor) throws Exception {
+                        Log.d(TAG, "apply: " + Thread.currentThread().getName());
+                        List<Student> students = new ArrayList<>();
+                        while (cursor.moveToNext()) {
+                            int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENT_ID));
+                            String firstName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FIRST_NAME));
+                            String lastName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LAST_NAME));
+                            int classId = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENT_CLASS_ID));
+                            String gender = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_GENDER));
+                            int age = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_AGE));
+                            students.add(new Student(id, firstName, lastName, classId, gender, age));
+                        }
+                        Log.d(TAG, "getAll: " + students.size());
+                        cursor.close();
+                        return students;
+                    }
+                });
     }
 
     @Override
-    public List<ClassRoom> getAllClassRoom() {
+    public Single<List<ClassRoom>> getAllClassRoom() {
         database = dbHelper.getWritableDatabase();
-        List<ClassRoom> classrooms = new ArrayList<>();
-        Cursor cursor = getClassRoom();
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
-            String className = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNAME));
-            int classNumber = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNUMBER));
-            int studentsCount = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENTSCOUNT));
-            int floor = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_FLOOR));
-            classrooms.add(new ClassRoom(id, className, classNumber, studentsCount, floor));
-        }
-        cursor.close();
-        return classrooms;
+        return getAllClassRoomEntries()
+                .map(new Function<Cursor, List<ClassRoom>>() {
+                    @Override
+                    public List<ClassRoom> apply(@NonNull Cursor cursor) throws Exception {
+                        List<ClassRoom> classrooms = new ArrayList<>();
+                        while (cursor.moveToNext()) {
+                            Log.d(TAG, "getAllCalssRoom: " + Thread.currentThread());
+                            int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
+                            String className = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNAME));
+                            int classNumber = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNUMBER));
+                            int studentsCount = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENTSCOUNT));
+                            int floor = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_FLOOR));
+                            classrooms.add(new ClassRoom(id, className, classNumber, studentsCount, floor));
+                        }
+                        cursor.close();
+                        return classrooms;
+                    }
+                });
     }
 
-    public Cursor getClassRoom() {
+    public Single<Cursor> getAllClassRoomEntries() {
         database = dbHelper.getWritableDatabase();
         String[] columns = new String[]{DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_CLASSNAME,
                 DatabaseHelper.COLUMN_CLASSNUMBER, DatabaseHelper.COLUMN_STUDENTSCOUNT, DatabaseHelper.COLUMN_FLOOR};
-        return database.query(DatabaseHelper.TABLE_CLASSROOMS, columns, null, null, null, null, DatabaseHelper.COLUMN_CLASSNAME);
+        return Single.just(database.query(DatabaseHelper.TABLE_CLASSROOMS, columns, null, null, null, null, DatabaseHelper.COLUMN_CLASSNAME));
     }
 
-
-    @Override
-    public long getCount() {
-        return DatabaseUtils.queryNumEntries(database, DatabaseHelper.TABLE_STUDENTS);
-    }
 
     @Override
     public long insert(Student student) {
@@ -125,7 +134,6 @@ public class DatabaseStudentsRepository implements StudentsRepository {
         cv.put(DatabaseHelper.COLUMN_STUDENT_CLASS_ID, student.getClassId());
         cv.put(DatabaseHelper.COLUMN_GENDER, student.getGender());
         cv.put(DatabaseHelper.COLUMN_AGE, student.getAge());
-
         Log.d(TAG, "run: " + Thread.currentThread().getName());
 
         return database.update(DatabaseHelper.TABLE_STUDENTS, cv, whereClause, null);
@@ -156,11 +164,11 @@ public class DatabaseStudentsRepository implements StudentsRepository {
     }
 
     @Override
-    public Cursor getAllEntries() {
+    public Single<Cursor> getAllEntries() {
         database = dbHelper.getWritableDatabase();
         String[] columns = new String[]{DatabaseHelper.COLUMN_STUDENT_ID, DatabaseHelper.COLUMN_FIRST_NAME,
                 DatabaseHelper.COLUMN_LAST_NAME, DatabaseHelper.COLUMN_STUDENT_CLASS_ID, DatabaseHelper.COLUMN_GENDER, DatabaseHelper.COLUMN_AGE};
-        return database.query(DatabaseHelper.TABLE_STUDENTS, columns, null, null, null, null, DatabaseHelper.COLUMN_LAST_NAME);
+        return Single.just(database.query(DatabaseHelper.TABLE_STUDENTS, columns, null, null, null, null, DatabaseHelper.COLUMN_LAST_NAME));
     }
 
     @Override

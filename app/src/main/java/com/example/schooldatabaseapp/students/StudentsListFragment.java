@@ -131,37 +131,37 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
 
     }
 
-//    @Override
-//    public void onItemDeleteWasClick(int position) {
-//        if (position == studentList.size()) {
-//            position = 0;
-//        }
-//        int finalPosition = position;
-//        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                switch (which) {
-//                    case DialogInterface.BUTTON_POSITIVE:
-//                        //Yes button clicked
-//                        presenter.deleteStudent(studentList, finalPosition);
-//                        studentList.remove(finalPosition);
-//                        presenter.updateStudent();
-//                        recyclerAdapter.notifyItemRemoved(finalPosition);
-//                        break;
-//
-//                    case DialogInterface.BUTTON_NEGATIVE:
-//                        //No button clicked
-//
-//                        break;
-//                }
-//            }
-//        };
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//        builder.setMessage("Delete student?").setPositiveButton("Yes", dialogClickListener)
-//                .setNegativeButton("No", dialogClickListener).show();
-//
-//    }
+    @Override
+    public void onItemDeleteWasClick(int position) {
+        if (position == studentList.size()) {
+            position = 0;
+        }
+        int finalPosition = position;
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
+                        presenter.deleteStudent(studentList, finalPosition);
+                        studentList.remove(finalPosition);
+                        presenter.updateStudent();
+                        recyclerAdapter.notifyItemRemoved(finalPosition);
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Delete student?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+
+    }
 
 
     @Override

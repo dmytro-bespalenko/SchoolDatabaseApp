@@ -38,10 +38,12 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
     private DetailsStudentContract.Presenter presenter;
     private String className;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_details_student, container, false);
     }
 
@@ -50,6 +52,7 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
         super.onViewCreated(view, savedInstanceState);
 
         presenter = new DetailsStudentPresenter(this);
+        classRoomList = presenter.getAllClassRooms();
 
         idView = view.findViewById(R.id.student_id);
         firstNameView = view.findViewById(R.id.student_first_name);
@@ -59,7 +62,6 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
         studentClassname = view.findViewById(R.id.student_classname);
         editStudent = view.findViewById(R.id.edit_student);
         deleteStudent = view.findViewById(R.id.delete_student);
-        classRoomList = presenter.getAllClassRooms();
 
         Bundle bundle = this.getArguments();
 
@@ -147,6 +149,7 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
     @Override
     public void onResume() {
         super.onResume();
+
 
     }
 }

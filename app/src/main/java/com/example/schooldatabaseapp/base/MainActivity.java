@@ -1,5 +1,6 @@
 package com.example.schooldatabaseapp.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,7 +44,11 @@ public class MainActivity extends AppCompatActivity implements FragmentChangeLis
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Fragment fragment = new SearchByFragment();
         FragmentChangeListener fragmentChangeListener = this;
-        fragmentChangeListener.replaceFragment(fragment);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() < 1) {
+            fragmentChangeListener.replaceFragment(fragment);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

@@ -17,6 +17,7 @@ public interface StudentsListContract {
 
         void openAddStudentFragment();
 
+        void onItemDeleteWasClick(int adapterPosition);
 
     }
 

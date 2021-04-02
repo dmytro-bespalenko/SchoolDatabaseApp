@@ -10,8 +10,7 @@ import com.example.schooldatabaseapp.model.StudentsRepository;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 @SuppressLint("CheckResult")
@@ -19,6 +18,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SearchByPresenter implements SearchByContract.Presenter {
 
+    private static final String TAG = "My_Tag";
     private SearchByContract.View view;
     private StudentsRepository repository;
 
@@ -29,26 +29,32 @@ public class SearchByPresenter implements SearchByContract.Presenter {
 
     @Override
     public void updateClassRooms() {
-        view.updateClassRooms(repository.getAllClassRoom());
+        repository.getAllClassRoom()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<ClassRoom>>() {
+                    @Override
+                    public void accept(List<ClassRoom> classRoomList) throws Exception {
+                        view.updateClassRooms(classRoomList);
+                    }
+                });
+
 
     }
 
     @Override
     public void updateStudents() {
-//        repository.getAll()
-//                .subscribeOn(Schedulers.io())
-//                .map(new Function<List<Student>, List<Student>>() {
-//                    @Override
-//                    public List<Student> apply(@NonNull List<Student> students) throws Exception {
-//                        return students;
-//                    }
-//                }).observeOn(AndroidSchedulers.mainThread())
-//                .subscribe();
-//
-//        ;
+        repository.getAllStudents()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Student>>() {
+                    @Override
+                    public void accept(List<Student> students) throws Exception {
+                        view.updateStudents(students);
+                    }
+                });
 
 
-        view.updateStudents(repository.getAll());
     }
 
 

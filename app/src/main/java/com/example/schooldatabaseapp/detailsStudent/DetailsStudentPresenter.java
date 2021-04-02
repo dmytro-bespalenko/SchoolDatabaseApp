@@ -1,12 +1,23 @@
 package com.example.schooldatabaseapp.detailsStudent;
 
+import android.annotation.SuppressLint;
+
 import com.example.schooldatabaseapp.dataBase.DatabaseStudentsRepository;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+
+@SuppressLint("CheckResult")
 
 public class DetailsStudentPresenter implements DetailsStudentContract.Presenter {
 
@@ -34,7 +45,7 @@ public class DetailsStudentPresenter implements DetailsStudentContract.Presenter
             @Override
             public void run() {
                 try {
-                    view.deleteCurrentStudent(repository.getAll(), repository.delete(student.getId()));
+//                    view.deleteCurrentStudent(repository.getAll(), repository.delete(student.getId()));
                 } catch (IndexOutOfBoundsException ignored) {
 
                 }
@@ -45,7 +56,19 @@ public class DetailsStudentPresenter implements DetailsStudentContract.Presenter
 
     @Override
     public List<ClassRoom> getAllClassRooms() {
-        return repository.getAllClassRoom();
+        List<ClassRoom> resultClassroomList = new ArrayList<>();
+        repository.getAllClassRoom()
+                .subscribeOn(Schedulers.io())
+                .map(new Function<List<ClassRoom>, List<ClassRoom>>() {
+                    @Override
+                    public List<ClassRoom> apply(@NonNull List<ClassRoom> classRoomList) throws Exception {
+                        resultClassroomList.addAll(classRoomList);
+                        return resultClassroomList;
+                    }
+                }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+
+        return resultClassroomList;
     }
 
 

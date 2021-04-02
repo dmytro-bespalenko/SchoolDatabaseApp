@@ -91,7 +91,6 @@ public class SearchByStudentsRecyclerAdapter extends RecyclerView.Adapter<Search
         }
     };
 
-    // FIXME: 31.03.21
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView searchResult;
 

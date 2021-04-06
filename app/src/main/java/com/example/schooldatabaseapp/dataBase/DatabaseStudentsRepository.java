@@ -1,5 +1,6 @@
 package com.example.schooldatabaseapp.dataBase;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,9 +15,14 @@ import com.example.schooldatabaseapp.model.StudentsRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
+
+@SuppressLint("CheckResult")
 
 public class DatabaseStudentsRepository implements StudentsRepository {
 
@@ -80,7 +86,7 @@ public class DatabaseStudentsRepository implements StudentsRepository {
                     public List<ClassRoom> apply(@NonNull Cursor cursor) throws Exception {
                         List<ClassRoom> classrooms = new ArrayList<>();
                         while (cursor.moveToNext()) {
-                            Log.d(TAG, "getAllCalssRoom: " + Thread.currentThread());
+                            Log.d(TAG, "getAllCalssRoom: " + Thread.currentThread().getName());
                             int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
                             String className = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNAME));
                             int classNumber = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNUMBER));
@@ -96,6 +102,7 @@ public class DatabaseStudentsRepository implements StudentsRepository {
 
     public Single<Cursor> getAllClassRoomEntries() {
         database = dbHelper.getWritableDatabase();
+
         String[] columns = new String[]{DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_CLASSNAME,
                 DatabaseHelper.COLUMN_CLASSNUMBER, DatabaseHelper.COLUMN_STUDENTSCOUNT, DatabaseHelper.COLUMN_FLOOR};
         return Single.just(database.query(DatabaseHelper.TABLE_CLASSROOMS, columns, null, null, null, null, DatabaseHelper.COLUMN_CLASSNAME));
@@ -103,40 +110,79 @@ public class DatabaseStudentsRepository implements StudentsRepository {
 
 
     @Override
-    public long insert(Student student) {
-        database = dbHelper.getWritableDatabase();
-        ContentValues cv = new ContentValues();
+    public Completable insert(Student student) {
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull CompletableEmitter emitter) throws Exception {
+                database = dbHelper.getWritableDatabase();
+                ContentValues cv = new ContentValues();
 
-        cv.put(DatabaseHelper.COLUMN_FIRST_NAME, student.getFirstName());
-        cv.put(DatabaseHelper.COLUMN_LAST_NAME, student.getLastName());
-        cv.put(DatabaseHelper.COLUMN_STUDENT_CLASS_ID, student.getClassId());
-        cv.put(DatabaseHelper.COLUMN_GENDER, student.getGender());
-        cv.put(DatabaseHelper.COLUMN_AGE, student.getAge());
+                cv.put(DatabaseHelper.COLUMN_FIRST_NAME, student.getFirstName());
+                cv.put(DatabaseHelper.COLUMN_LAST_NAME, student.getLastName());
+                cv.put(DatabaseHelper.COLUMN_STUDENT_CLASS_ID, student.getClassId());
+                cv.put(DatabaseHelper.COLUMN_GENDER, student.getGender());
+                cv.put(DatabaseHelper.COLUMN_AGE, student.getAge());
+                Log.d(TAG, "insert: " + Thread.currentThread().getName());
+                try {
 
-        return database.insert(DatabaseHelper.TABLE_STUDENTS, null, cv);
+                    database.insert(DatabaseHelper.TABLE_STUDENTS, null, cv);
+                } catch (Exception e) {
+                    emitter.onError(e);
+                } finally {
+                    emitter.onComplete();
+                }
+
+            }
+        });
     }
 
     @Override
-    public int delete(int studentId) {
-        database = dbHelper.getWritableDatabase();
-        String whereClause = "_id = ?";
-        String[] whereArgs = new String[]{String.valueOf(studentId)};
-        return database.delete(DatabaseHelper.TABLE_STUDENTS, whereClause, whereArgs);
+    public Completable delete(int studentId) {
+
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull CompletableEmitter emitter) throws Exception {
+                database = dbHelper.getWritableDatabase();
+                String whereClause = "_id = ?";
+                String[] whereArgs = new String[]{String.valueOf(studentId)};
+                try {
+                    database.delete(DatabaseHelper.TABLE_STUDENTS, whereClause, whereArgs);
+                    Log.d(TAG, "delete: " + Thread.currentThread().getName());
+                } catch (Exception e) {
+                    emitter.onError(e);
+                } finally {
+                    emitter.onComplete();
+                    Log.d(TAG, "subscribe: onComplete");
+                }
+
+
+            }
+        });
     }
 
     @Override
-    public int update(Student student) {
-        database = dbHelper.getWritableDatabase();
-        String whereClause = DatabaseHelper.COLUMN_STUDENT_ID + "=" + student.getId();
-        ContentValues cv = new ContentValues();
-        cv.put(DatabaseHelper.COLUMN_FIRST_NAME, student.getFirstName());
-        cv.put(DatabaseHelper.COLUMN_LAST_NAME, student.getLastName());
-        cv.put(DatabaseHelper.COLUMN_STUDENT_CLASS_ID, student.getClassId());
-        cv.put(DatabaseHelper.COLUMN_GENDER, student.getGender());
-        cv.put(DatabaseHelper.COLUMN_AGE, student.getAge());
-        Log.d(TAG, "run: " + Thread.currentThread().getName());
+    public Single<Student> update(Student student) {
+        return Single.fromPublisher(publisher -> {
+            database = dbHelper.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(DatabaseHelper.COLUMN_FIRST_NAME, student.getFirstName());
+            cv.put(DatabaseHelper.COLUMN_LAST_NAME, student.getLastName());
+            cv.put(DatabaseHelper.COLUMN_STUDENT_CLASS_ID, student.getClassId());
+            cv.put(DatabaseHelper.COLUMN_GENDER, student.getGender());
+            cv.put(DatabaseHelper.COLUMN_AGE, student.getAge());
+            Log.d(TAG, "update fromPublisher: " + Thread.currentThread().getName());
 
-        return database.update(DatabaseHelper.TABLE_STUDENTS, cv, whereClause, null);
+            try {
+                database.update(DatabaseHelper.TABLE_STUDENTS, cv, DatabaseHelper.COLUMN_STUDENT_ID + " = ?", new String[]{String.valueOf(student.getId())});
+                publisher.onNext(student);
+            } catch (Exception e) {
+                publisher.onError(e);
+            } finally {
+                publisher.onComplete();
+            }
+
+
+        });
     }
 
     @Override
@@ -158,6 +204,7 @@ public class DatabaseStudentsRepository implements StudentsRepository {
             int age = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_AGE));
             student = new Student(firstName, lastName, classId, gender, age);
         }
+        Log.d(TAG, "getById: " + Thread.currentThread().getName());
         cursor.close();
 
         return student;

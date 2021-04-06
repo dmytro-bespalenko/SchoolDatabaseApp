@@ -66,7 +66,9 @@ public class StudentsListPresenter implements StudentsListContract.Presenter {
 
     @Override
     public void deleteStudent(List<Student> studentsList, int adapterPosition) {
-        repository.delete(studentsList.get(adapterPosition).getId());
+        repository.delete(studentsList.get(adapterPosition).getId())
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 
     @Override

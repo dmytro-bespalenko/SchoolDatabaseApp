@@ -1,6 +1,7 @@
 package com.example.schooldatabaseapp.addStudents;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.example.schooldatabaseapp.dataBase.DatabaseStudentsRepository;
 import com.example.schooldatabaseapp.model.ClassRoom;
@@ -11,6 +12,9 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -22,9 +26,9 @@ import io.reactivex.schedulers.Schedulers;
 public class AddStudentPresenter implements AddStudentContract.Presenter {
 
 
+    private static final String TAG = "My_tag";
     private DatabaseStudentsRepository repository;
     private AddStudentContract.View view;
-    private Executor executor;
 
     public AddStudentPresenter(AddStudentContract.View callBack) {
         this.view = callBack;
@@ -32,31 +36,32 @@ public class AddStudentPresenter implements AddStudentContract.Presenter {
     }
 
     @Override
-    public void addNewStudent(String firstName, String lastName, int selectedClassId, String gender, int age) {
-        executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                repository.insert(new Student(firstName, lastName, selectedClassId, gender, age));
+    public void addNewStudent(Student student) {
 
-            }
-        });
+        repository.insert(student)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
 
     }
 
     @Override
     public List<ClassRoom> getClassRooms() {
-        List<ClassRoom> classRoomList = new ArrayList<>();
+        List<ClassRoom> resultClassRoomList = new ArrayList<>();
         repository.getAllClassRoom()
-                .subscribeOn(Schedulers.io())
-                .map(new Function<List<ClassRoom>, List<ClassRoom>>() {
+                .flatMap(new Function<List<ClassRoom>, SingleSource<List<ClassRoom>>>() {
                     @Override
-                    public List<ClassRoom> apply(@NonNull List<ClassRoom> classRoomList) throws Exception {
-                        return classRoomList;
+                    public SingleSource<List<ClassRoom>> apply(@NonNull List<ClassRoom> classRoomList) throws Exception {
+                        return Single.just(classRoomList);
                     }
-                }).observeOn(AndroidSchedulers.mainThread())
-                .subscribe((Consumer<List<ClassRoom>>) classRoomList::addAll);
-        return classRoomList;
+                }).subscribe(new Consumer<List<ClassRoom>>() {
+            @Override
+            public void accept(List<ClassRoom> classRoomList) throws Exception {
+                resultClassRoomList.addAll(classRoomList);
+            }
+        });
+
+
+        return resultClassRoomList;
     }
 
 

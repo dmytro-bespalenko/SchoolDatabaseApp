@@ -51,6 +51,7 @@ public class SearchByPresenter implements SearchByContract.Presenter {
                     @Override
                     public void accept(List<Student> students) throws Exception {
                         view.updateStudents(students);
+
                     }
                 });
 

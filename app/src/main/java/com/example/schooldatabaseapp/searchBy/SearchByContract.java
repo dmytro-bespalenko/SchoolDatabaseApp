@@ -19,6 +19,7 @@ public interface SearchByContract {
     }
 
     interface View {
+
         void updateStudents(List<Student> all);
 
         void openClassRoomDetailsFragment(ClassRoom classRoom);

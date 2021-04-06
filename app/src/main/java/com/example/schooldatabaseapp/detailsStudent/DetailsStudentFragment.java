@@ -21,6 +21,8 @@ import com.example.schooldatabaseapp.model.Student;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 public class DetailsStudentFragment extends Fragment implements DetailsStudentContract.View {
 
 
@@ -52,6 +54,7 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
         super.onViewCreated(view, savedInstanceState);
 
         presenter = new DetailsStudentPresenter(this);
+
         classRoomList = presenter.getAllClassRooms();
 
         idView = view.findViewById(R.id.student_id);
@@ -142,7 +145,7 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
 
 
     @Override
-    public void deleteCurrentStudent(List<Student> students, int delete) {
+    public void deleteCurrentStudent(List<Student> students, Single<Integer> delete) {
         students.remove(delete);
     }
 

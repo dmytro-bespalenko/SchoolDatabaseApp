@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.dataBase.DatabaseStudentsRepository;
 import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,8 +98,6 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
         // TODO: 30.03.21
 
 
-
-
         classSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -137,9 +136,7 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
             String lastName = String.valueOf(editLastName.getText());
             int age = Integer.parseInt(editaAge.getText().toString());
 
-            presenter.addNewStudent(firstName, lastName, selectedClassId, selectedGender, age);
-
-            //          int finalPosition = classRoomList.get(selectedClassId).getClassId();
+            presenter.addNewStudent(new Student(firstName, lastName, selectedClassId, selectedGender, age));
             assert getFragmentManager() != null;
             getFragmentManager().popBackStack();
             Log.d(TAG, "run: " + Thread.currentThread().getName());

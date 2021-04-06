@@ -174,5 +174,6 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
         super.onResume();
         presenter.updateClassRooms();
 
+
     }
 }

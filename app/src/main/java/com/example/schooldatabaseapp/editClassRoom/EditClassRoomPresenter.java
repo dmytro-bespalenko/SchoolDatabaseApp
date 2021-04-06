@@ -1,12 +1,15 @@
 package com.example.schooldatabaseapp.editClassRoom;
 
-import android.content.Context;
-import android.os.Handler;
-import android.util.Log;
+import android.annotation.SuppressLint;
 
+import com.example.schooldatabaseapp.dataBase.DatabaseClassRoomRepository;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
-import com.example.schooldatabaseapp.dataBase.DatabaseClassRoomRepository;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
+@SuppressLint("CheckResult")
 
 
 public class EditClassRoomPresenter implements EditClassRoomContract.Presenter {
@@ -14,7 +17,6 @@ public class EditClassRoomPresenter implements EditClassRoomContract.Presenter {
     private static final String TAG = "My_tag";
     private final ClassRoomRepository repository;
     private EditClassRoomContract.View view;
-    private Handler handler;
 
     public EditClassRoomPresenter(EditClassRoomContract.View callback) {
         this.repository = DatabaseClassRoomRepository.getInstance();
@@ -24,15 +26,11 @@ public class EditClassRoomPresenter implements EditClassRoomContract.Presenter {
 
     @Override
     public void editClassRoom(ClassRoom classRoom) {
-        handler = new Handler();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                repository.update(classRoom);
-                Log.d(TAG, "run: " + Thread.currentThread().getName() + " HandlerUpdate " + getClass().getName());
+        repository.update(classRoom)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
 
-            }
-        });
     }
 
 

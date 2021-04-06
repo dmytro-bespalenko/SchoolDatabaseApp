@@ -4,27 +4,26 @@ import android.database.Cursor;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public interface ClassRoomRepository {
 
     Single<List<ClassRoom>> getAllClassrooms();
 
-    long getCount();
 
     Single<List<Student>> getAllStudents();
 
-    long insert(ClassRoom classRoom);
+    Single<Long> insert(ClassRoom classRoom);
 
-    int delete(int studentId);
+    Completable delete(int classId);
 
-    int deleteStudent(int studentId);
+    Completable deleteStudent(int studentId);
 
-    int update(ClassRoom classRoom);
+    Completable update(ClassRoom classRoom);
 
-    void close();
 
-    ClassRoom getById(int id);
+    Single<ClassRoom> getById(int id);
 
     Single<Cursor> getAllClassRoomsEntries();
 

@@ -4,6 +4,7 @@ import android.database.Cursor;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public interface StudentsRepository {
@@ -14,11 +15,11 @@ public interface StudentsRepository {
     Single<List<ClassRoom>> getAllClassRoom();
 
 
-    long insert(Student student);
+    Completable insert(Student student);
 
-    int delete(int studentId);
+    Completable delete(int studentId);
 
-    int update(Student student);
+    Single<Student> update(Student student);
 
     void close();
 

@@ -3,7 +3,9 @@ package com.example.schooldatabaseapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ClassRoom implements Parcelable {
+import java.util.concurrent.Callable;
+
+public class ClassRoom implements Parcelable, Callable<ClassRoom> {
 
     private Integer id;
     private String className;
@@ -108,5 +110,10 @@ public class ClassRoom implements Parcelable {
         dest.writeInt(classNumber);
         dest.writeInt(studentsCount);
         dest.writeInt(floor);
+    }
+
+    @Override
+    public ClassRoom call() throws Exception {
+        return null;
     }
 }

@@ -11,9 +11,11 @@ import com.example.schooldatabaseapp.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observer;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -44,13 +46,9 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
                 .subscribe(new Consumer<List<ClassRoom>>() {
                     @Override
                     public void accept(List<ClassRoom> classRoomList) throws Exception {
-                        Log.d(TAG, "run: updateClassRooms " + Thread.currentThread().getName());
                         view.updateRooms(classRoomList);
-
                     }
                 });
-
-
     }
 
 
@@ -73,7 +71,6 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
             @Override
             public void run() {
                 view.openClassRoomDetailsFragment(classRoom);
-                Log.d(TAG, "run: " + Thread.currentThread().getName() + " " + getClass().getName());
 
             }
         });
@@ -87,7 +84,6 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
             @Override
             public void run() {
                 view.openAddClassRoomFragment();
-                Log.d(TAG, "run: " + Thread.currentThread().getName() + " " + getClass().getName());
 
             }
         });
@@ -112,13 +108,11 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
 
         repository.getAllStudents()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Student>>() {
                     @Override
-                    public void accept(List<Student> classRoomList) throws Exception {
+                    public void accept(List<Student> studentList) throws Exception {
                         Log.d(TAG, "Presenter " + Thread.currentThread().getName());
-
-                        result.addAll(classRoomList);
+                        result.addAll(studentList);
                     }
                 });
 
@@ -128,28 +122,24 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
 
     @Override
     public void deleteClassRoom(ClassRoom classRoom) {
-        handler = new Handler();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                repository.delete(classRoom.getClassId());
-                Log.d(TAG, "run: " + Thread.currentThread().getName() + " " + getClass().getName());
 
-            }
-        });
+        repository.delete(classRoom.getClassId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+
     }
 
     @Override
     public void deleteStudent(Student student) {
-        executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                repository.deleteStudent(student.getId());
-                Log.d(TAG, "run: " + Thread.currentThread().getName() + " " + getClass().getName());
 
-            }
-        });
+
+        repository.deleteStudent(student.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+
+
     }
 
 

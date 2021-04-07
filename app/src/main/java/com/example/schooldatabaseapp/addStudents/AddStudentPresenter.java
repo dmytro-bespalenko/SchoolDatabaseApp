@@ -1,21 +1,16 @@
 package com.example.schooldatabaseapp.addStudents;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
-import com.example.schooldatabaseapp.dataBase.DatabaseStudentsRepository;
+import com.example.schooldatabaseapp.Repositories.DatabaseStudentsRepository;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;

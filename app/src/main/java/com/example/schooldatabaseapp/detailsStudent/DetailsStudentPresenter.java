@@ -2,18 +2,14 @@ package com.example.schooldatabaseapp.detailsStudent;
 
 import android.annotation.SuppressLint;
 
-import com.example.schooldatabaseapp.dataBase.DatabaseStudentsRepository;
+import com.example.schooldatabaseapp.Repositories.DatabaseStudentsRepository;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Single;
-import io.reactivex.SingleSource;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 @SuppressLint("CheckResult")

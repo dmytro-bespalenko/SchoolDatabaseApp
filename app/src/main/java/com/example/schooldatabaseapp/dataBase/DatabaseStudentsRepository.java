@@ -70,7 +70,7 @@ public class DatabaseStudentsRepository implements StudentsRepository {
                             int age = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_AGE));
                             students.add(new Student(id, firstName, lastName, classId, gender, age));
                         }
-                        Log.d(TAG, "getAll: " + students.size());
+                        Log.d(TAG, "getAll: " + Thread.currentThread().getName());
                         cursor.close();
                         return students;
                     }
@@ -86,7 +86,7 @@ public class DatabaseStudentsRepository implements StudentsRepository {
                     public List<ClassRoom> apply(@NonNull Cursor cursor) throws Exception {
                         List<ClassRoom> classrooms = new ArrayList<>();
                         while (cursor.moveToNext()) {
-                            Log.d(TAG, "getAllCalssRoom: " + Thread.currentThread().getName());
+                            Log.d(TAG, "getAllCassRoom: " + Thread.currentThread().getName());
                             int id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
                             String className = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNAME));
                             int classNumber = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNUMBER));
@@ -102,7 +102,6 @@ public class DatabaseStudentsRepository implements StudentsRepository {
 
     public Single<Cursor> getAllClassRoomEntries() {
         database = dbHelper.getWritableDatabase();
-
         String[] columns = new String[]{DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_CLASSNAME,
                 DatabaseHelper.COLUMN_CLASSNUMBER, DatabaseHelper.COLUMN_STUDENTSCOUNT, DatabaseHelper.COLUMN_FLOOR};
         return Single.just(database.query(DatabaseHelper.TABLE_CLASSROOMS, columns, null, null, null, null, DatabaseHelper.COLUMN_CLASSNAME));
@@ -116,7 +115,6 @@ public class DatabaseStudentsRepository implements StudentsRepository {
             public void subscribe(@NonNull CompletableEmitter emitter) throws Exception {
                 database = dbHelper.getWritableDatabase();
                 ContentValues cv = new ContentValues();
-
                 cv.put(DatabaseHelper.COLUMN_FIRST_NAME, student.getFirstName());
                 cv.put(DatabaseHelper.COLUMN_LAST_NAME, student.getLastName());
                 cv.put(DatabaseHelper.COLUMN_STUDENT_CLASS_ID, student.getClassId());
@@ -124,7 +122,6 @@ public class DatabaseStudentsRepository implements StudentsRepository {
                 cv.put(DatabaseHelper.COLUMN_AGE, student.getAge());
                 Log.d(TAG, "insert: " + Thread.currentThread().getName());
                 try {
-
                     database.insert(DatabaseHelper.TABLE_STUDENTS, null, cv);
                 } catch (Exception e) {
                     emitter.onError(e);
@@ -170,11 +167,10 @@ public class DatabaseStudentsRepository implements StudentsRepository {
             cv.put(DatabaseHelper.COLUMN_STUDENT_CLASS_ID, student.getClassId());
             cv.put(DatabaseHelper.COLUMN_GENDER, student.getGender());
             cv.put(DatabaseHelper.COLUMN_AGE, student.getAge());
-            Log.d(TAG, "update fromPublisher: " + Thread.currentThread().getName());
-
             try {
                 database.update(DatabaseHelper.TABLE_STUDENTS, cv, DatabaseHelper.COLUMN_STUDENT_ID + " = ?", new String[]{String.valueOf(student.getId())});
                 publisher.onNext(student);
+                Log.d(TAG, "update fromPublisher: " + Thread.currentThread().getName());
             } catch (Exception e) {
                 publisher.onError(e);
             } finally {
@@ -186,31 +182,6 @@ public class DatabaseStudentsRepository implements StudentsRepository {
     }
 
     @Override
-    public void close() {
-        dbHelper.close();
-    }
-
-    @Override
-    public Student getById(int id) {
-        database = dbHelper.getWritableDatabase();
-        Student student = null;
-        String query = "SELECT * FROM " + DatabaseHelper.TABLE_STUDENTS + " WHERE " + DatabaseHelper.COLUMN_ID;
-        Cursor cursor = database.rawQuery(query, new String[]{String.valueOf(id)});
-        if (cursor.moveToFirst()) {
-            String firstName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FIRST_NAME));
-            String lastName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LAST_NAME));
-            int classId = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNAME));
-            String gender = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_GENDER));
-            int age = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_AGE));
-            student = new Student(firstName, lastName, classId, gender, age);
-        }
-        Log.d(TAG, "getById: " + Thread.currentThread().getName());
-        cursor.close();
-
-        return student;
-    }
-
-    @Override
     public Single<Cursor> getAllEntries() {
         database = dbHelper.getWritableDatabase();
         String[] columns = new String[]{DatabaseHelper.COLUMN_STUDENT_ID, DatabaseHelper.COLUMN_FIRST_NAME,
@@ -218,9 +189,4 @@ public class DatabaseStudentsRepository implements StudentsRepository {
         return Single.just(database.query(DatabaseHelper.TABLE_STUDENTS, columns, null, null, null, null, DatabaseHelper.COLUMN_LAST_NAME));
     }
 
-    @Override
-    public void deleteAll() {
-        dbHelper.deleteAll(database, DatabaseHelper.TABLE_STUDENTS);
-        close();
-    }
 }

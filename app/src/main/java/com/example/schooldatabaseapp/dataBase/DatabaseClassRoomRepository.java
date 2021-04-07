@@ -57,11 +57,6 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
 
     @Override
-    public void deleteAll() {
-        dbHelper.deleteAll(database, DatabaseHelper.TABLE_CLASSROOMS);
-    }
-
-    @Override
     public Single<List<ClassRoom>> getAllClassrooms() {
         database = dbHelper.getWritableDatabase();
 
@@ -128,23 +123,6 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
     }
 
 
-    @Override
-    public Single<ClassRoom> getById(int id) {
-        database = dbHelper.getWritableDatabase();
-        ClassRoom classRoom = null;
-        String query = "SELECT * FROM " + DatabaseHelper.TABLE_CLASSROOMS + " WHERE " + DatabaseHelper.COLUMN_ID;
-        Cursor cursor = database.rawQuery(query, new String[]{String.valueOf(id)});
-        if (cursor.moveToFirst()) {
-            String className = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNAME));
-            int classNumber = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNUMBER));
-            int studentsCount = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENTSCOUNT));
-            int floor = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_FLOOR));
-            classRoom = new ClassRoom(id, className, classNumber, studentsCount, floor);
-        }
-        Log.d(TAG, "getById:Class " + Thread.currentThread().getName());
-        cursor.close();
-        return Single.fromCallable(classRoom);
-    }
 
     @Override
     public Single<Long> insert(ClassRoom classRoom) {
@@ -195,7 +173,6 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
                 database = dbHelper.getWritableDatabase();
                 String whereClause = "_id = ?";
                 String[] whereArgs = new String[]{String.valueOf(studentId)};
-
                 try {
                     database.delete(DatabaseHelper.TABLE_STUDENTS, whereClause, whereArgs);
                     Log.d(TAG, "deleteStudentSingle: " + Thread.currentThread().getName());
@@ -213,6 +190,27 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
     @Override
     public Completable update(ClassRoom classRoom) {
 
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull CompletableEmitter emitter) throws Exception {
+                database = dbHelper.getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                cv.put(DatabaseHelper.COLUMN_CLASSNAME, classRoom.getClassName());
+                cv.put(DatabaseHelper.COLUMN_CLASSNUMBER, classRoom.getClassNumber());
+                cv.put(DatabaseHelper.COLUMN_STUDENTSCOUNT, classRoom.getStudentsCount());
+                cv.put(DatabaseHelper.COLUMN_FLOOR, classRoom.getFloor());
+                try {
+                    database.update(DatabaseHelper.TABLE_CLASSROOMS, cv, DatabaseHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(classRoom.getClassId())});
+                    Log.d(TAG, "getById:Class " + Thread.currentThread().getName());
+
+                } catch (Exception e) {
+                    emitter.onError(e);
+                } finally {
+                    emitter.onComplete();
+                }
+
+            }
+        });
 
 //        Single.fromCallable(database.rawQuery(query, columns));
 //        database.update(DatabaseHelper.TABLE_CLASSROOMS, cv, whereClause, null)
@@ -251,37 +249,15 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
 //                return cursor;
 //            }
 //        });
-        return Completable.create(new CompletableOnSubscribe() {
-            @Override
-            public void subscribe(@NonNull CompletableEmitter emitter) throws Exception {
-                database = dbHelper.getWritableDatabase();
-
-                ContentValues cv = new ContentValues();
-                cv.put(DatabaseHelper.COLUMN_CLASSNAME, classRoom.getClassName());
-                cv.put(DatabaseHelper.COLUMN_CLASSNUMBER, classRoom.getClassNumber());
-                cv.put(DatabaseHelper.COLUMN_STUDENTSCOUNT, classRoom.getStudentsCount());
-                cv.put(DatabaseHelper.COLUMN_FLOOR, classRoom.getFloor());
-                try {
-                    database.update(DatabaseHelper.TABLE_CLASSROOMS, cv, DatabaseHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(classRoom.getClassId())});
-                    Log.d(TAG, "getById:Class " + Thread.currentThread().getName());
-
-                } catch (Exception e) {
-                    emitter.onError(e);
-                } finally {
-                    emitter.onComplete();
-                }
-
-            }
-        });
 
 
     }
 
 
-    public Single<Cursor> getAllClassRoomsId() {
-        database = dbHelper.getWritableDatabase();
-        String[] columns = new String[]{DatabaseHelper.COLUMN_ID};
-        return Single.just(database.query(DatabaseHelper.TABLE_CLASSROOMS, columns, null, null, null, null, null));
-    }
+//    public Single<Cursor> getAllClassRoomsId() {
+//        database = dbHelper.getWritableDatabase();
+//        String[] columns = new String[]{DatabaseHelper.COLUMN_ID};
+//        return Single.just(database.query(DatabaseHelper.TABLE_CLASSROOMS, columns, null, null, null, null, null));
+//    }
 
 }

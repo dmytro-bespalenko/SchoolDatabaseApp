@@ -23,10 +23,7 @@ public interface ClassRoomRepository {
     Completable update(ClassRoom classRoom);
 
 
-    Single<ClassRoom> getById(int id);
-
     Single<Cursor> getAllClassRoomsEntries();
 
-    void deleteAll();
 
 }

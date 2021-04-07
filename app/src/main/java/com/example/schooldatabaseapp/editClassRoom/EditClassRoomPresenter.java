@@ -2,7 +2,7 @@ package com.example.schooldatabaseapp.editClassRoom;
 
 import android.annotation.SuppressLint;
 
-import com.example.schooldatabaseapp.Repositories.DatabaseClassRoomRepository;
+import com.example.schooldatabaseapp.repositories.DatabaseClassRoomRepository;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
 

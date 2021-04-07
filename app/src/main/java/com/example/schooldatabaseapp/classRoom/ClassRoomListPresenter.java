@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
-import com.example.schooldatabaseapp.Repositories.DatabaseClassRoomRepository;
+import com.example.schooldatabaseapp.repositories.DatabaseClassRoomRepository;
 import com.example.schooldatabaseapp.model.Student;
 
 import java.util.ArrayList;

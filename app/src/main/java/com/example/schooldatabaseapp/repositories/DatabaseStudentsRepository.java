@@ -1,4 +1,4 @@
-package com.example.schooldatabaseapp.Repositories;
+package com.example.schooldatabaseapp.repositories;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;

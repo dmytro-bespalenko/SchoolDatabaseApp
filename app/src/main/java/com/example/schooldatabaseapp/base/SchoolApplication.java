@@ -2,8 +2,8 @@ package com.example.schooldatabaseapp.base;
 
 import android.app.Application;
 
-import com.example.schooldatabaseapp.Repositories.DatabaseClassRoomRepository;
-import com.example.schooldatabaseapp.Repositories.DatabaseStudentsRepository;
+import com.example.schooldatabaseapp.repositories.DatabaseClassRoomRepository;
+import com.example.schooldatabaseapp.repositories.DatabaseStudentsRepository;
 
 public class SchoolApplication extends Application {
     @Override

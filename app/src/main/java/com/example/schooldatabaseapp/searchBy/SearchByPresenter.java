@@ -2,7 +2,7 @@ package com.example.schooldatabaseapp.searchBy;
 
 import android.annotation.SuppressLint;
 
-import com.example.schooldatabaseapp.Repositories.DatabaseStudentsRepository;
+import com.example.schooldatabaseapp.repositories.DatabaseStudentsRepository;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.model.StudentsRepository;

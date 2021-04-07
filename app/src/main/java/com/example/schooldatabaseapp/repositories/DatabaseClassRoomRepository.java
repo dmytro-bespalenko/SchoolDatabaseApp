@@ -1,4 +1,4 @@
-package com.example.schooldatabaseapp.Repositories;
+package com.example.schooldatabaseapp.repositories;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -11,9 +11,6 @@ import com.example.schooldatabaseapp.base.SchoolApplication;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
 import com.example.schooldatabaseapp.model.Student;
-
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +56,6 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
     @Override
     public Single<List<ClassRoom>> getAllClassrooms() {
         database = dbHelper.getWritableDatabase();
-
         return getAllClassRoomsEntries()
                 .map(new Function<Cursor, List<ClassRoom>>() {
                     @Override
@@ -107,7 +103,6 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
 
     private Single<Cursor> getAllStudentsEntries() {
         database = dbHelper.getWritableDatabase();
-
         String[] columns = new String[]{DatabaseHelper.COLUMN_STUDENT_ID, DatabaseHelper.COLUMN_FIRST_NAME,
                 DatabaseHelper.COLUMN_LAST_NAME, DatabaseHelper.COLUMN_STUDENT_CLASS_ID, DatabaseHelper.COLUMN_GENDER, DatabaseHelper.COLUMN_AGE};
         return Single.just(database.query(DatabaseHelper.TABLE_STUDENTS, columns, null, null, null, null, null));
@@ -123,22 +118,25 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
     }
 
 
-
     @Override
     public Single<Long> insert(ClassRoom classRoom) {
         database = dbHelper.getWritableDatabase();
-        return Single.fromPublisher(new Publisher<Long>() {
-            @Override
-            public void subscribe(Subscriber<? super Long> s) {
-                ContentValues cv = new ContentValues();
-                cv.put(DatabaseHelper.COLUMN_CLASSNAME, classRoom.getClassName());
-                cv.put(DatabaseHelper.COLUMN_CLASSNUMBER, classRoom.getClassNumber());
-                cv.put(DatabaseHelper.COLUMN_STUDENTSCOUNT, classRoom.getStudentsCount());
-                cv.put(DatabaseHelper.COLUMN_FLOOR, classRoom.getFloor());
+        return Single.fromPublisher(publisher -> {
+            ContentValues cv = new ContentValues();
+            cv.put(DatabaseHelper.COLUMN_CLASSNAME, classRoom.getClassName());
+            cv.put(DatabaseHelper.COLUMN_CLASSNUMBER, classRoom.getClassNumber());
+            cv.put(DatabaseHelper.COLUMN_STUDENTSCOUNT, classRoom.getStudentsCount());
+            cv.put(DatabaseHelper.COLUMN_FLOOR, classRoom.getFloor());
+            try {
                 Log.d(TAG, "insert: ClassRoom " + Thread.currentThread().getName());
                 database.insert(DatabaseHelper.TABLE_CLASSROOMS, null, cv);
-
+            } catch (Exception e) {
+                publisher.onError(e);
+            } finally {
+                publisher.onComplete();
             }
+
+
         });
     }
 

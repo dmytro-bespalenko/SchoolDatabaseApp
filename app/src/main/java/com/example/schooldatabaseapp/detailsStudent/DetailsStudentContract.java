@@ -1,12 +1,11 @@
 package com.example.schooldatabaseapp.detailsStudent;
 
-import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.EntityClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 
 import java.util.List;
 
 import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
 
 public interface DetailsStudentContract {
 
@@ -24,7 +23,7 @@ public interface DetailsStudentContract {
         void deleteStudent(Student student);
 
 
-        List<ClassRoom> getAllClassRooms();
+        List<EntityClassRoom> getAllClassRooms();
 
     }
 

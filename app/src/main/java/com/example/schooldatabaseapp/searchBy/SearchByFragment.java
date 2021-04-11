@@ -21,16 +21,12 @@ import com.example.schooldatabaseapp.adapters.SearchByClassRoomsRecyclerAdapter;
 import com.example.schooldatabaseapp.adapters.SearchByStudentsRecyclerAdapter;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.detailsStudent.DetailsStudentFragment;
-import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.EntityClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.students.StudentsListFragment;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 
 public class SearchByFragment extends Fragment implements SearchByContract.View, SearchByStudentsRecyclerAdapter.CallBackAdapterPosition, SearchByClassRoomsRecyclerAdapter.CallBackAdapterPosition {
@@ -40,7 +36,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
     private SearchByClassRoomsRecyclerAdapter recyclerClassroomsAdapter;
 
     private List<Student> studentList = new ArrayList<>();
-    private List<ClassRoom> classRoomList = new ArrayList<>();
+    private List<EntityClassRoom> classRoomList = new ArrayList<>();
 
     private SearchByContract.Presenter presenter;
     private SearchView searchView;
@@ -134,7 +130,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
     }
 
     @Override
-    public void updateClassRooms(List<ClassRoom> allClassRoom) {
+    public void updateClassRooms(List<EntityClassRoom> allClassRoom) {
         classRoomList.clear();
         classRoomList.addAll(allClassRoom);
         recyclerClassroomsAdapter = new SearchByClassRoomsRecyclerAdapter(classRoomList, this);
@@ -143,7 +139,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
     }
 
     @Override
-    public void openClassRoomDetailsFragment(ClassRoom classRoom) {
+    public void openClassRoomDetailsFragment(EntityClassRoom classRoom) {
         Fragment fragment = new StudentsListFragment();
         FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
         Bundle bundle = new Bundle();
@@ -178,7 +174,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
     }
 
     @Override
-    public void adapterPosition(ClassRoom classRoom) {
+    public void adapterPosition(EntityClassRoom classRoom) {
 
         presenter.openStudentsListFragment(classRoom);
 

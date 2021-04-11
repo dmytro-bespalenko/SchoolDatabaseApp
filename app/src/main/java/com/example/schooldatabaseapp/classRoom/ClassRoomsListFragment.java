@@ -21,6 +21,8 @@ import com.example.schooldatabaseapp.addStudents.AddStudentFragment;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.editClassRoom.EditClassRoomFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.EntityClassRoom;
+import com.example.schooldatabaseapp.model.RoomClassRoomRepository;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.students.StudentsListFragment;
 
@@ -52,7 +54,7 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter = new ClassRoomListPresenter(this);
+        presenter = new ClassRoomListPresenter(this, RoomClassRoomRepository.getInstance());
         studentList = presenter.getAllStudents();
 
         Button addClassButton = view.findViewById(R.id.addClassButton);

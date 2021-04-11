@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.schooldatabaseapp.R;
-import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.EntityClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 
 import java.util.ArrayList;
@@ -34,12 +34,12 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
     private Student student;
     private Button saveEditButton;
 
-    private List<ClassRoom> classRoomList = new ArrayList<>();
+    private List<EntityClassRoom> classRoomList = new ArrayList<>();
 
     private EditStudentContract.Presenter presenter;
     private String selectedGender;
     private int selectedClassId;
-    private ClassRoom classRoom;
+    private EntityClassRoom classRoom;
 
 
     @Override

@@ -31,7 +31,6 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
     private SQLiteDatabase database;
     private static DatabaseClassRoomRepository instance;
 
-
     public DatabaseClassRoomRepository(SchoolApplication application) {
         dbHelper = new DatabaseHelper(application);
     }
@@ -108,8 +107,6 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
         return Single.just(database.query(DatabaseHelper.TABLE_STUDENTS, columns, null, null, null, null, null));
     }
 
-
-    @Override
     public Single<Cursor> getAllClassRoomsEntries() {
         database = dbHelper.getWritableDatabase();
         String[] columns = new String[]{DatabaseHelper.COLUMN_ID, DatabaseHelper.COLUMN_CLASSNAME,

@@ -5,7 +5,10 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.ClassRoomDao;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
+import com.example.schooldatabaseapp.model.EntityClassRoom;
+import com.example.schooldatabaseapp.model.RoomClassRoomRepository;
 import com.example.schooldatabaseapp.repositories.DatabaseClassRoomRepository;
 import com.example.schooldatabaseapp.model.Student;
 
@@ -26,18 +29,18 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
     private static final String TAG = "My_tag";
     private final ClassRoomListContract.View view;
     private final ClassRoomRepository repository;
+    ClassRoomDao dao;
     private Executor executor;
-    private Handler handler;
 
-    public ClassRoomListPresenter(ClassRoomListContract.View callBack) {
-        this.repository = DatabaseClassRoomRepository.getInstance();
+    public ClassRoomListPresenter(ClassRoomListContract.View callBack, ClassRoomRepository roomRepository) {
+        this.repository = roomRepository;
         this.view = callBack;
     }
 
 
     @Override
     public void updateClassRooms() {
-
+        dao.getAllClassrooms();
         repository.getAllClassrooms()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -122,7 +125,8 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
     public void deleteClassRoom(ClassRoom classRoom) {
 
         repository.delete(classRoom.getClassId())
-                .subscribeOn(Schedulers.io())
+                .
+                        subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
 

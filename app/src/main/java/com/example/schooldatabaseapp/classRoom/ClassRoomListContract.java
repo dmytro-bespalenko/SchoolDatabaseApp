@@ -1,6 +1,7 @@
 package com.example.schooldatabaseapp.classRoom;
 
 import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.EntityClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 
 import java.util.List;

@@ -2,8 +2,8 @@ package com.example.schooldatabaseapp.detailsStudent;
 
 import android.annotation.SuppressLint;
 
+import com.example.schooldatabaseapp.model.EntityClassRoom;
 import com.example.schooldatabaseapp.repositories.DatabaseStudentsRepository;
-import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 
 import java.util.ArrayList;
@@ -34,22 +34,20 @@ public class DetailsStudentPresenter implements DetailsStudentContract.Presenter
 
     @Override
     public void deleteStudent(Student student) {
-        repository.delete(student.getId())
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+        repository.delete(student);
 
 
     }
 
     @Override
-    public List<ClassRoom> getAllClassRooms() {
+    public List<EntityClassRoom> getAllClassRooms() {
 
-        List<ClassRoom> result = new ArrayList<>();
+        List<EntityClassRoom> result = new ArrayList<>();
         repository.getAllClassRoom()
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<List<ClassRoom>>() {
+                .subscribe(new Consumer<List<EntityClassRoom>>() {
             @Override
-            public void accept(List<ClassRoom> classRoomList) throws Exception {
+            public void accept(List<EntityClassRoom> classRoomList) throws Exception {
                 result.addAll(classRoomList);
             }
         });

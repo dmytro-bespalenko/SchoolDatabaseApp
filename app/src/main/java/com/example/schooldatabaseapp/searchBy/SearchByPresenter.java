@@ -2,10 +2,9 @@ package com.example.schooldatabaseapp.searchBy;
 
 import android.annotation.SuppressLint;
 
+import com.example.schooldatabaseapp.model.EntityClassRoom;
 import com.example.schooldatabaseapp.repositories.DatabaseStudentsRepository;
-import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
-import com.example.schooldatabaseapp.model.StudentsRepository;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class SearchByPresenter implements SearchByContract.Presenter {
 
     private static final String TAG = "My_Tag";
     private SearchByContract.View view;
-    private StudentsRepository repository;
+    private StudentsDao repository;
 
     public SearchByPresenter(SearchByContract.View callBack) {
         this.view = callBack;
@@ -32,9 +31,9 @@ public class SearchByPresenter implements SearchByContract.Presenter {
         repository.getAllClassRoom()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<ClassRoom>>() {
+                .subscribe(new Consumer<List<EntityClassRoom>>() {
                     @Override
-                    public void accept(List<ClassRoom> classRoomList) throws Exception {
+                    public void accept(List<EntityClassRoom> classRoomList) throws Exception {
                         view.updateClassRooms(classRoomList);
                     }
                 });
@@ -66,7 +65,7 @@ public class SearchByPresenter implements SearchByContract.Presenter {
     }
 
     @Override
-    public void openStudentsListFragment(ClassRoom classRoom) {
+    public void openStudentsListFragment(EntityClassRoom classRoom) {
         view.openClassRoomDetailsFragment(classRoom);
     }
 

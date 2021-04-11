@@ -181,7 +181,6 @@ public class DatabaseStudentsRepository implements StudentsRepository {
         });
     }
 
-    @Override
     public Single<Cursor> getAllEntries() {
         database = dbHelper.getWritableDatabase();
         String[] columns = new String[]{DatabaseHelper.COLUMN_STUDENT_ID, DatabaseHelper.COLUMN_FIRST_NAME,

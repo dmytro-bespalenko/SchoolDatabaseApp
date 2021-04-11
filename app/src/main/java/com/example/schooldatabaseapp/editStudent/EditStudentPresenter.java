@@ -2,10 +2,9 @@ package com.example.schooldatabaseapp.editStudent;
 
 import android.annotation.SuppressLint;
 
+import com.example.schooldatabaseapp.model.EntityClassRoom;
 import com.example.schooldatabaseapp.repositories.DatabaseStudentsRepository;
-import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
-import com.example.schooldatabaseapp.model.StudentsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,7 @@ public class EditStudentPresenter implements EditStudentContract.Presenter {
 
     private static final String TAG = "My_tag";
     private EditStudentContract.View view;
-    private StudentsRepository studentsRepository;
+    private StudentsDao studentsRepository;
 
     public EditStudentPresenter(EditStudentContract.View callBack) {
         this.view = callBack;
@@ -29,13 +28,13 @@ public class EditStudentPresenter implements EditStudentContract.Presenter {
     }
 
     @Override
-    public List<ClassRoom> getClassRooms() {
-        List<ClassRoom> resultClassRoomList = new ArrayList<>();
+    public List<EntityClassRoom> getClassRooms() {
+        List<EntityClassRoom> resultClassRoomList = new ArrayList<>();
         studentsRepository.getAllClassRoom()
                 .subscribeOn(Schedulers.io())
-                .map(new Function<List<ClassRoom>, List<ClassRoom>>() {
+                .map(new Function<List<EntityClassRoom>, List<EntityClassRoom>>() {
                     @Override
-                    public List<ClassRoom> apply(@NonNull List<ClassRoom> classRoomList) throws Exception {
+                    public List<EntityClassRoom> apply(@NonNull List<EntityClassRoom> classRoomList) throws Exception {
                         resultClassRoomList.addAll(classRoomList);
                         return classRoomList;
                     }
@@ -48,9 +47,6 @@ public class EditStudentPresenter implements EditStudentContract.Presenter {
     @Override
     public void saveEditStudent(Student student) {
 
-        studentsRepository.update(student)
-                .subscribeOn(Schedulers.io())
-                .subscribe();
-
+        studentsRepository.update(student);
     }
 }

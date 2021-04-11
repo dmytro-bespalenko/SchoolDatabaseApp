@@ -1,7 +1,5 @@
 package com.example.schooldatabaseapp.model;
 
-import android.database.Cursor;
-
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -11,19 +9,19 @@ public interface ClassRoomRepository {
 
     Single<List<ClassRoom>> getAllClassrooms();
 
-
     Single<List<Student>> getAllStudents();
 
+    //    void insert(ClassRoom classRoom);
     Single<Long> insert(ClassRoom classRoom);
 
     Completable delete(int classId);
+//    void delete(int classId);
 
     Completable deleteStudent(int studentId);
+//    void deleteStudent(int studentId);
 
     Completable update(ClassRoom classRoom);
-
-
-    Single<Cursor> getAllClassRoomsEntries();
+//    void update(ClassRoom classRoom);
 
 
 }

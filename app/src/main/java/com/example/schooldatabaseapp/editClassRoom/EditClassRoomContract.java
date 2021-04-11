@@ -1,8 +1,6 @@
 package com.example.schooldatabaseapp.editClassRoom;
 
-import com.example.schooldatabaseapp.model.ClassRoom;
-
-import java.util.List;
+import com.example.schooldatabaseapp.model.EntityClassRoom;
 
 public interface EditClassRoomContract {
 
@@ -13,7 +11,7 @@ public interface EditClassRoomContract {
 
     interface Presenter {
 
-        void editClassRoom(ClassRoom classRoom);
+        void editClassRoom(EntityClassRoom classRoom);
 
 
 

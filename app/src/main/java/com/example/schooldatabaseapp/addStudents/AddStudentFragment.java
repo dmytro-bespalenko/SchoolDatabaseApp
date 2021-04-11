@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.schooldatabaseapp.R;
-import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.EntityClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
     private EditText editFirstName;
     private EditText editLastName;
     private EditText editaAge;
-    private List<ClassRoom> classRoomList = new ArrayList<>();
+    private List<EntityClassRoom> classRoomList = new ArrayList<>();
 
     private Spinner genderSpinner;
     private Spinner classSpinner;
@@ -38,7 +38,7 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
     private int selectedClassId;
 
     private AddStudentContract.Presenter presenter;
-    private ClassRoom classRoom;
+    private EntityClassRoom classRoom;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

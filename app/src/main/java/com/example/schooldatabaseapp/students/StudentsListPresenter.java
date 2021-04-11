@@ -19,8 +19,9 @@ public class StudentsListPresenter implements StudentsListContract.Presenter {
     private StudentsRepository repository;
     private StudentsListContract.View view;
 
-    public StudentsListPresenter(StudentsListContract.View callBack) {
-        this.repository = DatabaseStudentsRepository.getInstance();
+
+    public StudentsListPresenter(StudentsListContract.View callBack, StudentsRepository studentsRepository) {
+        this.repository = studentsRepository;
         this.view = callBack;
     }
 
@@ -65,9 +66,7 @@ public class StudentsListPresenter implements StudentsListContract.Presenter {
 
     @Override
     public void deleteStudent(List<Student> studentsList, int adapterPosition) {
-        repository.delete(studentsList.get(adapterPosition).getId())
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+        repository.delete((adapterPosition));
     }
 
     @Override

@@ -3,15 +3,26 @@ package com.example.schooldatabaseapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ClassRoom implements Parcelable {
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
+@Entity
+public class EntityClassRoom implements Parcelable {
+
+    @PrimaryKey
     private Integer id;
+    @ColumnInfo(name = "class_name")
     private String className;
-    public int classNumber;
-    private int studentsCount;
-    private int floor;
-
-    public ClassRoom(String className, int classNumber, int studentsCount, int floor) {
+    @ColumnInfo(name = "class_number")
+    public Integer classNumber;
+    @ColumnInfo(name = "students_count")
+    private Integer studentsCount;
+    @ColumnInfo(name = "floor")
+    private Integer floor;
+    @Ignore
+    public EntityClassRoom(String className, int classNumber, int studentsCount, int floor) {
         this.id = null;
         this.className = className;
         this.classNumber = classNumber;
@@ -19,7 +30,7 @@ public class ClassRoom implements Parcelable {
         this.floor = floor;
     }
 
-    public ClassRoom(int id, String className, int classNumber, int studentsCount, int floor) {
+    public EntityClassRoom(Integer id, String className, int classNumber, int studentsCount, int floor) {
         this.id = id;
         this.className = className;
         this.classNumber = classNumber;
@@ -27,7 +38,7 @@ public class ClassRoom implements Parcelable {
         this.floor = floor;
     }
 
-    protected ClassRoom(Parcel in) {
+    protected EntityClassRoom(Parcel in) {
         if (in.readByte() == 0) {
             id = null;
         } else {
@@ -55,7 +66,12 @@ public class ClassRoom implements Parcelable {
         return id;
     }
 
-    public void setId(int id) {
+    public Integer getId() {
+        return id;
+    }
+
+
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -67,7 +83,7 @@ public class ClassRoom implements Parcelable {
         this.className = className;
     }
 
-    public int getClassNumber() {
+    public Integer getClassNumber() {
         return classNumber;
     }
 
@@ -75,7 +91,7 @@ public class ClassRoom implements Parcelable {
         this.classNumber = classNumber;
     }
 
-    public int getStudentsCount() {
+    public Integer getStudentsCount() {
         return studentsCount;
     }
 
@@ -83,7 +99,7 @@ public class ClassRoom implements Parcelable {
         this.studentsCount = studentsCount;
     }
 
-    public int getFloor() {
+    public Integer getFloor() {
         return floor;
     }
 

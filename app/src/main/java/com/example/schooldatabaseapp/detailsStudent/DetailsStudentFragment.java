@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.editStudent.EditStudentFragment;
-import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.EntityClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
     private Student student;
     private Button editStudent;
     private Button deleteStudent;
-    private List<ClassRoom> classRoomList;
+    private List<EntityClassRoom> classRoomList;
 
     private DetailsStudentContract.Presenter presenter;
     private String className;

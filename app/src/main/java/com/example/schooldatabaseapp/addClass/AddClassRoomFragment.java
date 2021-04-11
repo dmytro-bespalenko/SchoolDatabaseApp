@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.schooldatabaseapp.R;
+import com.example.schooldatabaseapp.model.RoomClassRoomRepository;
 
 public class AddClassRoomFragment extends Fragment implements AddClassRoomContract.View {
 
@@ -32,7 +33,7 @@ public class AddClassRoomFragment extends Fragment implements AddClassRoomContra
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new AddClassRoomPresenter(this);
+        presenter = new AddClassRoomPresenter(this, RoomClassRoomRepository.getInstance());
         editClassName = view.findViewById(R.id.addClassName);
         editClassNumber = view.findViewById(R.id.addClassNumber);
         editFloor = view.findViewById(R.id.addFloor);

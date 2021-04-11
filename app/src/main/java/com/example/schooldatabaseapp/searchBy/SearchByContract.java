@@ -1,6 +1,6 @@
 package com.example.schooldatabaseapp.searchBy;
 
-import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.EntityClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 
 import java.util.List;
@@ -15,16 +15,16 @@ public interface SearchByContract {
 
         void openDetailsStudentFragment(Student student);
 
-        void openStudentsListFragment(ClassRoom classRoom);
+        void openStudentsListFragment(EntityClassRoom classRoom);
     }
 
     interface View {
 
         void updateStudents(List<Student> all);
 
-        void openClassRoomDetailsFragment(ClassRoom classRoom);
+        void openClassRoomDetailsFragment(EntityClassRoom classRoom);
 
-        void updateClassRooms(List<ClassRoom> allClassRoom);
+        void updateClassRooms(List<EntityClassRoom> allClassRoom);
 
         void openDetailsStudentFragment(Student student);
     }

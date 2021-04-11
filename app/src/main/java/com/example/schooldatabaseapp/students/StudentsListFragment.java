@@ -19,14 +19,14 @@ import android.widget.TextView;
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.addStudents.AddStudentFragment;
 import com.example.schooldatabaseapp.detailsStudent.DetailsStudentFragment;
-import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.EntityClassRoom;
+import com.example.schooldatabaseapp.model.RoomClassRoomRepository;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.adapters.StudentsRecyclerAdapter;
+import com.example.schooldatabaseapp.repositories.DatabaseStudentsRepository;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class StudentsListFragment extends Fragment implements StudentsListContract.View, StudentsRecyclerAdapter.CallBackAdapterPosition {
@@ -43,7 +43,7 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
     private TextView floor;
     private Button addButton;
     private int count;
-    private ClassRoom classRoom;
+    private EntityClassRoom classRoom;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,7 +57,7 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new StudentsListPresenter(this);
+        presenter = new StudentsListPresenter(this, RoomStudentsRepository.getInstance());
 
         RecyclerView recyclerView = view.findViewById(R.id.students_recycle_view);
         recyclerAdapter = new StudentsRecyclerAdapter(studentList, this);

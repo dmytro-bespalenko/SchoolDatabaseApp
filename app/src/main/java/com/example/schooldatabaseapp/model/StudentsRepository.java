@@ -1,7 +1,9 @@
 package com.example.schooldatabaseapp.model;
 
 import android.database.Cursor;
+
 import java.util.List;
+
 import io.reactivex.Completable;
 import io.reactivex.Single;
 

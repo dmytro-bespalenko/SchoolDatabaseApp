@@ -2,8 +2,8 @@ package com.example.schooldatabaseapp.addStudents;
 
 import android.annotation.SuppressLint;
 
+import com.example.schooldatabaseapp.model.EntityClassRoom;
 import com.example.schooldatabaseapp.repositories.DatabaseStudentsRepository;
-import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 
 import java.util.ArrayList;
@@ -14,7 +14,6 @@ import io.reactivex.SingleSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 @SuppressLint("CheckResult")
 
@@ -33,24 +32,22 @@ public class AddStudentPresenter implements AddStudentContract.Presenter {
     @Override
     public void addNewStudent(Student student) {
 
-        repository.insert(student)
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+        repository.insert(student);
 
     }
 
     @Override
-    public List<ClassRoom> getClassRooms() {
-        List<ClassRoom> resultClassRoomList = new ArrayList<>();
+    public List<EntityClassRoom> getClassRooms() {
+        List<EntityClassRoom> resultClassRoomList = new ArrayList<>();
         repository.getAllClassRoom()
-                .flatMap(new Function<List<ClassRoom>, SingleSource<List<ClassRoom>>>() {
+                .flatMap(new Function<List<EntityClassRoom>, SingleSource<List<EntityClassRoom>>>() {
                     @Override
-                    public SingleSource<List<ClassRoom>> apply(@NonNull List<ClassRoom> classRoomList) throws Exception {
+                    public SingleSource<List<EntityClassRoom>> apply(@NonNull List<EntityClassRoom> classRoomList) throws Exception {
                         return Single.just(classRoomList);
                     }
-                }).subscribe(new Consumer<List<ClassRoom>>() {
+                }).subscribe(new Consumer<List<EntityClassRoom>>() {
             @Override
-            public void accept(List<ClassRoom> classRoomList) throws Exception {
+            public void accept(List<EntityClassRoom> classRoomList) throws Exception {
                 resultClassRoomList.addAll(classRoomList);
             }
         });

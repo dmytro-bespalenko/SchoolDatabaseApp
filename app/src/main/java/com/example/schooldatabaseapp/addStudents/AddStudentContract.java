@@ -1,6 +1,6 @@
 package com.example.schooldatabaseapp.addStudents;
 
-import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.EntityClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 
 import java.util.List;
@@ -11,7 +11,7 @@ interface AddStudentContract {
 
         void addNewStudent(Student student);
 
-        List<ClassRoom> getClassRooms();
+        List<EntityClassRoom> getClassRooms();
 
     }
 

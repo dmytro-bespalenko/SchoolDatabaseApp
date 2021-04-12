@@ -1,4 +1,4 @@
-package com.example.schooldatabaseapp.model;
+package com.example.schooldatabaseapp.room.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,6 +8,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
 
 import static androidx.room.ForeignKey.CASCADE;
 
@@ -69,6 +70,18 @@ public class EntityStudent implements Parcelable {
         age = in.readInt();
     }
 
+    public static final Creator<EntityStudent> CREATOR = new Creator<EntityStudent>() {
+        @Override
+        public EntityStudent createFromParcel(Parcel in) {
+            return new EntityStudent(in);
+        }
+
+        @Override
+        public EntityStudent[] newArray(int size) {
+            return new EntityStudent[size];
+        }
+    };
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -106,17 +119,6 @@ public class EntityStudent implements Parcelable {
         return lastName;
     }
 
-    public static final Creator<Student> CREATOR = new Creator<Student>() {
-        @Override
-        public Student createFromParcel(Parcel in) {
-            return new Student(in);
-        }
-
-        @Override
-        public Student[] newArray(int size) {
-            return new Student[size];
-        }
-    };
 
 
     public Integer getClassId() {

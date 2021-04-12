@@ -1,4 +1,4 @@
-package com.example.schooldatabaseapp.model;
+package com.example.schooldatabaseapp.room.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -21,6 +21,7 @@ public class EntityClassRoom implements Parcelable {
     private Integer studentsCount;
     @ColumnInfo(name = "floor")
     private Integer floor;
+
     @Ignore
     public EntityClassRoom(String className, int classNumber, int studentsCount, int floor) {
         this.id = null;
@@ -29,7 +30,6 @@ public class EntityClassRoom implements Parcelable {
         this.studentsCount = studentsCount;
         this.floor = floor;
     }
-
     public EntityClassRoom(Integer id, String className, int classNumber, int studentsCount, int floor) {
         this.id = id;
         this.className = className;

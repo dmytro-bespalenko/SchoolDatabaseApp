@@ -2,9 +2,12 @@ package com.example.schooldatabaseapp.editStudent;
 
 import android.annotation.SuppressLint;
 
-import com.example.schooldatabaseapp.model.EntityClassRoom;
+import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.StudentsRepository;
+import com.example.schooldatabaseapp.room.entity.EntityClassRoom;
 import com.example.schooldatabaseapp.repositories.DatabaseStudentsRepository;
 import com.example.schooldatabaseapp.model.Student;
+import com.example.schooldatabaseapp.room.repository.RoomStudentsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,21 +23,21 @@ public class EditStudentPresenter implements EditStudentContract.Presenter {
 
     private static final String TAG = "My_tag";
     private EditStudentContract.View view;
-    private StudentsDao studentsRepository;
+    private StudentsRepository studentsRepository;
 
-    public EditStudentPresenter(EditStudentContract.View callBack) {
+    public EditStudentPresenter(EditStudentContract.View callBack, StudentsRepository repository) {
         this.view = callBack;
-        this.studentsRepository = DatabaseStudentsRepository.getInstance();
+        this.studentsRepository = repository;
     }
 
     @Override
-    public List<EntityClassRoom> getClassRooms() {
-        List<EntityClassRoom> resultClassRoomList = new ArrayList<>();
+    public List<ClassRoom> getClassRooms() {
+        List<ClassRoom> resultClassRoomList = new ArrayList<>();
         studentsRepository.getAllClassRoom()
                 .subscribeOn(Schedulers.io())
-                .map(new Function<List<EntityClassRoom>, List<EntityClassRoom>>() {
+                .map(new Function<List<ClassRoom>, List<ClassRoom>>() {
                     @Override
-                    public List<EntityClassRoom> apply(@NonNull List<EntityClassRoom> classRoomList) throws Exception {
+                    public List<ClassRoom> apply(@NonNull List<ClassRoom> classRoomList) throws Exception {
                         resultClassRoomList.addAll(classRoomList);
                         return classRoomList;
                     }

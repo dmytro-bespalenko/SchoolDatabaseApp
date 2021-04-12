@@ -4,10 +4,11 @@ import android.app.Application;
 
 import androidx.room.Room;
 
-import com.example.schooldatabaseapp.model.RoomClassRoomRepository;
+import com.example.schooldatabaseapp.room.SchoolAppDatabase;
+import com.example.schooldatabaseapp.room.repository.RoomClassRoomRepository;
 import com.example.schooldatabaseapp.repositories.DatabaseClassRoomRepository;
 import com.example.schooldatabaseapp.repositories.DatabaseStudentsRepository;
-import com.example.schooldatabaseapp.students.RoomStudentsRepository;
+import com.example.schooldatabaseapp.room.repository.RoomStudentsRepository;
 
 public class SchoolApplication extends Application {
 

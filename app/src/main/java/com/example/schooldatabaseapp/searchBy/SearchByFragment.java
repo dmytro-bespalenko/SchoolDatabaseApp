@@ -1,6 +1,11 @@
 package com.example.schooldatabaseapp.searchBy;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,20 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Spinner;
-
-
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.adapters.SearchByClassRoomsRecyclerAdapter;
 import com.example.schooldatabaseapp.adapters.SearchByStudentsRecyclerAdapter;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.detailsStudent.DetailsStudentFragment;
-import com.example.schooldatabaseapp.model.EntityClassRoom;
+import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
+import com.example.schooldatabaseapp.room.repository.RoomStudentsRepository;
 import com.example.schooldatabaseapp.students.StudentsListFragment;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
     private SearchByClassRoomsRecyclerAdapter recyclerClassroomsAdapter;
 
     private List<Student> studentList = new ArrayList<>();
-    private List<EntityClassRoom> classRoomList = new ArrayList<>();
+    private List<ClassRoom> classRoomList = new ArrayList<>();
 
     private SearchByContract.Presenter presenter;
     private SearchView searchView;
@@ -65,7 +64,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
 
         searchView = view.findViewById(R.id.edit_search_view_query);
 
-        presenter = new SearchByPresenter(this);
+        presenter = new SearchByPresenter(this, RoomStudentsRepository.getInstance());
         recyclerView = view.findViewById(R.id.search_result_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         spinner = view.findViewById(R.id.spinner_search_by);
@@ -130,7 +129,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
     }
 
     @Override
-    public void updateClassRooms(List<EntityClassRoom> allClassRoom) {
+    public void updateClassRooms(List<ClassRoom> allClassRoom) {
         classRoomList.clear();
         classRoomList.addAll(allClassRoom);
         recyclerClassroomsAdapter = new SearchByClassRoomsRecyclerAdapter(classRoomList, this);
@@ -139,7 +138,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
     }
 
     @Override
-    public void openClassRoomDetailsFragment(EntityClassRoom classRoom) {
+    public void openClassRoomDetailsFragment(ClassRoom classRoom) {
         Fragment fragment = new StudentsListFragment();
         FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
         Bundle bundle = new Bundle();
@@ -174,7 +173,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
     }
 
     @Override
-    public void adapterPosition(EntityClassRoom classRoom) {
+    public void adapterPosition(ClassRoom classRoom) {
 
         presenter.openStudentsListFragment(classRoom);
 

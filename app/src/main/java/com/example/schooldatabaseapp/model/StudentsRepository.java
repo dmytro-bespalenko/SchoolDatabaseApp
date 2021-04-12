@@ -1,7 +1,5 @@
 package com.example.schooldatabaseapp.model;
 
-import android.database.Cursor;
-
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -17,9 +15,8 @@ public interface StudentsRepository {
 
     Completable delete(int studentId);
 
-    Single<Student> update(Student student);
+    Completable update(Student student);
 
-    Single<Cursor> getAllEntries();
 
 
 }

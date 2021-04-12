@@ -10,6 +10,7 @@ import com.example.schooldatabaseapp.model.StudentsRepository;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -33,9 +34,14 @@ public class StudentsListPresenter implements StudentsListContract.Presenter {
         repository.getAllStudents()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(students -> view.updateStudents(students));
+                .subscribe(new Consumer<List<Student>>() {
+                    @Override
+                    public void accept(List<Student> students) throws Exception {
+                        view.updateStudents(students);
+                        Log.d(TAG, "updateStudent : " + Thread.currentThread().getName());
+                    }
+                });
 
-        Log.d(TAG, "Handler updateStudent : " + Thread.currentThread().getName());
 
 
     }

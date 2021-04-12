@@ -19,12 +19,12 @@ import android.widget.TextView;
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.addStudents.AddStudentFragment;
 import com.example.schooldatabaseapp.detailsStudent.DetailsStudentFragment;
-import com.example.schooldatabaseapp.model.EntityClassRoom;
-import com.example.schooldatabaseapp.model.RoomClassRoomRepository;
+import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.room.entity.EntityClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.adapters.StudentsRecyclerAdapter;
-import com.example.schooldatabaseapp.repositories.DatabaseStudentsRepository;
+import com.example.schooldatabaseapp.room.repository.RoomStudentsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class StudentsListFragment extends Fragment implements StudentsListContra
     private TextView floor;
     private Button addButton;
     private int count;
-    private EntityClassRoom classRoom;
+    private ClassRoom classRoom;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

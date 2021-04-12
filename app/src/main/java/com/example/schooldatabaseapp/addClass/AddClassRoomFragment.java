@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.schooldatabaseapp.R;
-import com.example.schooldatabaseapp.model.RoomClassRoomRepository;
+import com.example.schooldatabaseapp.room.repository.RoomClassRoomRepository;
 
 public class AddClassRoomFragment extends Fragment implements AddClassRoomContract.View {
 

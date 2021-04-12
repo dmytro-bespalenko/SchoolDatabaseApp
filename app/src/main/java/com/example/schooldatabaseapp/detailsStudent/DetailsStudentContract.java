@@ -1,6 +1,7 @@
 package com.example.schooldatabaseapp.detailsStudent;
 
-import com.example.schooldatabaseapp.model.EntityClassRoom;
+import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.room.entity.EntityClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface DetailsStudentContract {
         void deleteStudent(Student student);
 
 
-        List<EntityClassRoom> getAllClassRooms();
+        List<ClassRoom> getAllClassRooms();
 
     }
 

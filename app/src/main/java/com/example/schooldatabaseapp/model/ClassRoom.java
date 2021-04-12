@@ -7,7 +7,7 @@ public class ClassRoom implements Parcelable {
 
     private Integer id;
     private String className;
-    public int classNumber;
+    private int classNumber;
     private int studentsCount;
     private int floor;
 
@@ -19,7 +19,7 @@ public class ClassRoom implements Parcelable {
         this.floor = floor;
     }
 
-    public ClassRoom(int id, String className, int classNumber, int studentsCount, int floor) {
+    public ClassRoom(Integer id, String className, int classNumber, int studentsCount, int floor) {
         this.id = id;
         this.className = className;
         this.classNumber = classNumber;
@@ -39,19 +39,20 @@ public class ClassRoom implements Parcelable {
         floor = in.readInt();
     }
 
-    public static final Creator<EntityClassRoom> CREATOR = new Creator<EntityClassRoom>() {
+
+    public static final Creator<ClassRoom> CREATOR = new Creator<ClassRoom>() {
         @Override
-        public EntityClassRoom createFromParcel(Parcel in) {
-            return new EntityClassRoom(in);
+        public ClassRoom createFromParcel(Parcel in) {
+            return new ClassRoom(in);
         }
 
         @Override
-        public EntityClassRoom[] newArray(int size) {
-            return new EntityClassRoom[size];
+        public ClassRoom[] newArray(int size) {
+            return new ClassRoom[size];
         }
     };
 
-    public int getClassId() {
+    public Integer getClassId() {
         return id;
     }
 

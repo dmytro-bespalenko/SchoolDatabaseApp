@@ -2,9 +2,10 @@ package com.example.schooldatabaseapp.searchBy;
 
 import android.annotation.SuppressLint;
 
-import com.example.schooldatabaseapp.model.EntityClassRoom;
-import com.example.schooldatabaseapp.repositories.DatabaseStudentsRepository;
+import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.Student;
+import com.example.schooldatabaseapp.model.StudentsRepository;
+import com.example.schooldatabaseapp.room.repository.RoomStudentsRepository;
 
 import java.util.List;
 
@@ -19,11 +20,11 @@ public class SearchByPresenter implements SearchByContract.Presenter {
 
     private static final String TAG = "My_Tag";
     private SearchByContract.View view;
-    private StudentsDao repository;
+    private StudentsRepository repository;
 
-    public SearchByPresenter(SearchByContract.View callBack) {
+    public SearchByPresenter(SearchByContract.View callBack, StudentsRepository repository) {
         this.view = callBack;
-        repository = DatabaseStudentsRepository.getInstance();
+        this.repository = repository;
     }
 
     @Override
@@ -31,9 +32,9 @@ public class SearchByPresenter implements SearchByContract.Presenter {
         repository.getAllClassRoom()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<EntityClassRoom>>() {
+                .subscribe(new Consumer<List<ClassRoom>>() {
                     @Override
-                    public void accept(List<EntityClassRoom> classRoomList) throws Exception {
+                    public void accept(List<ClassRoom> classRoomList) throws Exception {
                         view.updateClassRooms(classRoomList);
                     }
                 });
@@ -65,7 +66,7 @@ public class SearchByPresenter implements SearchByContract.Presenter {
     }
 
     @Override
-    public void openStudentsListFragment(EntityClassRoom classRoom) {
+    public void openStudentsListFragment(ClassRoom classRoom) {
         view.openClassRoomDetailsFragment(classRoom);
     }
 

@@ -2,9 +2,12 @@ package com.example.schooldatabaseapp.detailsStudent;
 
 import android.annotation.SuppressLint;
 
-import com.example.schooldatabaseapp.model.EntityClassRoom;
+import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.StudentsRepository;
+import com.example.schooldatabaseapp.room.entity.EntityClassRoom;
 import com.example.schooldatabaseapp.repositories.DatabaseStudentsRepository;
 import com.example.schooldatabaseapp.model.Student;
+import com.example.schooldatabaseapp.room.repository.RoomStudentsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +21,11 @@ public class DetailsStudentPresenter implements DetailsStudentContract.Presenter
 
     private static final String TAG = "My_tag";
     private DetailsStudentContract.View view;
-    private DatabaseStudentsRepository repository;
+    private StudentsRepository repository;
 
-    public DetailsStudentPresenter(DetailsStudentContract.View callBack) {
+    public DetailsStudentPresenter(DetailsStudentContract.View callBack, StudentsRepository roomStudentsRepository) {
         this.view = callBack;
-        repository = DatabaseStudentsRepository.getInstance();
+        repository = roomStudentsRepository;
     }
 
     @Override
@@ -34,23 +37,22 @@ public class DetailsStudentPresenter implements DetailsStudentContract.Presenter
 
     @Override
     public void deleteStudent(Student student) {
-        repository.delete(student);
-
+        repository.delete(student.getId());
 
     }
 
     @Override
-    public List<EntityClassRoom> getAllClassRooms() {
+    public List<ClassRoom> getAllClassRooms() {
 
-        List<EntityClassRoom> result = new ArrayList<>();
+        List<ClassRoom> result = new ArrayList<>();
         repository.getAllClassRoom()
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<List<EntityClassRoom>>() {
-            @Override
-            public void accept(List<EntityClassRoom> classRoomList) throws Exception {
-                result.addAll(classRoomList);
-            }
-        });
+                .subscribe(new Consumer<List<ClassRoom>>() {
+                    @Override
+                    public void accept(List<ClassRoom> classRoomList) throws Exception {
+                        result.addAll(classRoomList);
+                    }
+                });
 
         return result;
     }

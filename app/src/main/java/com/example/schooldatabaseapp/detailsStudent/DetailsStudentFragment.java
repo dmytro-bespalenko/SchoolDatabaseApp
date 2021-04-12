@@ -16,8 +16,10 @@ import androidx.fragment.app.Fragment;
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.editStudent.EditStudentFragment;
-import com.example.schooldatabaseapp.model.EntityClassRoom;
+import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.room.entity.EntityClassRoom;
 import com.example.schooldatabaseapp.model.Student;
+import com.example.schooldatabaseapp.room.repository.RoomStudentsRepository;
 
 import java.util.List;
 
@@ -35,7 +37,7 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
     private Student student;
     private Button editStudent;
     private Button deleteStudent;
-    private List<EntityClassRoom> classRoomList;
+    private List<ClassRoom> classRoomList;
 
     private DetailsStudentContract.Presenter presenter;
     private String className;
@@ -53,7 +55,7 @@ public class DetailsStudentFragment extends Fragment implements DetailsStudentCo
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new DetailsStudentPresenter(this);
+        presenter = new DetailsStudentPresenter(this, RoomStudentsRepository.getInstance());
 
         classRoomList = presenter.getAllClassRooms();
 

@@ -158,26 +158,27 @@ public class DatabaseStudentsRepository implements StudentsRepository {
     }
 
     @Override
-    public Single<Student> update(Student student) {
-        return Single.fromPublisher(publisher -> {
-            database = dbHelper.getWritableDatabase();
-            ContentValues cv = new ContentValues();
-            cv.put(DatabaseHelper.COLUMN_FIRST_NAME, student.getFirstName());
-            cv.put(DatabaseHelper.COLUMN_LAST_NAME, student.getLastName());
-            cv.put(DatabaseHelper.COLUMN_STUDENT_CLASS_ID, student.getClassId());
-            cv.put(DatabaseHelper.COLUMN_GENDER, student.getGender());
-            cv.put(DatabaseHelper.COLUMN_AGE, student.getAge());
-            try {
-                database.update(DatabaseHelper.TABLE_STUDENTS, cv, DatabaseHelper.COLUMN_STUDENT_ID + " = ?", new String[]{String.valueOf(student.getId())});
-                publisher.onNext(student);
-                Log.d(TAG, "update fromPublisher: " + Thread.currentThread().getName());
-            } catch (Exception e) {
-                publisher.onError(e);
-            } finally {
-                publisher.onComplete();
+    public Completable update(Student student) {
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull CompletableEmitter emitter) throws Exception {
+                database = dbHelper.getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                cv.put(DatabaseHelper.COLUMN_FIRST_NAME, student.getFirstName());
+                cv.put(DatabaseHelper.COLUMN_LAST_NAME, student.getLastName());
+                cv.put(DatabaseHelper.COLUMN_STUDENT_CLASS_ID, student.getClassId());
+                cv.put(DatabaseHelper.COLUMN_GENDER, student.getGender());
+                cv.put(DatabaseHelper.COLUMN_AGE, student.getAge());
+                try {
+                    database.update(DatabaseHelper.TABLE_STUDENTS, cv, DatabaseHelper.COLUMN_STUDENT_ID + " = ?", new String[]{String.valueOf(student.getId())});
+                    Log.d(TAG, "update fromPublisher: " + Thread.currentThread().getName());
+                } catch (Exception e) {
+                    emitter.onError(e);
+                } finally {
+                    emitter.onComplete();
+                }
+
             }
-
-
         });
     }
 

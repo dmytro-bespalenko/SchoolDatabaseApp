@@ -1,15 +1,10 @@
 package com.example.schooldatabaseapp.classRoom;
 
 import android.annotation.SuppressLint;
-import android.os.Handler;
 import android.util.Log;
 
 import com.example.schooldatabaseapp.model.ClassRoom;
-import com.example.schooldatabaseapp.model.ClassRoomDao;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
-import com.example.schooldatabaseapp.model.EntityClassRoom;
-import com.example.schooldatabaseapp.model.RoomClassRoomRepository;
-import com.example.schooldatabaseapp.repositories.DatabaseClassRoomRepository;
 import com.example.schooldatabaseapp.model.Student;
 
 import java.util.ArrayList;
@@ -29,7 +24,6 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
     private static final String TAG = "My_tag";
     private final ClassRoomListContract.View view;
     private final ClassRoomRepository repository;
-    ClassRoomDao dao;
     private Executor executor;
 
     public ClassRoomListPresenter(ClassRoomListContract.View callBack, ClassRoomRepository roomRepository) {
@@ -40,7 +34,6 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
 
     @Override
     public void updateClassRooms() {
-        dao.getAllClassrooms();
         repository.getAllClassrooms()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -2,9 +2,9 @@ package com.example.schooldatabaseapp.editClassRoom;
 
 import android.annotation.SuppressLint;
 
-import com.example.schooldatabaseapp.model.ClassRoomDao;
-import com.example.schooldatabaseapp.model.EntityClassRoom;
-import com.example.schooldatabaseapp.repositories.DatabaseClassRoomRepository;
+import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.ClassRoomRepository;
+import com.example.schooldatabaseapp.room.repository.RoomClassRoomRepository;
 
 @SuppressLint("CheckResult")
 
@@ -12,17 +12,17 @@ import com.example.schooldatabaseapp.repositories.DatabaseClassRoomRepository;
 public class EditClassRoomPresenter implements EditClassRoomContract.Presenter {
 
     private static final String TAG = "My_tag";
-    private final ClassRoomDao repository;
+    private final ClassRoomRepository repository;
     private EditClassRoomContract.View view;
 
-    public EditClassRoomPresenter(EditClassRoomContract.View callback) {
-        this.repository = DatabaseClassRoomRepository.getInstance();
+    public EditClassRoomPresenter(EditClassRoomContract.View callback, ClassRoomRepository repository) {
+        this.repository = repository;
         this.view = callback;
     }
 
 
     @Override
-    public void editClassRoom(EntityClassRoom classRoom) {
+    public void editClassRoom(ClassRoom classRoom) {
         repository.update(classRoom);
 
     }

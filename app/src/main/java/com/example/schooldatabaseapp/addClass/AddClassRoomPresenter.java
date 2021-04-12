@@ -2,10 +2,10 @@ package com.example.schooldatabaseapp.addClass;
 
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
-import com.example.schooldatabaseapp.model.EntityClassRoom;
-import com.example.schooldatabaseapp.model.RoomClassRoomRepository;
-import com.example.schooldatabaseapp.repositories.DatabaseClassRoomRepository;
-import com.example.schooldatabaseapp.model.ClassRoomDao;
+import com.example.schooldatabaseapp.room.repository.RoomClassRoomRepository;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class AddClassRoomPresenter implements AddClassRoomContract.Presenter {
 
@@ -20,7 +20,11 @@ public class AddClassRoomPresenter implements AddClassRoomContract.Presenter {
 
     @Override
     public void addNewClassRoom(String className, int classNumber, int floor) {
-        repository.insert(new ClassRoom(className, classNumber, 5, floor));
+        repository.insert(new ClassRoom(className, classNumber, 5, floor))
+                .subscribeOn(Schedulers.io())
+                .subscribe()
+
+        ;
 
     }
 }

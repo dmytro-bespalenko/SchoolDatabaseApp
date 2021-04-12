@@ -16,8 +16,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.schooldatabaseapp.R;
-import com.example.schooldatabaseapp.model.EntityClassRoom;
+import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.room.entity.EntityClassRoom;
 import com.example.schooldatabaseapp.model.Student;
+import com.example.schooldatabaseapp.room.repository.RoomStudentsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
     private EditText editFirstName;
     private EditText editLastName;
     private EditText editaAge;
-    private List<EntityClassRoom> classRoomList = new ArrayList<>();
+    private List<ClassRoom> classRoomList = new ArrayList<>();
 
     private Spinner genderSpinner;
     private Spinner classSpinner;
@@ -38,7 +40,7 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
     private int selectedClassId;
 
     private AddStudentContract.Presenter presenter;
-    private EntityClassRoom classRoom;
+    private ClassRoom classRoom;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,7 +55,7 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
         super.onViewCreated(view, savedInstanceState);
 
 
-        presenter = new AddStudentPresenter(this);
+        presenter = new AddStudentPresenter(this, RoomStudentsRepository.getInstance());
 
         editFirstName = view.findViewById(R.id.add_firstName);
         editLastName = view.findViewById(R.id.add_lastName);
@@ -90,11 +92,10 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
         }
         classSpinner.setAdapter(adapter);
 
-        if (classRoom != null) {
+        if (classRoom != null && classRoom.getClassId()!=null) {
             selectedClassId = classRoom.getClassId();
             classSpinner.setSelection(adapter.getPosition(classRoom.getClassName()), true);
         }
-        // TODO: 30.03.21
 
 
         classSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

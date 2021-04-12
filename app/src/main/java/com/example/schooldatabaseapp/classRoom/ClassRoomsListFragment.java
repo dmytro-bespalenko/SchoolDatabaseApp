@@ -21,8 +21,7 @@ import com.example.schooldatabaseapp.addStudents.AddStudentFragment;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.editClassRoom.EditClassRoomFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
-import com.example.schooldatabaseapp.model.EntityClassRoom;
-import com.example.schooldatabaseapp.model.RoomClassRoomRepository;
+import com.example.schooldatabaseapp.room.repository.RoomClassRoomRepository;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.students.StudentsListFragment;
 

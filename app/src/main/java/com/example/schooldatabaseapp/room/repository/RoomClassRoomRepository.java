@@ -1,12 +1,21 @@
-package com.example.schooldatabaseapp.model;
+package com.example.schooldatabaseapp.room.repository;
 
-import com.example.schooldatabaseapp.base.SchoolApplication;
+import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.model.ClassRoomRepository;
+import com.example.schooldatabaseapp.model.Student;
+import com.example.schooldatabaseapp.room.dao.ClassRoomDao;
+import com.example.schooldatabaseapp.room.entity.EntityClassRoom;
+import com.example.schooldatabaseapp.room.entity.EntityStudent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 
@@ -36,7 +45,7 @@ public class RoomClassRoomRepository implements ClassRoomRepository {
 
     @Override
     public Single<List<ClassRoom>> getAllClassrooms() {
-        return dao.getAllClassrooms()
+        return  dao.getAllClassrooms()
                 .map(new Function<List<EntityClassRoom>, List<ClassRoom>>() {
                     @Override
                     public List<ClassRoom> apply(@NonNull List<EntityClassRoom> entityClassRooms) throws Exception {
@@ -71,31 +80,68 @@ public class RoomClassRoomRepository implements ClassRoomRepository {
 
                         return students;
                     }
-                })
-                ;
+                });
     }
 
     @Override
     public Single<Long> insert(ClassRoom classRoom) {
-        return dao.insert(new EntityClassRoom(classRoom.getClassName()
-                , classRoom.getClassNumber()
-                , classRoom.getStudentsCount()
-                , classRoom.getFloor()
-        ));
+        return Single.create(new SingleOnSubscribe<Long>() {
+            @Override
+            public void subscribe(@NonNull SingleEmitter<Long> emitter) throws Exception {
+                try {
+                    dao.insert(new EntityClassRoom(classRoom.getClassName()
+                            , classRoom.getClassNumber()
+                            , classRoom.getStudentsCount()
+                            , classRoom.getFloor()));
+
+                } catch (Exception e) {
+                    emitter.onError(e);
+                } finally {
+                    emitter.onSuccess(1L);
+                }
+
+            }
+        });
     }
 
+
     @Override
-    public Completable delete(int classId) {
-        return dao.delete(classId);
+    public Completable delete(Integer classId) {
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull CompletableEmitter emitter) throws Exception {
+                try {
+                    dao.delete(classId);
+                } catch (Exception e) {
+                    emitter.onError(e);
+                } finally {
+                    emitter.onComplete();
+                }
+            }
+
+        });
     }
 
     @Override
     public Completable deleteStudent(int studentId) {
-        return dao.deleteStudent(studentId);
+        return null;
     }
+
 
     @Override
     public Completable update(ClassRoom classRoom) {
-        return null;
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull CompletableEmitter emitter) throws Exception {
+                try {
+                    dao.update(new EntityClassRoom(classRoom.getClassId(), classRoom.getClassName(), classRoom.getClassNumber(), classRoom.getStudentsCount(), classRoom.getFloor()));
+                } catch (Exception e) {
+                    emitter.onError(e);
+                } finally {
+                    emitter.onComplete();
+                }
+            }
+
+        });
     }
 }

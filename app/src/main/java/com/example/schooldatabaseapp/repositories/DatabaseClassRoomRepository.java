@@ -138,7 +138,7 @@ public class DatabaseClassRoomRepository implements ClassRoomRepository {
     }
 
     @Override
-    public Completable delete(int classId) {
+    public Completable delete(Integer classId) {
         return Completable.create(new CompletableOnSubscribe() {
             @Override
             public void subscribe(@NonNull CompletableEmitter emitter) throws Exception {

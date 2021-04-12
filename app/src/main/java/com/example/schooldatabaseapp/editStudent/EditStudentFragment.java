@@ -16,8 +16,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.schooldatabaseapp.R;
-import com.example.schooldatabaseapp.model.EntityClassRoom;
+import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.room.entity.EntityClassRoom;
 import com.example.schooldatabaseapp.model.Student;
+import com.example.schooldatabaseapp.room.repository.RoomStudentsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +36,12 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
     private Student student;
     private Button saveEditButton;
 
-    private List<EntityClassRoom> classRoomList = new ArrayList<>();
+    private List<ClassRoom> classRoomList = new ArrayList<>();
 
     private EditStudentContract.Presenter presenter;
     private String selectedGender;
     private int selectedClassId;
-    private EntityClassRoom classRoom;
+    private ClassRoom classRoom;
 
 
     @Override
@@ -54,7 +56,7 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new EditStudentPresenter(this);
+        presenter = new EditStudentPresenter(this, RoomStudentsRepository.getInstance());
 
         editFirstName = view.findViewById(R.id.edit_student_first_name);
         editLastName = view.findViewById(R.id.edit_student_last_name);

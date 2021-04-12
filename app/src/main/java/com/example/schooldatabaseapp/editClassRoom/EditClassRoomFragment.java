@@ -13,7 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.schooldatabaseapp.R;
-import com.example.schooldatabaseapp.model.EntityClassRoom;
+import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.room.entity.EntityClassRoom;
+import com.example.schooldatabaseapp.room.repository.RoomClassRoomRepository;
 
 public class EditClassRoomFragment extends Fragment implements EditClassRoomContract.View {
 
@@ -24,7 +26,7 @@ public class EditClassRoomFragment extends Fragment implements EditClassRoomCont
     private EditText editClassName;
     private EditText editClassNumber;
     private EditText editFloor;
-    private EntityClassRoom classRoom;
+    private ClassRoom classRoom;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,7 +40,7 @@ public class EditClassRoomFragment extends Fragment implements EditClassRoomCont
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new EditClassRoomPresenter(this);
+        presenter = new EditClassRoomPresenter(this, RoomClassRoomRepository.getInstance());
 
         editClassName = view.findViewById(R.id.editClassName);
         editClassNumber = view.findViewById(R.id.editClassNumber);
@@ -75,7 +77,7 @@ public class EditClassRoomFragment extends Fragment implements EditClassRoomCont
             String className = String.valueOf(editClassName.getText());
             int classNumber = Integer.parseInt(editClassNumber.getText().toString());
             int floor = Integer.parseInt(editFloor.getText().toString());
-            presenter.editClassRoom(new EntityClassRoom(classRoom.getClassId(), className, classNumber, 0, floor));
+            presenter.editClassRoom(new ClassRoom(classRoom.getClassId(), className, classNumber, 0, floor));
             assert getFragmentManager() != null;
             getFragmentManager().popBackStack();
         }

@@ -1,10 +1,12 @@
-package com.example.schooldatabaseapp.model;
+package com.example.schooldatabaseapp.room.dao;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.example.schooldatabaseapp.room.entity.EntityClassRoom;
+import com.example.schooldatabaseapp.room.entity.EntityStudent;
 
 import java.util.List;
 
@@ -21,19 +23,13 @@ public interface ClassRoomDao {
     Single<List<EntityStudent>> getAllStudents();
 
     @Insert
-    Single<Long> insert(EntityClassRoom classRoom);
+    void insert(EntityClassRoom classRoom);
 
-    @Delete
-    Completable delete(int classId);
-
-    @Delete
-    Completable deleteStudent(int studentId);
+    @Query("DELETE FROM entityclassroom WHERE id = :classId")
+    Completable delete(Integer classId);
 
     @Update
     void update(EntityClassRoom classRoom);
-
-
-
 
 
 }

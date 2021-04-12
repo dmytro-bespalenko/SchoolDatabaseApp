@@ -12,7 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
-import com.example.schooldatabaseapp.model.EntityClassRoom;
+import com.example.schooldatabaseapp.model.ClassRoom;
+import com.example.schooldatabaseapp.room.entity.EntityClassRoom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,18 +21,18 @@ import java.util.List;
 public class SearchByClassRoomsRecyclerAdapter extends RecyclerView.Adapter<SearchByClassRoomsRecyclerAdapter.ViewHolder> implements Filterable {
 
 
-    private final List<EntityClassRoom> classRoomList;
-    private final List<EntityClassRoom> filteredClassRoomList;
+    private final List<ClassRoom> classRoomList;
+    private final List<ClassRoom> filteredClassRoomList;
     private CallBackAdapterPosition callBackAdapterPosition;
 
 
 
     public interface CallBackAdapterPosition {
-        void adapterPosition(EntityClassRoom position);
+        void adapterPosition(ClassRoom position);
     }
 
 
-    public SearchByClassRoomsRecyclerAdapter(List<EntityClassRoom> classRoomList, CallBackAdapterPosition callBackAdapterPosition) {
+    public SearchByClassRoomsRecyclerAdapter(List<ClassRoom> classRoomList, CallBackAdapterPosition callBackAdapterPosition) {
         this.classRoomList = classRoomList;
         this.filteredClassRoomList = new ArrayList<>(classRoomList);
         this.callBackAdapterPosition = callBackAdapterPosition;
@@ -47,7 +48,7 @@ public class SearchByClassRoomsRecyclerAdapter extends RecyclerView.Adapter<Sear
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull SearchByClassRoomsRecyclerAdapter.ViewHolder holder, int position) {
-        EntityClassRoom classRoom = classRoomList.get(position);
+        ClassRoom classRoom = classRoomList.get(position);
 
         holder.searchResult.setText(classRoom.getClassName());
     }
@@ -66,12 +67,12 @@ public class SearchByClassRoomsRecyclerAdapter extends RecyclerView.Adapter<Sear
     private final Filter classRoomFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<EntityClassRoom> resultList = new ArrayList<>();
+            List<ClassRoom> resultList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
                 resultList.addAll(filteredClassRoomList);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (EntityClassRoom classRoom : filteredClassRoomList) {
+                for (ClassRoom classRoom : filteredClassRoomList) {
                     if (classRoom.getClassName().toLowerCase().contains(filterPattern)) {
                         resultList.add(classRoom);
                     }
@@ -97,13 +98,12 @@ public class SearchByClassRoomsRecyclerAdapter extends RecyclerView.Adapter<Sear
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView searchResult;
 
-        public ViewHolder(@NonNull View itemView, CallBackAdapterPosition callBackAdapterPosition, List<EntityClassRoom> filteredClassRoomList) {
+        public ViewHolder(@NonNull View itemView, CallBackAdapterPosition callBackAdapterPosition, List<ClassRoom> filteredClassRoomList) {
             super(itemView);
             searchResult = itemView.findViewById(R.id.search_result_text_view);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    presenter.onItemClassRoomClickListener(filteredClassRoomList.get(getAdapterPosition()));
                     callBackAdapterPosition.adapterPosition(filteredClassRoomList.get(getAdapterPosition()));
                 }
             });

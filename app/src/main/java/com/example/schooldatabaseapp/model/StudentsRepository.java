@@ -3,6 +3,7 @@ package com.example.schooldatabaseapp.model;
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 public interface StudentsRepository {

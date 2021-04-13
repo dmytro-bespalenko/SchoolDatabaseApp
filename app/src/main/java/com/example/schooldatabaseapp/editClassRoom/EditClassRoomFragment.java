@@ -77,7 +77,7 @@ public class EditClassRoomFragment extends Fragment implements EditClassRoomCont
             String className = String.valueOf(editClassName.getText());
             int classNumber = Integer.parseInt(editClassNumber.getText().toString());
             int floor = Integer.parseInt(editFloor.getText().toString());
-            presenter.editClassRoom(new ClassRoom(classRoom.getClassId(), className, classNumber, 0, floor));
+            presenter.editClassRoom(new ClassRoom(className, classNumber, 0, floor));
             assert getFragmentManager() != null;
             getFragmentManager().popBackStack();
         }

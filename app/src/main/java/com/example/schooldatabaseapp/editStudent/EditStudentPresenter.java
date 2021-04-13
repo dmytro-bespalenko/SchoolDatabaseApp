@@ -50,6 +50,8 @@ public class EditStudentPresenter implements EditStudentContract.Presenter {
     @Override
     public void saveEditStudent(Student student) {
 
-        studentsRepository.update(student);
+        studentsRepository.update(student)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 }

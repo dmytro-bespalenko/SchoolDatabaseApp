@@ -9,13 +9,10 @@ public interface ClassRoomRepository {
 
     Single<List<ClassRoom>> getAllClassrooms();
 
-    Single<List<Student>> getAllStudents();
 
-    Single<Long> insert(ClassRoom classRoom);
+    Completable insert(ClassRoom classRoom);
 
     Completable delete(Integer classRoom);
-
-    Completable deleteStudent(int studentId);
 
     Completable update(ClassRoom classRoom);
 

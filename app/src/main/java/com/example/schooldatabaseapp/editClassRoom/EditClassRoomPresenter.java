@@ -6,6 +6,8 @@ import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.model.ClassRoomRepository;
 import com.example.schooldatabaseapp.room.repository.RoomClassRoomRepository;
 
+import io.reactivex.schedulers.Schedulers;
+
 @SuppressLint("CheckResult")
 
 
@@ -23,7 +25,9 @@ public class EditClassRoomPresenter implements EditClassRoomContract.Presenter {
 
     @Override
     public void editClassRoom(ClassRoom classRoom) {
-        repository.update(classRoom);
+        repository.update(classRoom)
+        .subscribeOn(Schedulers.io())
+        .subscribe();
 
     }
 

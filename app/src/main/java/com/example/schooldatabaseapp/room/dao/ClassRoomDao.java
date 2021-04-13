@@ -11,7 +11,10 @@ import com.example.schooldatabaseapp.room.entity.EntityStudent;
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
+
+import static androidx.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface ClassRoomDao {
@@ -22,14 +25,14 @@ public interface ClassRoomDao {
     @Query("SELECT * FROM EntityStudent")
     Single<List<EntityStudent>> getAllStudents();
 
-    @Insert
-    void insert(EntityClassRoom classRoom);
+    @Insert(onConflict = REPLACE)
+    Completable insert(EntityClassRoom classRoom);
 
     @Query("DELETE FROM entityclassroom WHERE id = :classId")
     Completable delete(Integer classId);
 
-    @Update
-    void update(EntityClassRoom classRoom);
+    @Update()
+    Completable update(EntityClassRoom classRoom);
 
 
 }

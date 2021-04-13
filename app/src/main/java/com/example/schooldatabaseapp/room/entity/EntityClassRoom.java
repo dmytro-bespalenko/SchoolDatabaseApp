@@ -2,7 +2,6 @@ package com.example.schooldatabaseapp.room.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -11,18 +10,18 @@ import androidx.room.PrimaryKey;
 @Entity
 public class EntityClassRoom implements Parcelable {
 
-    @PrimaryKey
-    private Integer id;
+    @PrimaryKey(autoGenerate = true)
+    public Integer id;
+
     @ColumnInfo(name = "class_name")
     private String className;
     @ColumnInfo(name = "class_number")
-    public Integer classNumber;
+    private Integer classNumber;
     @ColumnInfo(name = "students_count")
     private Integer studentsCount;
     @ColumnInfo(name = "floor")
     private Integer floor;
 
-    @Ignore
     public EntityClassRoom(String className, int classNumber, int studentsCount, int floor) {
         this.id = null;
         this.className = className;
@@ -30,6 +29,8 @@ public class EntityClassRoom implements Parcelable {
         this.studentsCount = studentsCount;
         this.floor = floor;
     }
+
+    @Ignore
     public EntityClassRoom(Integer id, String className, int classNumber, int studentsCount, int floor) {
         this.id = id;
         this.className = className;
@@ -62,9 +63,6 @@ public class EntityClassRoom implements Parcelable {
         }
     };
 
-    public int getClassId() {
-        return id;
-    }
 
     public Integer getId() {
         return id;

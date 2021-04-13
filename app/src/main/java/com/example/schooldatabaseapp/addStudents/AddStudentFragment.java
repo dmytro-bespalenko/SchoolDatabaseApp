@@ -92,7 +92,7 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
         }
         classSpinner.setAdapter(adapter);
 
-        if (classRoom != null && classRoom.getClassId()!=null) {
+        if (classRoom != null) {
             selectedClassId = classRoom.getClassId();
             classSpinner.setSelection(adapter.getPosition(classRoom.getClassName()), true);
         }

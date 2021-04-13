@@ -3,6 +3,9 @@ package com.example.schooldatabaseapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
+
 public class ClassRoom implements Parcelable {
 
     private Integer id;

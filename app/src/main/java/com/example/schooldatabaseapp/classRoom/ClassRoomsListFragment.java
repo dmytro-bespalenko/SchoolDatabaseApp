@@ -36,7 +36,6 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
     private ClassRoomsRecyclerAdapter recyclerAdapter;
     private List<ClassRoom> classRoomList = new ArrayList<>();
     private ClassRoomListContract.Presenter presenter;
-    private List<Student> studentList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +53,6 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         presenter = new ClassRoomListPresenter(this, RoomClassRoomRepository.getInstance());
-        studentList = presenter.getAllStudents();
 
         Button addClassButton = view.findViewById(R.id.addClassButton);
         addClassButton.setOnClickListener(new View.OnClickListener() {
@@ -144,11 +142,6 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
                         //Yes button clicked
-                        for (int i = 0; i < studentList.size(); i++) {
-                            if (classRoom.getClassId() == studentList.get(i).getClassId()) {
-                                presenter.deleteStudent(studentList.get(i));
-                            }
-                        }
                         presenter.deleteClassRoom(classRoom);
                         classRoomList.remove(classRoom);
                         presenter.updateClassRooms();

@@ -165,12 +165,12 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
             String firstName = String.valueOf(editFirstName.getText());
             String lastName = String.valueOf(editLastName.getText());
             int age = Integer.parseInt(editAge.getText().toString());
-            presenter.saveEditStudent(new Student(student.getId(), firstName, lastName, selectedClassId, selectedGender, age));
+            presenter.saveEditStudent(new Student(firstName, lastName, selectedClassId, selectedGender, age));
 
 
             assert getFragmentManager() != null;
             getFragmentManager().popBackStack();
-            getFragmentManager().popBackStack();
+//            getFragmentManager().popBackStack();
 
         }
     }

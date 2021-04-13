@@ -36,11 +36,8 @@ public interface ClassRoomListContract {
 
         void showAddStudentFragment();
 
-        List<Student> getAllStudents();
-
         void deleteClassRoom(ClassRoom finalPosition);
 
-        void deleteStudent(Student student);
 
     }
 

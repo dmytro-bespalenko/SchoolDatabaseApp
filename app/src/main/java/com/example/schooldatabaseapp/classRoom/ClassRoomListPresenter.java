@@ -12,7 +12,10 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import io.reactivex.CompletableObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -96,46 +99,16 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
         });
     }
 
-    @Override
-    public List<Student> getAllStudents() {
-        List<Student> result = new ArrayList<>();
-
-        repository.getAllStudents()
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<List<Student>>() {
-                    @Override
-                    public void accept(List<Student> studentList) throws Exception {
-                        Log.d(TAG, "Presenter " + Thread.currentThread().getName());
-                        result.addAll(studentList);
-                    }
-                });
-
-
-        return result;
-    }
 
     @Override
     public void deleteClassRoom(ClassRoom classRoom) {
 
         repository.delete(classRoom.getClassId())
-                .
-                        subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-
-    }
-
-    @Override
-    public void deleteStudent(Student student) {
-
-
-        repository.deleteStudent(student.getId())
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
 
-
     }
+
 
 
 }

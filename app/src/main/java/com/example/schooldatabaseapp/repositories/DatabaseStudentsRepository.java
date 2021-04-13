@@ -18,6 +18,7 @@ import java.util.List;
 import io.reactivex.Completable;
 import io.reactivex.CompletableEmitter;
 import io.reactivex.CompletableOnSubscribe;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
@@ -92,10 +93,11 @@ public class DatabaseStudentsRepository implements StudentsRepository {
                             int classNumber = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNUMBER));
                             int studentsCount = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENTSCOUNT));
                             int floor = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_FLOOR));
-                            classrooms.add(new ClassRoom(id, className, classNumber, studentsCount, floor));
+                            classrooms.add(new ClassRoom(className, classNumber, studentsCount, floor));
                         }
                         cursor.close();
                         return classrooms;
+
                     }
                 });
     }

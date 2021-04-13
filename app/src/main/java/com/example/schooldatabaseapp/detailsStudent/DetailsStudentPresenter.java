@@ -37,7 +37,9 @@ public class DetailsStudentPresenter implements DetailsStudentContract.Presenter
 
     @Override
     public void deleteStudent(Student student) {
-        repository.delete(student.getId());
+        repository.delete(student.getId())
+                .subscribeOn(Schedulers.io())
+                .subscribe();
 
     }
 

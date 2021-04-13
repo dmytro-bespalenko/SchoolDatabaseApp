@@ -49,17 +49,12 @@ public class AddStudentPresenter implements AddStudentContract.Presenter {
         List<ClassRoom> resultClassRoomList = new ArrayList<>();
         repository.getAllClassRoom()
                 .subscribeOn(Schedulers.io())
-                .flatMap(new Function<List<ClassRoom>, SingleSource<List<ClassRoom>>>() {
+                .subscribe(new Consumer<List<ClassRoom>>() {
                     @Override
-                    public SingleSource<List<ClassRoom>> apply(@NonNull List<ClassRoom> classRoomList) throws Exception {
-                        return Single.just(classRoomList);
+                    public void accept(List<ClassRoom> classRoomList) throws Exception {
+                        resultClassRoomList.addAll(classRoomList);
                     }
-                }).subscribe(new Consumer<List<ClassRoom>>() {
-            @Override
-            public void accept(List<ClassRoom> classRoomList) throws Exception {
-                resultClassRoomList.addAll(classRoomList);
-            }
-        });
+                });
 
 
         return resultClassRoomList;

@@ -3,7 +3,6 @@ package com.example.schooldatabaseapp.students;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.example.schooldatabaseapp.repositories.DatabaseStudentsRepository;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.model.StudentsRepository;
 

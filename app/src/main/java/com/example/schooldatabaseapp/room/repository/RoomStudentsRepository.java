@@ -107,7 +107,7 @@ public class RoomStudentsRepository implements StudentsRepository {
 
     @Override
     public Completable update(Student student) {
-        EntityStudent entityStudent = new EntityStudent(student.getFirstName(), student.getLastName(), student.getClassId(), student.getGender(), student.getAge());
+        EntityStudent entityStudent = new EntityStudent(student.getId(), student.getFirstName(), student.getLastName(), student.getClassId(), student.getGender(), student.getAge());
         return dao.update(entityStudent);
 
     }

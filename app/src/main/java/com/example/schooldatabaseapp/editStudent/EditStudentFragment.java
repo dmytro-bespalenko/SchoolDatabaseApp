@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.model.ClassRoom;
-import com.example.schooldatabaseapp.room.entity.EntityClassRoom;
 import com.example.schooldatabaseapp.model.Student;
 import com.example.schooldatabaseapp.room.repository.RoomStudentsRepository;
 
@@ -42,6 +41,7 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
     private String selectedGender;
     private int selectedClassId;
     private ClassRoom classRoom;
+    private int studentId;
 
 
     @Override
@@ -72,6 +72,7 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
             student = bundle.getParcelable("pos");
             editFirstName.setText(student.getFirstName());
             editLastName.setText(student.getLastName());
+            studentId = student.getId();
             editAge.setText(String.valueOf(student.getAge()));
 
         }
@@ -165,12 +166,12 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
             String firstName = String.valueOf(editFirstName.getText());
             String lastName = String.valueOf(editLastName.getText());
             int age = Integer.parseInt(editAge.getText().toString());
-            presenter.saveEditStudent(new Student(firstName, lastName, selectedClassId, selectedGender, age));
+            presenter.saveEditStudent(new Student(studentId, firstName, lastName, selectedClassId, selectedGender, age));
 
 
             assert getFragmentManager() != null;
             getFragmentManager().popBackStack();
-//            getFragmentManager().popBackStack();
+            getFragmentManager().popBackStack();
 
         }
     }

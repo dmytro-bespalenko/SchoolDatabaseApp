@@ -14,14 +14,6 @@ public class ClassRoom implements Parcelable {
     private int studentsCount;
     private int floor;
 
-    public ClassRoom(String className, int classNumber, int studentsCount, int floor) {
-        this.id = null;
-        this.className = className;
-        this.classNumber = classNumber;
-        this.studentsCount = studentsCount;
-        this.floor = floor;
-    }
-
     public ClassRoom(Integer id, String className, int classNumber, int studentsCount, int floor) {
         this.id = id;
         this.className = className;

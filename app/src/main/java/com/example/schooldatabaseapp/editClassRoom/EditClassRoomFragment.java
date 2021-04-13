@@ -27,6 +27,7 @@ public class EditClassRoomFragment extends Fragment implements EditClassRoomCont
     private EditText editClassNumber;
     private EditText editFloor;
     private ClassRoom classRoom;
+    int classId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +50,7 @@ public class EditClassRoomFragment extends Fragment implements EditClassRoomCont
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             classRoom = bundle.getParcelable("pos");
+            classId = classRoom.getClassId();
             editClassName.setText(classRoom.getClassName());
             editClassNumber.setText(String.valueOf(classRoom.getClassNumber()));
             editFloor.setText(String.valueOf(classRoom.getFloor()));
@@ -77,7 +79,7 @@ public class EditClassRoomFragment extends Fragment implements EditClassRoomCont
             String className = String.valueOf(editClassName.getText());
             int classNumber = Integer.parseInt(editClassNumber.getText().toString());
             int floor = Integer.parseInt(editFloor.getText().toString());
-            presenter.editClassRoom(new ClassRoom(className, classNumber, 0, floor));
+            presenter.editClassRoom(new ClassRoom(classId, className, classNumber, 0, floor));
             assert getFragmentManager() != null;
             getFragmentManager().popBackStack();
         }

@@ -18,7 +18,7 @@ public class AddClassRoomPresenter implements AddClassRoomContract.Presenter {
 
     @Override
     public void addNewClassRoom(String className, int classNumber, int floor) {
-        repository.insert(new ClassRoom(className, classNumber, 0, floor))
+        repository.insert(new ClassRoom(2 ,className, classNumber, 0, floor))
                 .subscribeOn(Schedulers.io())
                 .subscribe()
 

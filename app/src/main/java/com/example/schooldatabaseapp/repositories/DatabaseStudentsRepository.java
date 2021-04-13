@@ -93,7 +93,7 @@ public class DatabaseStudentsRepository implements StudentsRepository {
                             int classNumber = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLASSNUMBER));
                             int studentsCount = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_STUDENTSCOUNT));
                             int floor = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_FLOOR));
-                            classrooms.add(new ClassRoom(className, classNumber, studentsCount, floor));
+                            classrooms.add(new ClassRoom(2, className, classNumber, studentsCount, floor));
                         }
                         cursor.close();
                         return classrooms;

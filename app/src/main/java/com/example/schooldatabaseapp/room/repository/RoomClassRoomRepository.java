@@ -79,7 +79,8 @@ public class RoomClassRoomRepository implements ClassRoomRepository {
 
     @Override
     public Completable update(ClassRoom classRoom) {
-        return dao.update(new EntityClassRoom(classRoom.getClassId(), classRoom.getClassName(), classRoom.getClassNumber(), classRoom.getStudentsCount(), classRoom.getFloor()));
+        return dao.update(new EntityClassRoom(classRoom.getClassId(), classRoom.getClassName(),
+                classRoom.getClassNumber(), classRoom.getStudentsCount(), classRoom.getFloor()));
 
     }
 }

@@ -16,6 +16,7 @@ import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -47,17 +48,24 @@ public class AddStudentPresenter implements AddStudentContract.Presenter {
     @Override
     public List<ClassRoom> getClassRooms() {
         List<ClassRoom> resultClassRoomList = new ArrayList<>();
-        repository.getAllClassRoom()
+//        repository.getAllClassRoom()
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(new Consumer<List<ClassRoom>>() {
+//                    @Override
+//                    public void accept(List<ClassRoom> classRoomList) throws Exception {
+//                        resultClassRoomList.addAll(classRoomList);
+//                    }
+//                });
+
+
+        return repository.getAllClassRoom()
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<List<ClassRoom>>() {
+                .map(new Function<List<ClassRoom>, List<ClassRoom>>() {
                     @Override
-                    public void accept(List<ClassRoom> classRoomList) throws Exception {
-                        resultClassRoomList.addAll(classRoomList);
+                    public List<ClassRoom> apply(@NonNull List<ClassRoom> classRoomList) throws Exception {
+                        return classRoomList;
                     }
-                });
-
-
-        return resultClassRoomList;
+                }).toObservable().blockingSingle();
     }
 
 

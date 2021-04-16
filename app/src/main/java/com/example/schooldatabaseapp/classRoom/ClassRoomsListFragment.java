@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -11,6 +14,8 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,27 +24,41 @@ import com.example.schooldatabaseapp.adapters.ClassRoomsRecyclerAdapter;
 import com.example.schooldatabaseapp.addClass.AddClassRoomFragment;
 import com.example.schooldatabaseapp.addStudents.AddStudentFragment;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
+import com.example.schooldatabaseapp.classRoom.mvvvm.ClassRoomListViewModel;
 import com.example.schooldatabaseapp.editClassRoom.EditClassRoomFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.room.repository.RoomClassRoomRepository;
-import com.example.schooldatabaseapp.model.Student;
+import com.example.schooldatabaseapp.searchBy.SearchByFragment;
 import com.example.schooldatabaseapp.students.StudentsListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ClassRoomsListFragment extends Fragment implements ClassRoomListContract.View, ClassRoomsRecyclerAdapter.CallBackAdapterPosition {
+public class ClassRoomsListFragment extends Fragment implements ClassRoomListContract.View, ClassRoomsRecyclerAdapter.CallBackAdapterPosition  {
 
 
     private static final String TAG = "My_Tag";
     private ClassRoomsRecyclerAdapter recyclerAdapter;
-    private List<ClassRoom> classRoomList = new ArrayList<>();
-    private ClassRoomListContract.Presenter presenter;
+    private final List<ClassRoom> classRoomList = new ArrayList<>();
+//    private ClassRoomListContract.Presenter presenter;
+
+    public ClassRoomListViewModel viewModel;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        viewModel = new ViewModelProvider(this).get(ClassRoomListViewModel.class);
+        viewModel.getUsers().observe(this, new Observer<List<ClassRoom>>() {
+            @Override
+            public void onChanged(List<ClassRoom> classRooms) {
+                classRoomList.addAll(classRooms);
+
+            }
+        });
+
     }
 
     @Override
@@ -52,13 +71,17 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter = new ClassRoomListPresenter(this, RoomClassRoomRepository.getInstance());
+
+
+//        presenter = new ClassRoomListPresenter(this, RoomClassRoomRepository.getInstance());
+
 
         Button addClassButton = view.findViewById(R.id.addClassButton);
         addClassButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.showAddClassFragment();
+//                presenter.showAddClassFragment();
+
             }
         });
 
@@ -66,7 +89,7 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
         addStudentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.showAddStudentFragment();
+//                presenter.showAddStudentFragment();
             }
         });
 
@@ -78,13 +101,26 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
     }
 
     @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Fragment fragment = new SearchByFragment();
+        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getContext();
+        assert fragmentChangeListener != null;
+        fragmentChangeListener.replaceFragment(fragment);
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void updateRooms(List<ClassRoom> all) {
         classRoomList.clear();
         classRoomList.addAll(all);
         recyclerAdapter.notifyDataSetChanged();
     }
-
-
 
 
     @Override
@@ -119,19 +155,18 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
 
         Fragment fragment = new AddStudentFragment();
         FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
-
         fragmentChangeListener.replaceFragment(fragment);
     }
 
 
     @Override
     public void editButtonOnClickListener(ClassRoom classRoom) {
-        presenter.openEditFragment(classRoom);
+//        presenter.openEditFragment(classRoom);
     }
 
     @Override
     public void onItemClickListener(ClassRoom classRoom) {
-        presenter.onItemClickListener(classRoom);
+//        presenter.onItemClickListener(classRoom);
     }
 
     @Override
@@ -142,9 +177,9 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
                         //Yes button clicked
-                        presenter.deleteClassRoom(classRoom);
+//                        presenter.deleteClassRoom(classRoom);
                         classRoomList.remove(classRoom);
-                        presenter.updateClassRooms();
+//                        presenter.updateClassRooms();
                         recyclerAdapter.notifyItemRemoved(classRoomList.indexOf(classRoom));
                         break;
 
@@ -166,8 +201,7 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
     @Override
     public void onResume() {
         super.onResume();
-        presenter.updateClassRooms();
-
+//        presenter.updateClassRooms();
 
     }
 }

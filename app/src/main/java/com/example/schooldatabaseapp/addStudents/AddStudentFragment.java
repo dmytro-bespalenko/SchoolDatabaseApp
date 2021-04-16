@@ -31,7 +31,7 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
     private EditText editFirstName;
     private EditText editLastName;
     private EditText editaAge;
-    private List<ClassRoom> classRoomList = new ArrayList<>();
+    private List<ClassRoom> classRoomList;
 
     private Spinner genderSpinner;
     private Spinner classSpinner;
@@ -50,18 +50,18 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
     }
 
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         presenter = new AddStudentPresenter(this, RoomStudentsRepository.getInstance());
-
         editFirstName = view.findViewById(R.id.add_firstName);
         editLastName = view.findViewById(R.id.add_lastName);
         editaAge = view.findViewById(R.id.add_age);
         genderSpinner = view.findViewById(R.id.add_spinner_Gender);
         classRoomList = presenter.getClassRooms();
+
         saveStudent = view.findViewById(R.id.save_Student_button);
 
         Bundle bundle = this.getArguments();
@@ -111,7 +111,6 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
             }
         });
 
-
         saveStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,11 +134,11 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
             String firstName = String.valueOf(editFirstName.getText());
             String lastName = String.valueOf(editLastName.getText());
             int age = Integer.parseInt(editaAge.getText().toString());
-
             presenter.addNewStudent(new Student(firstName, lastName, selectedClassId, selectedGender, age));
+
             assert getFragmentManager() != null;
             getFragmentManager().popBackStack();
-            Log.d(TAG, "run: " + Thread.currentThread().getName());
+
         }
     }
 

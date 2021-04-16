@@ -72,7 +72,7 @@ public class RoomStudentsRepository implements StudentsRepository {
     }
 
     @Override
-    public Single<List<ClassRoom>> getAllClassRoom() {
+    public  Single<List<ClassRoom>> getAllClassRoom() {
         return dao.getAllClassRoom()
                 .map(new Function<List<EntityClassRoom>, List<ClassRoom>>() {
                     @Override

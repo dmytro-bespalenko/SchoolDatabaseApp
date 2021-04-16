@@ -34,7 +34,6 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
         this.view = callBack;
     }
 
-
     @Override
     public void updateClassRooms() {
         repository.getAllClassrooms()
@@ -47,7 +46,6 @@ public class ClassRoomListPresenter implements ClassRoomListContract.Presenter {
                     }
                 });
     }
-
 
     @Override
     public void openEditFragment(ClassRoom classRoom) {

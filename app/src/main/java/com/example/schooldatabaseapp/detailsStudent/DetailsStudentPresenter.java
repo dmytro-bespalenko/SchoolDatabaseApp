@@ -3,16 +3,13 @@ package com.example.schooldatabaseapp.detailsStudent;
 import android.annotation.SuppressLint;
 
 import com.example.schooldatabaseapp.model.ClassRoom;
-import com.example.schooldatabaseapp.model.StudentsRepository;
-import com.example.schooldatabaseapp.room.entity.EntityClassRoom;
-import com.example.schooldatabaseapp.repositories.DatabaseStudentsRepository;
 import com.example.schooldatabaseapp.model.Student;
-import com.example.schooldatabaseapp.room.repository.RoomStudentsRepository;
+import com.example.schooldatabaseapp.model.StudentsRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.functions.Consumer;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 @SuppressLint("CheckResult")
@@ -46,17 +43,14 @@ public class DetailsStudentPresenter implements DetailsStudentContract.Presenter
     @Override
     public List<ClassRoom> getAllClassRooms() {
 
-        List<ClassRoom> result = new ArrayList<>();
-        repository.getAllClassRoom()
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<List<ClassRoom>>() {
-                    @Override
-                    public void accept(List<ClassRoom> classRoomList) throws Exception {
-                        result.addAll(classRoomList);
-                    }
-                });
 
-        return result;
+        return repository.getAllClassRoom().subscribeOn(Schedulers.io())
+                .map(new Function<List<ClassRoom>, List<ClassRoom>>() {
+                    @Override
+                    public List<ClassRoom> apply(@NonNull List<ClassRoom> classRoomList) throws Exception {
+                        return classRoomList;
+                    }
+                }).toObservable().blockingSingle();
     }
 
 

@@ -16,20 +16,18 @@ import java.util.List;
 
 public class ClassRoomListViewModel extends ViewModel {
 
-    public MutableLiveData<List<ClassRoom>> classrooms;
     private ClassRoomRepository repository;
+    public MutableLiveData<List<ClassRoom>> classrooms = new MutableLiveData<List<ClassRoom>>();
 
     public ClassRoomListViewModel() {
         super();
         repository = RoomClassRoomRepository.getInstance();
     }
 
-    public LiveData<List<ClassRoom>> getUsers() {
+    public void getClassRooms() {
         if (classrooms == null) {
-            classrooms = new MutableLiveData<List<ClassRoom>>();
-            loadClassRooms();
+            classrooms.postValue(loadClassRooms());
         }
-        return classrooms;
     }
 
     private void loadClassRooms() {

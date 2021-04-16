@@ -27,7 +27,6 @@ import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.classRoom.mvvvm.ClassRoomListViewModel;
 import com.example.schooldatabaseapp.editClassRoom.EditClassRoomFragment;
 import com.example.schooldatabaseapp.model.ClassRoom;
-import com.example.schooldatabaseapp.room.repository.RoomClassRoomRepository;
 import com.example.schooldatabaseapp.searchBy.SearchByFragment;
 import com.example.schooldatabaseapp.students.StudentsListFragment;
 
@@ -51,7 +50,7 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         viewModel = new ViewModelProvider(this).get(ClassRoomListViewModel.class);
-        viewModel.getUsers().observe(this, new Observer<List<ClassRoom>>() {
+        viewModel.classrooms().observe(this, new Observer<List<ClassRoom>>() {
             @Override
             public void onChanged(List<ClassRoom> classRooms) {
                 classRoomList.addAll(classRooms);
@@ -60,6 +59,7 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
         });
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -1,6 +1,7 @@
 package com.example.schooldatabaseapp.classRoom;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,42 +22,38 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooldatabaseapp.R;
 import com.example.schooldatabaseapp.adapters.ClassRoomsRecyclerAdapter;
-import com.example.schooldatabaseapp.addClass.AddClassRoomFragment;
-import com.example.schooldatabaseapp.addStudents.AddStudentFragment;
 import com.example.schooldatabaseapp.base.FragmentChangeListener;
 import com.example.schooldatabaseapp.classRoom.mvvvm.ClassRoomListViewModel;
-import com.example.schooldatabaseapp.editClassRoom.EditClassRoomFragment;
+import com.example.schooldatabaseapp.classRoom.mvvvm.FragmentsChanger;
+import com.example.schooldatabaseapp.classRoom.mvvvm.ViewModelFactory;
 import com.example.schooldatabaseapp.model.ClassRoom;
 import com.example.schooldatabaseapp.searchBy.SearchByFragment;
-import com.example.schooldatabaseapp.students.StudentsListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
-public class ClassRoomsListFragment extends Fragment implements ClassRoomListContract.View, ClassRoomsRecyclerAdapter.CallBackAdapterPosition  {
+public class ClassRoomsListFragment extends Fragment implements ClassRoomsRecyclerAdapter.CallBackAdapterPosition {
 
 
     private static final String TAG = "My_Tag";
     private ClassRoomsRecyclerAdapter recyclerAdapter;
     private final List<ClassRoom> classRoomList = new ArrayList<>();
-//    private ClassRoomListContract.Presenter presenter;
-
     public ClassRoomListViewModel viewModel;
+    public FragmentsChanger changer;
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.changer = (FragmentsChanger) context;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        viewModel = new ViewModelProvider(this).get(ClassRoomListViewModel.class);
-        viewModel.classrooms().observe(this, new Observer<List<ClassRoom>>() {
-            @Override
-            public void onChanged(List<ClassRoom> classRooms) {
-                classRoomList.addAll(classRooms);
-
-            }
-        });
+        viewModel = new ViewModelProvider(this, new ViewModelFactory(Objects.requireNonNull(getActivity()).getApplication())).get(ClassRoomListViewModel.class);
 
     }
 
@@ -71,17 +68,21 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-//        presenter = new ClassRoomListPresenter(this, RoomClassRoomRepository.getInstance());
+        viewModel.getClassrooms().observe(this, new Observer<List<ClassRoom>>() {
+            @Override
+            public void onChanged(List<ClassRoom> classRooms) {
+                classRoomList.clear();
+                classRoomList.addAll(classRooms);
+                recyclerAdapter.notifyDataSetChanged();
+            }
+        });
 
 
         Button addClassButton = view.findViewById(R.id.addClassButton);
         addClassButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                presenter.showAddClassFragment();
-
+                changer.openAddClassRoomFragment();
             }
         });
 
@@ -89,7 +90,8 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
         addStudentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                presenter.showAddStudentFragment();
+                changer.openAddStudentFragment();
+
             }
         });
 
@@ -115,58 +117,10 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void updateRooms(List<ClassRoom> all) {
-        classRoomList.clear();
-        classRoomList.addAll(all);
-        recyclerAdapter.notifyDataSetChanged();
-    }
-
-
-    @Override
-    public void openClassRoomEditFragment(ClassRoom classRoom) {
-        Fragment fragment = new EditClassRoomFragment();
-        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("pos", classRoom);
-        fragment.setArguments(bundle);
-        fragmentChangeListener.replaceFragment(fragment);
-    }
-
-    @Override
-    public void openClassRoomDetailsFragment(ClassRoom classRoom) {
-        Fragment fragment = new StudentsListFragment();
-        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("pos", classRoom);
-        fragment.setArguments(bundle);
-        fragmentChangeListener.replaceFragment(fragment);
-    }
-
-    @Override
-    public void openAddClassRoomFragment() {
-        Fragment fragment = new AddClassRoomFragment();
-        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
-        fragmentChangeListener.replaceFragment(fragment);
-    }
-
-    @Override
-    public void openAddStudentFragment() {
-
-        Fragment fragment = new AddStudentFragment();
-        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
-        fragmentChangeListener.replaceFragment(fragment);
-    }
-
-
-    @Override
-    public void editButtonOnClickListener(ClassRoom classRoom) {
-//        presenter.openEditFragment(classRoom);
-    }
 
     @Override
     public void onItemClickListener(ClassRoom classRoom) {
-//        presenter.onItemClickListener(classRoom);
+        changer.openClassRoomDetailsFragment(classRoom);
     }
 
     @Override
@@ -177,9 +131,9 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
                         //Yes button clicked
-//                        presenter.deleteClassRoom(classRoom);
+                        viewModel.deleteClassRoom(classRoom);
                         classRoomList.remove(classRoom);
-//                        presenter.updateClassRooms();
+                        viewModel.updateClassrooms();
                         recyclerAdapter.notifyItemRemoved(classRoomList.indexOf(classRoom));
                         break;
 
@@ -191,7 +145,6 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
             }
         };
 
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("Delete classroom?").setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener).show();
@@ -199,9 +152,56 @@ public class ClassRoomsListFragment extends Fragment implements ClassRoomListCon
     }
 
     @Override
+    public void editButtonOnClickListener(ClassRoom classRoom) {
+        changer.openClassRoomEditFragment(classRoom);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-//        presenter.updateClassRooms();
+        viewModel.updateClassrooms();
 
     }
+    //    @Override
+//    public void updateRooms(List<ClassRoom> all) {
+//        classRoomList.clear();
+//        classRoomList.addAll(all);
+//        recyclerAdapter.notifyDataSetChanged();
+//    }
+//
+//
+//    @Override
+//    public void openClassRoomEditFragment(ClassRoom classRoom) {
+//        Fragment fragment = new EditClassRoomFragment();
+//        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable("pos", classRoom);
+//        fragment.setArguments(bundle);
+//        fragmentChangeListener.replaceFragment(fragment);
+//    }
+//
+//    @Override
+//    public void openClassRoomDetailsFragment(ClassRoom classRoom) {
+//        Fragment fragment = new StudentsListFragment();
+//        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable("pos", classRoom);
+//        fragment.setArguments(bundle);
+//        fragmentChangeListener.replaceFragment(fragment);
+//    }
+//
+//    @Override
+//    public void openAddClassRoomFragment() {
+//        Fragment fragment = new AddClassRoomFragment();
+//        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
+//        fragmentChangeListener.replaceFragment(fragment);
+//    }
+//
+//    @Override
+//    public void openAddStudentFragment() {
+//
+//        Fragment fragment = new AddStudentFragment();
+//        FragmentChangeListener fragmentChangeListener = (FragmentChangeListener) getActivity();
+//        fragmentChangeListener.replaceFragment(fragment);
+//    }
 }
